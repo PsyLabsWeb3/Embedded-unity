@@ -6,7 +6,6 @@ using Fusion.Sockets;
 using UnityEngine.SceneManagement;
 using EmbeddedAPI;
 using System;
-using System.Linq;
 
 namespace BEKStudio
 {
