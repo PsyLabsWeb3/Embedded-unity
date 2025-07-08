@@ -2,7 +2,6 @@ using BEKStudio;
 using Fusion;
 using UnityEngine;
 using System.Collections;
-using EmbeddedAPI;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -56,8 +55,6 @@ public class PlayerSpawner : MonoBehaviour
             walletComp.WalletAddress = PlayerSessionData.WalletAddress;
             walletComp.MatchId = PlayerSessionData.MatchId;
         }
-
-        _ = API.JoinMatchAsync(PlayerSessionData.MatchId, PlayerSessionData.WalletAddress);
 
         NetworkManager.Instance.Runner.SetPlayerObject(NetworkManager.Instance.Runner.LocalPlayer, obj);
 

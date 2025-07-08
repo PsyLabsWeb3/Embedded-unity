@@ -60,6 +60,8 @@ namespace BEKStudio
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
                 PlayerCount = 2
             });
+
+            _ = API.JoinMatchAsync(_matchId, wallet);
         }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
