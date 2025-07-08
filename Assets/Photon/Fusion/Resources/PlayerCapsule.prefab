@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3310895287081646964}
   - component: {fileID: 2988407042878507220}
   - component: {fileID: 7062998958025103911}
+  - component: {fileID: -3223736114292797367}
   m_Layer: 0
   m_Name: PlayerCapsule
   m_TagString: Untagged
@@ -158,6 +159,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 2988407042878507220}
   - {fileID: 7062998958025103911}
+  - {fileID: -3223736114292797367}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &2988407042878507220
 MonoBehaviour:
@@ -189,3 +191,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 2
+--- !u!114 &-3223736114292797367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4343138932281204935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa542d829f2e84409deaa13fa00872f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _WalletAddress: 
+  _MatchId: 
