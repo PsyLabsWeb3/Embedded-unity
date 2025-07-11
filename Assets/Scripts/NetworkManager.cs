@@ -37,7 +37,21 @@ namespace BEKStudio
         private async void Start()
         {
             // ToDo: Get wallet and tx for this player
-            string wallet = "player_wallet_" + System.Guid.NewGuid().ToString();
+            string address = WalletManager.WalletAddress;
+            string wallet = "";
+
+            if (!string.IsNullOrEmpty(address))
+            {
+                wallet = address;
+                Debug.Log("✅ Usando wallet del jugador: " + wallet);
+                // Puedes hacer lógica con la dirección aquí (cargar perfil, verificar NFTs, etc.)
+            }
+            else
+            {
+                wallet = "player_wallet_" + System.Guid.NewGuid().ToString();
+                Debug.LogWarning("❌ WalletAddress aún no está disponible se genero uno aleatorio: " + wallet);
+            }
+           
             string tx = "player_tx_" + System.Guid.NewGuid().ToString();
 
             _matchId = await API.RegisterPlayerAsync(wallet, tx);
