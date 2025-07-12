@@ -71,7 +71,7 @@ namespace BEKStudio
                 GameMode = GameMode.Shared,
                 SessionName = _matchId,
                 Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+                SceneManager = null,
                 PlayerCount = 2
             });
 
@@ -90,6 +90,36 @@ namespace BEKStudio
                 OnRoomFull?.Invoke();
             }
         }
+
+        // public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        // {
+        //     _playersJoined++;
+        //     Debug.Log($"Player {player.PlayerId} joined. Total players: {_playersJoined}");
+
+        //     // Verifica si ya está spawneado
+        //     if (runner.GetPlayerObject(player) == null)
+        //     {
+        //         Vector3 spawnPos = player.PlayerId == 0 ? new Vector3(-10, 1, 0) : new Vector3(10, 1, 0);
+
+        //         var obj = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
+        //         Debug.Log($"✅ Spawned Player {player.PlayerId} at {spawnPos}");
+
+        //         if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
+        //         {
+        //             walletComp.WalletAddress = PlayerSessionData.WalletAddress;
+        //             walletComp.MatchId = PlayerSessionData.MatchId;
+        //         }
+
+        //         runner.SetPlayerObject(player, obj);
+        //     }
+
+        //     // Opcional: notifica si ya están los 2
+        //     if (_playersJoined == 2)
+        //     {
+        //         Debug.Log("Game Ready");
+        //         OnRoomFull?.Invoke();
+        //     }
+        // }
 
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {

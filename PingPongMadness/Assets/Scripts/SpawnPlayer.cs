@@ -43,12 +43,30 @@ public class PlayerSpawner : MonoBehaviour
 
         Debug.Log($"Spawning player for: {NetworkManager.Instance.Runner.LocalPlayer.PlayerId}");
 
+         // Calcula posición según ID del jugador
+        int playerId = NetworkManager.Instance.Runner.LocalPlayer.PlayerId;
+
+        Vector3 spawnPos = Vector3.zero;
+
+        // Asignar posición según PlayerId
+        if (playerId == 1)
+            spawnPos = new Vector3(-10, 1, 0); // lado izquierdo
+        else if (playerId == 2)
+            spawnPos = new Vector3(10, 1, 0);  // lado derecho
+        else
+            Debug.LogWarning($"Unexpected PlayerId: {playerId}");
+
+        Debug.Log($"[SPAWN DEBUG] PlayerId: {playerId}, SpawnPos: {spawnPos}");
+
         var obj = NetworkManager.Instance.Runner.Spawn(
             playerPrefab,
-            new Vector3(0, 1, 0),
+            spawnPos,
             Quaternion.identity,
             NetworkManager.Instance.Runner.LocalPlayer
         );
+
+        Debug.Log($"[SPAWNED OBJ] Position: {obj.transform.position}");
+
 
         if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
         {
