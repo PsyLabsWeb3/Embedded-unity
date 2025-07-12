@@ -25,39 +25,28 @@ public class PlayerSpawner : MonoBehaviour
         while (NetworkManager.Instance.Runner.LocalPlayer == null ||
                NetworkManager.Instance.Runner.LocalPlayer.PlayerId == -1)
         {
-            Debug.Log("Waiting for LocalPlayer to be valid...");
+            Debug.Log("⏳ Waiting for LocalPlayer to be valid...");
             yield return null;
         }
 
         if (hasSpawned)
         {
-            Debug.Log("Already spawned. Skipping...");
+            Debug.Log("⚠️ Already spawned. Skipping...");
             yield break;
         }
 
         if (NetworkManager.Instance.Runner.GetPlayerObject(NetworkManager.Instance.Runner.LocalPlayer) != null)
         {
-            Debug.Log("Player already spawned (via Fusion).");
+            Debug.LogWarning("⚠️ Player already spawned. Aborting manual spawn.");
             yield break;
         }
 
-        Debug.Log($"Spawning player for: {NetworkManager.Instance.Runner.LocalPlayer.PlayerId}");
-
-         // Calcula posición según ID del jugador
         int playerId = NetworkManager.Instance.Runner.LocalPlayer.PlayerId;
 
-        Vector3 spawnPos = Vector3.zero;
+        Vector3 spawnPos = playerId == 1 ? new Vector3(-5, 1, 0) : new Vector3(5, 1, 0);
+        Debug.Log($"🚀 Spawning player {playerId} at {spawnPos}");
 
-        // Asignar posición según PlayerId
-        if (playerId == 1)
-            spawnPos = new Vector3(-10, 1, 0); // lado izquierdo
-        else if (playerId == 2)
-            spawnPos = new Vector3(10, 1, 0);  // lado derecho
-        else
-            Debug.LogWarning($"Unexpected PlayerId: {playerId}");
-
-        Debug.Log($"[SPAWN DEBUG] PlayerId: {playerId}, SpawnPos: {spawnPos}");
-
+        // Manual spawn
         var obj = NetworkManager.Instance.Runner.Spawn(
             playerPrefab,
             spawnPos,
@@ -65,9 +54,13 @@ public class PlayerSpawner : MonoBehaviour
             NetworkManager.Instance.Runner.LocalPlayer
         );
 
-        Debug.Log($"[SPAWNED OBJ] Position: {obj.transform.position}");
+        // 🔧 Reposicionamiento forzado (por si no se respeta spawnPos)
+        var cc = obj.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+        obj.transform.position = spawnPos;
+        if (cc != null) cc.enabled = true;
 
-
+        // Asignar datos de jugador
         if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
         {
             walletComp.WalletAddress = PlayerSessionData.WalletAddress;
@@ -77,6 +70,7 @@ public class PlayerSpawner : MonoBehaviour
         NetworkManager.Instance.Runner.SetPlayerObject(NetworkManager.Instance.Runner.LocalPlayer, obj);
 
         hasSpawned = true;
+        Debug.Log($"✅ Player {playerId} spawned and moved to {spawnPos}");
     }
 
     private void OnDestroy()
