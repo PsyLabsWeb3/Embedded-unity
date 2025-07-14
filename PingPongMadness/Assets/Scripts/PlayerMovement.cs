@@ -1,29 +1,24 @@
 using Fusion;
 using UnityEngine;
+using BEKStudio;
 
 public class PlayerMovement : NetworkBehaviour
 {
     private CharacterController _controller;
-
     public float PlayerSpeed = 2f;
 
-      public override void Spawned()
-    {
-        base.Spawned();
+   [Networked] public bool Blocked { get; set; } 
 
-        // Forzar posición inicial solo en StateAuthority
-        if (Object.HasStateAuthority)
-        {
-            _controller = GetComponent<CharacterController>();
-            _controller.enabled = false;
-            transform.position = Object.InputAuthority.PlayerId == 0 ? new Vector3(-3, 1, 0) : new Vector3(3, 1, 0);
-            _controller.enabled = true;
-        }
+
+    private void Awake()
+    {
+        _controller = GetComponent<CharacterController>();
     }
+
 
     public override void FixedUpdateNetwork()
     {
-        if (!Object.HasInputAuthority)
+        if (!HasInputAuthority || Blocked)
             return;
 
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
@@ -34,5 +29,13 @@ public class PlayerMovement : NetworkBehaviour
         {
             transform.forward = move;
         }
+    }
+    public bool HasBeenSpawned { get; private set; } = false;
+
+    public override void Spawned()
+    {
+        HasBeenSpawned = true;
+        Blocked = true;
+        Debug.Log($"📌 Spawned() confirmado para Player {Object.InputAuthority.PlayerId}");
     }
 }
