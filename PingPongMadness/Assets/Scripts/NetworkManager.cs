@@ -14,6 +14,8 @@ namespace BEKStudio
         public static NetworkManager Instance;
         private List<PlayerMovement> registeredPlayers = new List<PlayerMovement>();
         private bool gameStarted = false;
+      
+
 
         [Header("Photon Fusion")]
         public NetworkRunner runnerPrefab;
@@ -218,8 +220,8 @@ namespace BEKStudio
         {
             gameStarted = true;
 
-            foreach (var player in registeredPlayers)
-                player.Blocked = true;
+            // foreach (var player in registeredPlayers)
+            //     player.Blocked = true;
 
             Debug.Log("\u23f3 Game starting in 6...");
             yield return new WaitForSeconds(1);
@@ -234,8 +236,14 @@ namespace BEKStudio
             Debug.Log("\u23f3 1...");
             yield return new WaitForSeconds(1);
 
-            foreach (var player in registeredPlayers)
-                player.Blocked = false;
+             // Este código solo lo ejecuta el host lógico (PlayerId == 1)
+            if (Runner.LocalPlayer.PlayerId == 1 && GameStateManager.Instance != null)
+            {
+                GameStateManager.Instance.GameStarted = true; // ✅ se replica a todos
+                Debug.Log("✅ GameStarted replicado");
+            }
+
+                // GameStarted = true;
 
             Debug.Log("\u2705 GAME STARTED!");
         }

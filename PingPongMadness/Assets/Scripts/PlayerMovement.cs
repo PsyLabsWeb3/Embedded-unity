@@ -18,8 +18,9 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (!HasInputAuthority || Blocked)
-            return;
+         if (!HasInputAuthority || GameStateManager.Instance == null || !GameStateManager.Instance.GameStarted)
+        return;
+         
 
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
 
