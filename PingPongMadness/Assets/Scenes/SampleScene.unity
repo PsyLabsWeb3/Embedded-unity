@@ -1579,6 +1579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93ce684a94984a7c811c238d83b81e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballPrefab: {fileID: 5087810488027657056, guid: dcc61df88544f47f79476a97b7668c80, type: 3}
   runnerPrefab: {fileID: 1530408104}
   playerPrefab: {fileID: 3310895287081646964, guid: df1954c930bc64f9d90eaf50aa4c9a56, type: 3}
 --- !u!4 &1459551575

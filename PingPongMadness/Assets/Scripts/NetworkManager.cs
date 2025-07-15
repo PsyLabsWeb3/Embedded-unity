@@ -14,8 +14,9 @@ namespace BEKStudio
         public static NetworkManager Instance;
         private List<PlayerMovement> registeredPlayers = new List<PlayerMovement>();
         private bool gameStarted = false;
-      
 
+        [SerializeField] private NetworkObject ballPrefab;
+        private NetworkObject ballInstance;
 
         [Header("Photon Fusion")]
         public NetworkRunner runnerPrefab;
@@ -239,6 +240,11 @@ namespace BEKStudio
             {
                 GameStateManager.Instance.GameStarted = true; // ✅ se replica a todos
                 Debug.Log("✅ GameStarted replicado");
+                 // Spawn ball
+                if (ballInstance == null)
+                {
+                    ballInstance = Runner.Spawn(ballPrefab, Vector3.zero, Quaternion.identity);
+                }
             }
 
                 // GameStarted = true;
