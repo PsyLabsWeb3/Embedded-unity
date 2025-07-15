@@ -241,9 +241,16 @@ namespace BEKStudio
                 GameStateManager.Instance.GameStarted = true; // ✅ se replica a todos
                 Debug.Log("✅ GameStarted replicado");
                  // Spawn ball
-                if (ballInstance == null)
+                // if (ballInstance == null)
+                // {
+                //     ballInstance = Runner.Spawn(ballPrefab, Vector3.zero, Quaternion.identity);
+                // }
+                   if (Runner.LocalPlayer.PlayerId == 1)
                 {
-                    ballInstance = Runner.Spawn(ballPrefab, Vector3.zero, Quaternion.identity);
+                    var hostPlayerRef = Runner.LocalPlayer;
+                    Vector3 position = Vector3.zero; // posición inicial de la pelota
+                    Runner.Spawn(ballPrefab, position, Quaternion.identity, hostPlayerRef);
+                    Debug.Log("🏐 Ball spawned by host.");
                 }
             }
 
