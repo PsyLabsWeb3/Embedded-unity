@@ -326,7 +326,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -336,16 +336,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /Volumes/Satechi SSD/embedded-unity/Embedded-unity/PingPongMadness
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 204.08838}
-    m_SelectedIDs: 08ac0000
-    m_LastClickedID: 44040
-    m_ExpandedIDs: 0000000088ab00008aab00008cab00008eab000000ca9a3b
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: a4ab0000
+    m_LastClickedID: 43940
+    m_ExpandedIDs: 00000000a4ab0000a6ab0000a8ab0000aaab000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -374,7 +374,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000088ab00008aab00008cab00008eab0000
+    m_ExpandedIDs: 00000000a4ab0000a6ab0000a8ab0000aaab0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -522,7 +522,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 5cdfffff74dffffffce1ffff7ee9ffff96e9ffff4eecffff30f8ffff1afbffff00aa000052c10000
+      m_ExpandedIDs: 86f2ffff9ef2ffff5ef5ffff1afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.11059427, y: -0.09318936, z: 0.010395443, w: -0.9894506}
     speed: 2
-    m_Value: {x: -0.1105923, y: -0.09318769, z: 0.010395257, w: -0.9894329}
+    m_Value: {x: -0.11059428, y: -0.093189366, z: 0.010395443, w: -0.9894506}
   m_Size:
     m_Target: 428.7108
     speed: 2
