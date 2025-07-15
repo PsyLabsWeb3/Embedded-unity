@@ -7,6 +7,9 @@ public class GameStateManager : NetworkBehaviour
 
     [Networked] public bool GameStarted { get; set; }
 
+    [Networked]
+    public int CountdownValue { get; set; }
+
     public override void Spawned()
     {
         if (Instance == null)

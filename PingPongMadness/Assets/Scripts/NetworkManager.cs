@@ -222,13 +222,17 @@ namespace BEKStudio
 
             // foreach (var player in registeredPlayers)
             //     player.Blocked = true;
-        for (int i = 6; i >= 1; i--)
-            {
-                CountdownUI.Instance.ShowCountdown(i);
-                yield return new WaitForSeconds(1f);
-            }
-             CountdownUI.Instance.HideCountdown();
+            if (GameStateManager.Instance != null)
+                GameStateManager.Instance.CountdownValue = 6;
 
+            for (int i = 5; i >= 1; i--)
+            {
+                Debug.Log($"⏳ {i}...");
+                yield return new WaitForSeconds(1);
+
+                if (GameStateManager.Instance != null)
+                    GameStateManager.Instance.CountdownValue = i;
+            }
 
              // Este código solo lo ejecuta el host lógico (PlayerId == 1)
             if (Runner.LocalPlayer.PlayerId == 1 && GameStateManager.Instance != null)
