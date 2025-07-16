@@ -5,7 +5,7 @@ using BEKStudio;
 public class PlayerMovement : NetworkBehaviour
 {
     private CharacterController _controller;
-    public float PlayerSpeed = 2f;
+    public float PlayerSpeed = 20f;
 
    [Networked] public bool Blocked { get; set; } 
 

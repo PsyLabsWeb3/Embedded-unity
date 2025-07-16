@@ -14,6 +14,7 @@ namespace BEKStudio
         public static NetworkManager Instance;
         private List<PlayerMovement> registeredPlayers = new List<PlayerMovement>();
         private bool gameStarted = false;
+        private bool gameEnded = false;
 
         [SerializeField] private NetworkObject ballPrefab;
         private NetworkObject ballInstance;
@@ -97,6 +98,12 @@ namespace BEKStudio
 {
     _playersJoined++;
     Debug.Log($"Player {player.PlayerId} joined. Total players: {_playersJoined}");
+
+        if (player.PlayerId <= 0)
+    {
+        Debug.LogWarning($"⛔ Invalid PlayerId: {player.PlayerId}. Skipping spawn.");
+        return;
+    }
 
     // Solo el host lógico (PlayerId == 1) debe hacer los spawns
     if (Runner.LocalPlayer.PlayerId == 1)
@@ -257,6 +264,27 @@ namespace BEKStudio
                 // GameStarted = true;
 
             Debug.Log("\u2705 GAME STARTED!");
+        }
+
+        public void OnGoalScored(GoalZone.Side side)
+        {
+            if (gameEnded) return;
+            gameEnded = true;
+
+            string winner = side == GoalZone.Side.Left ? "Jugador 2" : "Jugador 1";
+            Debug.Log($"🏆 ¡{winner} gana!");
+
+            // Mostrar mensaje de victoria en ambos clientes
+            if (GameStateManager.Instance != null)
+            {
+                GameStateManager.Instance.SetWinner(winner);
+            }
+
+            // Opcional: despawn ball
+            if (ballInstance != null)
+            {
+                Runner.Despawn(ballInstance);
+            }
         }
 
         public void OnInput(NetworkRunner runner, NetworkInput input)
