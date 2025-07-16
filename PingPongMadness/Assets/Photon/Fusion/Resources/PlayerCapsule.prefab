@@ -139,7 +139,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0.002
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3310895287081646964
 MonoBehaviour:
@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d9df424bf4d49dda2a4fbc9fc9bea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeed: 2
+  PlayerSpeed: 10
   _Blocked: 0
 --- !u!114 &-3223736114292797367
 MonoBehaviour:

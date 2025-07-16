@@ -5,7 +5,7 @@ public class BallController : NetworkBehaviour
 {
     private Rigidbody _rb;
 
-    public float initialSpeed = 5f;
+    public float initialSpeed = 0.5f;
 
     public override void Spawned()
     {
