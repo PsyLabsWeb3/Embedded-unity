@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 68de9910470abb14c876eaa993a66bc1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Models/Platform/Materials/Ground.mat
+  uploadId: 745896

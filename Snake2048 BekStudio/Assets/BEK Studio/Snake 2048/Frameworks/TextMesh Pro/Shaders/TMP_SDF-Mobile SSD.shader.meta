@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c8d12adcee749c344b8117cf7c7eb912
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Frameworks/TextMesh Pro/Shaders/TMP_SDF-Mobile
+    SSD.shader
+  uploadId: 745896

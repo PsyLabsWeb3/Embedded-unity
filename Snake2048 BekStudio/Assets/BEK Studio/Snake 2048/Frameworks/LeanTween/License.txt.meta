@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e389e9bcd4f944c338327697bd209cad
+timeCreated: 1469016738
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Frameworks/LeanTween/License.txt
+  uploadId: 745896

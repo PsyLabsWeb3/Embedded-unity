@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2ccf049c2cdc94f3f837c93f81689b5f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Prefabs/Food.prefab
+  uploadId: 745896

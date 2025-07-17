@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 91a5b07cc3384f86a88d7c29698e058b
+labels:
+- gvh
+- gvh_version-9.6.0
+- gvhp_exportpath-GoogleMobileAds/GoogleMobileAds.Common.dll
+timeCreated: 1480838400
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/GoogleMobileAds/GoogleMobileAds.Common.dll
+  uploadId: 745896
