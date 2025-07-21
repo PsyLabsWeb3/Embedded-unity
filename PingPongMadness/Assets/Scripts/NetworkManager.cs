@@ -15,6 +15,8 @@ namespace BEKStudio
         private List<PlayerMovement> registeredPlayers = new List<PlayerMovement>();
         private bool gameStarted = false;
         private bool gameEnded = false;
+        private bool ballSpawned = false;
+
 
         [SerializeField] private NetworkObject ballPrefab;
         private NetworkObject ballInstance;
@@ -106,24 +108,24 @@ namespace BEKStudio
     }
 
     // Solo el host lógico (PlayerId == 1) debe hacer los spawns
-    if (Runner.LocalPlayer.PlayerId == 1)
-    {
-        Vector3 spawnPos = player.PlayerId == 1 ? new Vector3(-5, 1, 0) : new Vector3(5, 1, 0);
+    // if (Runner.LocalPlayer.PlayerId == 1)
+    // {
+    //     Vector3 spawnPos = player.PlayerId == 1 ? new Vector3(-5, 1, 0) : new Vector3(5, 1, 0);
 
-        if (runner.GetPlayerObject(player) == null)
-        {
-            var obj = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
-            Debug.Log($"🚀 Spawning player {player.PlayerId} at {spawnPos}");
+    //     if (runner.GetPlayerObject(player) == null)
+    //     {
+    //         var obj = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
+    //         Debug.Log($"🚀 Spawning player {player.PlayerId} at {spawnPos}");
 
-            if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
-            {
-                walletComp.WalletAddress = PlayerSessionData.WalletAddress;
-                walletComp.MatchId = PlayerSessionData.MatchId;
-            }
+    //         if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
+    //         {
+    //             walletComp.WalletAddress = PlayerSessionData.WalletAddress;
+    //             walletComp.MatchId = PlayerSessionData.MatchId;
+    //         }
 
-            runner.SetPlayerObject(player, obj);
-        }
-    }
+    //         runner.SetPlayerObject(player, obj);
+    //     }
+    // }
 
     if (_playersJoined == 2)
     {
@@ -243,27 +245,28 @@ namespace BEKStudio
             }
 
              // Este código solo lo ejecuta el host lógico (PlayerId == 1)
-            if (Runner.LocalPlayer.PlayerId == 1 && GameStateManager.Instance != null)
+          if (Runner.LocalPlayer.PlayerId == 1 && GameStateManager.Instance != null)
             {
-                GameStateManager.Instance.GameStarted = true; // ✅ se replica a todos
-                Debug.Log("✅ GameStarted replicado");
-                 // Spawn ball
-                // if (ballInstance == null)
-                // {
-                //     ballInstance = Runner.Spawn(ballPrefab, Vector3.zero, Quaternion.identity);
-                // }
-                   if (Runner.LocalPlayer.PlayerId == 1)
+                if (!ballSpawned)
                 {
+                    GameStateManager.Instance.GameStarted = true; // ✅ se replica a todos
+                    Debug.Log("✅ GameStarted replicado");
+
                     var hostPlayerRef = Runner.LocalPlayer;
-                    Vector3 position = Vector3.zero; // posición inicial de la pelota
+                    Vector3 position = Vector3.zero;
+
                     Runner.Spawn(ballPrefab, position, Quaternion.identity, hostPlayerRef);
                     Debug.Log("🏐 Ball spawned by host.");
+
+                    ballSpawned = true; // ✅ evita doble spawn
+                }
+                else
+                {
+                    Debug.Log("⚠️ Ball spawn skipped: already spawned.");
                 }
             }
 
-                // GameStarted = true;
-
-            Debug.Log("\u2705 GAME STARTED!");
+            Debug.Log("✅ GAME STARTED!");
         }
 
         public void OnGoalScored(GoalZone.Side side)
