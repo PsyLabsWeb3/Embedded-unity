@@ -41,4 +41,12 @@ public class PlayerMovement : NetworkBehaviour
         Blocked = true;
         Debug.Log($"📌 Spawned() confirmado para Player {Object.InputAuthority.PlayerId}");
     }
+
+       private void OnTriggerEnter(Collider other)
+    {
+        // if (!HasStateAuthority) return;
+         Debug.Log($"🎯 PADTrigger activado por: {other.name} en Player {Object.InputAuthority.PlayerId}");
+
+       
+    }
 }
