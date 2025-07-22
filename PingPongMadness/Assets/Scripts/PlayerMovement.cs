@@ -22,14 +22,16 @@ public class PlayerMovement : NetworkBehaviour
         return;
          
 
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
+        // Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
+        Vector3 move = new Vector3(0, 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
+
 
         _controller.Move(move);
 
-        if (move != Vector3.zero)
-        {
-            transform.forward = move;
-        }
+        // if (move != Vector3.zero)
+        // {
+        //     transform.forward = move;
+        // }
     }
     public bool HasBeenSpawned { get; private set; } = false;
 
