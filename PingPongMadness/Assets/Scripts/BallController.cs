@@ -9,17 +9,22 @@ public class BallController : NetworkBehaviour
 
     private Vector3 lastVelocity;
 
+        
     public override void Spawned()
     {
         _rb = GetComponent<Rigidbody>();
 
         if (HasStateAuthority)
         {
-            // Movimiento inicial en dirección aleatoria
-            Vector3 direction = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-0.5f, 0.5f)).normalized;
+            // Forzar movimiento inicial con suficiente componente en X
+            float x = Random.Range(0.5f, 1f) * (Random.value > 0.5f ? 1 : -1); // asegúrate que avanza en X
+            float z = Random.Range(-0.5f, 0.5f); // opcional variación vertical
+
+            Vector3 direction = new Vector3(x, 0, z).normalized;
             _rb.linearVelocity = direction * initialSpeed;
         }
     }
+
 
  public override void FixedUpdateNetwork()
     {
