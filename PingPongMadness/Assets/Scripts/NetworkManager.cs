@@ -21,6 +21,7 @@ namespace BEKStudio
         [SerializeField] private NetworkObject ballPrefab;
         private NetworkObject ballInstance;
 
+
         [Header("Photon Fusion")]
         public NetworkRunner runnerPrefab;
         public NetworkObject playerPrefab;
@@ -273,14 +274,19 @@ namespace BEKStudio
         {
             if (gameEnded) return;
             gameEnded = true;
+            GameStateManager.Instance.GameEnded  = true;
+            GameStateManager.Instance.SetGameEnded();
 
             string winner = side == GoalZone.Side.Left ? "Jugador 2" : "Jugador 1";
             Debug.Log($"🏆 ¡{winner} gana!");
+          
 
             // Mostrar mensaje de victoria en ambos clientes
             if (GameStateManager.Instance != null)
             {
+                
                 GameStateManager.Instance.SetWinner(winner);
+                
             }
 
             // Opcional: despawn ball
@@ -295,8 +301,8 @@ namespace BEKStudio
             Vector2 direction = Vector2.zero;
             if (Input.GetKey(KeyCode.UpArrow)) direction = Vector2.up;
             if (Input.GetKey(KeyCode.DownArrow)) direction = Vector2.down;
-            if (Input.GetKey(KeyCode.LeftArrow)) direction = Vector2.left;
-            if (Input.GetKey(KeyCode.RightArrow)) direction = Vector2.right;
+            // if (Input.GetKey(KeyCode.LeftArrow)) direction = Vector2.left;
+            // if (Input.GetKey(KeyCode.RightArrow)) direction = Vector2.right;
 
             input.Set(new SnakeInputData { direction = direction });
         }
