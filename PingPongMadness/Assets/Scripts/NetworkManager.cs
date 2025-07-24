@@ -277,7 +277,9 @@ namespace BEKStudio
             GameStateManager.Instance.GameEnded  = true;
             GameStateManager.Instance.SetGameEnded();
 
-            string winner = side == GoalZone.Side.Left ? "Jugador 2" : "Jugador 1";
+            // string winner = side == GoalZone.Side.Left ? "2" : "1";
+            string winner = (side == GoalZone.Side.Left) ? "2" : "1";
+
             Debug.Log($"🏆 ¡{winner} gana!");
           
 
