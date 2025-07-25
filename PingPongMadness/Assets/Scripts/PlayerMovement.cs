@@ -22,11 +22,32 @@ public class PlayerMovement : NetworkBehaviour
         return;
          
 
-        // Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
-        Vector3 move = new Vector3(0, 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
+        // if (Blocked) return;
+
+                    if (MobileInputUI.Instance == null)
+            {
+                Debug.LogWarning("❌ MobileInputUI.Instance is null");
+            }
+
+                 
+
+                float moveZ = Input.GetAxis("Vertical"); // PC
+        if (MobileInputUI.Instance != null)
+        {
+            if (MobileInputUI.Instance.IsMovingUp)
+                moveZ = 1f;
+            else if (MobileInputUI.Instance.IsMovingDown)
+                moveZ = -1f;
+        }
+
+                Vector3 move = new Vector3(0, 0, moveZ) * Runner.DeltaTime * PlayerSpeed;
+                _controller.Move(move);
+    
+     
+        // Vector3 move = new Vector3(0, 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * PlayerSpeed;
 
 
-        _controller.Move(move);
+        // _controller.Move(move);
 
         // if (move != Vector3.zero)
         // {
