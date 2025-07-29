@@ -8,7 +8,7 @@ public class GoalZone : NetworkBehaviour
     public enum Side { Left, Right }
     public Side goalSide;
 
-    private void OnTriggerEnter(Collider other)
+    private async void OnTriggerEnter(Collider other)
     {
         // if (!HasStateAuthority) return;
          Debug.Log($"🎯 Trigger activado por: {other.name}");
@@ -19,7 +19,8 @@ public class GoalZone : NetworkBehaviour
 
             if (NetworkManager.Instance != null)
             {
-                NetworkManager.Instance.OnGoalScored(goalSide);
+                await NetworkManager.Instance.OnGoalScored(goalSide);
+
             }
         }
     }

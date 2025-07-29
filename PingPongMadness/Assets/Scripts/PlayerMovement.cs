@@ -4,8 +4,11 @@ using BEKStudio;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    public string WalletAddress;
     private CharacterController _controller;
     public float PlayerSpeed = 100f;
+    
+    public PlayerRef OwnerRef { get; private set; }
 
    [Networked] public bool Blocked { get; set; } 
 
@@ -22,9 +25,8 @@ public class PlayerMovement : NetworkBehaviour
         return;
          
 
-        // if (Blocked) return;
 
-                    if (MobileInputUI.Instance == null)
+        if (MobileInputUI.Instance == null)
             {
                 Debug.LogWarning("❌ MobileInputUI.Instance is null");
             }
@@ -58,10 +60,20 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void Spawned()
     {
+        OwnerRef = Object.InputAuthority;
+
+         if (HasInputAuthority && TryGetComponent<NetworkWallet>(out var walletComp))
+        {
+            
+            walletComp.WalletAddress = PlayerSessionData.WalletAddress;
+            Debug.Log($"📥 Wallet del jugador local asignada: {walletComp.WalletAddress}");
+        }
+
         HasBeenSpawned = true;
         Blocked = true;
         Debug.Log($"📌 Spawned() confirmado para Player {Object.InputAuthority.PlayerId}");
     }
+
 
        private void OnTriggerEnter(Collider other)
     {

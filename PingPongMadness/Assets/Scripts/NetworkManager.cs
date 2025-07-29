@@ -6,6 +6,8 @@ using Fusion.Sockets;
 using UnityEngine.SceneManagement;
 using EmbeddedAPI;
 using System;
+using System.Threading.Tasks;
+
 
 namespace BEKStudio
 {
@@ -108,26 +110,6 @@ namespace BEKStudio
         return;
     }
 
-    // Solo el host lógico (PlayerId == 1) debe hacer los spawns
-    // if (Runner.LocalPlayer.PlayerId == 1)
-    // {
-    //     Vector3 spawnPos = player.PlayerId == 1 ? new Vector3(-5, 1, 0) : new Vector3(5, 1, 0);
-
-    //     if (runner.GetPlayerObject(player) == null)
-    //     {
-    //         var obj = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
-    //         Debug.Log($"🚀 Spawning player {player.PlayerId} at {spawnPos}");
-
-    //         if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
-    //         {
-    //             walletComp.WalletAddress = PlayerSessionData.WalletAddress;
-    //             walletComp.MatchId = PlayerSessionData.MatchId;
-    //         }
-
-    //         runner.SetPlayerObject(player, obj);
-    //     }
-    // }
-
     if (_playersJoined == 2)
     {
         Debug.Log("Game Ready");
@@ -186,6 +168,14 @@ namespace BEKStudio
 
             if (registeredPlayers.Count == 2 && !gameStarted)
             {
+                 PlayerMovement player1 = registeredPlayers[0];
+                 PlayerMovement player2 = registeredPlayers[1];
+                 string wallet1 = player1.WalletAddress;
+                 string wallet2 = player2.WalletAddress;
+
+                   Debug.Log($"📡 Player 1 Wallet: {wallet1}");
+                   Debug.Log($"📡 Player 2 Wallet: {wallet2}");
+
                 StartCoroutine(StartGameCountdown());
             }
         }
@@ -270,33 +260,57 @@ namespace BEKStudio
             Debug.Log("✅ GAME STARTED!");
         }
 
-        public void OnGoalScored(GoalZone.Side side)
+      public async Task OnGoalScored(GoalZone.Side side)
+
         {
             if (gameEnded) return;
             gameEnded = true;
             GameStateManager.Instance.GameEnded  = true;
             GameStateManager.Instance.SetGameEnded();
+            
 
             // string winner = side == GoalZone.Side.Left ? "2" : "1";
             string winner = (side == GoalZone.Side.Left) ? "2" : "1";
 
             Debug.Log($"🏆 ¡{winner} gana!");
-          
 
-            // Mostrar mensaje de victoria en ambos clientes
-            if (GameStateManager.Instance != null)
-            {
-                
-                GameStateManager.Instance.SetWinner(winner);
-                
-            }
+            GameStateManager.Instance.SetWinner(winner);
 
-            // Opcional: despawn ball
-            if (ballInstance != null)
+           // Determinar índice del ganador según el lado donde cayó el gol
+            int winnerIndex = (side == GoalZone.Side.Left) ? 1 : 0; // Si el gol fue en el lado izquierdo, gana el de la derecha
+
+            
+
+            if (registeredPlayers.Count == 2)
             {
-                Runner.Despawn(ballInstance);
+                // Asegura que estás accediendo al jugador, no a un string
+                PlayerMovement winnerPlayer = registeredPlayers[winnerIndex];
+
+                // Ahora intenta obtener el componente NetworkWallet
+                if (winnerPlayer.TryGetComponent<NetworkWallet>(out var walletComp))
+                {
+                    string wallet = walletComp.WalletAddress;
+                    string matchId = PlayerSessionData.MatchId;
+
+                    Debug.Log($"🏆 Reportando ganador: Wallet={wallet}, MatchID={matchId}");
+
+                    wallet = wallet?.Trim();
+                    matchId = matchId?.Trim();
+
+                    await API.ReportMatchResultAsync(matchId, wallet);
+                  
+                }
+                else
+                {
+                    Debug.LogWarning("⚠️ No se encontró NetworkWallet en el jugador ganador");
+                }
+                }
+                        // Opcional: despawn ball
+                        if (ballInstance != null)
+                        {
+                            Runner.Despawn(ballInstance);
+                        }
             }
-        }
 
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
