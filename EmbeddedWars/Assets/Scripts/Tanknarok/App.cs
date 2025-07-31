@@ -70,7 +70,7 @@ namespace FusionExamples.Tanknarok
 			FusionLauncher.Launch(
 				_gameMode,
 				region,
-				roomName,
+				_matchId,
 				_gameManagerPrefab,
 				_levelManager,
 				OnConnectionStatusUpdate
