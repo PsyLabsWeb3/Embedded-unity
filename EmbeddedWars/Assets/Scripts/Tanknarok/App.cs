@@ -4,6 +4,7 @@ using FusionHelpers;
 using Tanknarok.UI;
 using TMPro;
 using UnityEngine;
+using EmbeddedAPI;
 
 namespace FusionExamples.Tanknarok
 {
@@ -28,6 +29,8 @@ namespace FusionExamples.Tanknarok
 		private GameMode _gameMode;
 		private int _nextPlayerIndex;
 
+		private string _matchId = null;
+
 		private void Awake()
 		{
 			Application.targetFrameRate = 60;
@@ -35,9 +38,43 @@ namespace FusionExamples.Tanknarok
 			_levelManager.onStatusUpdate = OnConnectionStatusUpdate;
 		}
 
-		private void Start()
+		private async void Start()
 		{
-			OnConnectionStatusUpdate( null, FusionLauncher.ConnectionStatus.Disconnected, "");
+			// OnConnectionStatusUpdate( null, FusionLauncher.ConnectionStatus.Disconnected, "");
+
+			_status = FusionLauncher.ConnectionStatus.Disconnected;
+
+			// Ocultar UIs innecesarios
+			_uiStart.SetVisible(false);
+			_uiRoom.SetVisible(false);     // 👈 Oculta también el de Room
+			_uiProgress.SetVisible(true);  // Muestra que está conectando
+
+			// Establece el modo de juego (Host, Client o Shared)
+			_gameMode = GameMode.Shared;
+
+			// string address = WalletManager.WalletAddress;
+			string address = "";
+			 string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+
+            Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
+
+            string tx = "player_tx_" + System.Guid.NewGuid();
+            _matchId = await API.RegisterPlayerAsync(wallet, tx);
+            Debug.Log($"Match ID received from backend: {_matchId}");
+
+			// Define los valores hardcodeados
+			string region = "";           // o "us", "eu", etc.
+			string roomName = "room-001";
+
+			// Inicia conexión directamente
+			FusionLauncher.Launch(
+				_gameMode,
+				region,
+				roomName,
+				_gameManagerPrefab,
+				_levelManager,
+				OnConnectionStatusUpdate
+			);
 		}
 
 		private void Update()
@@ -86,21 +123,40 @@ namespace FusionExamples.Tanknarok
 				_uiRoom.SetVisible(true);
 		}
 
-		public void OnEnterRoom()
-		{
-			if (GateUI(_uiRoom))
-			{
-				// Get region from dropdown
-				string region = string.Empty;
-				if (_regionDropdown.value > 0)
-                {
-					region = _regionDropdown.options[_regionDropdown.value].text;
-					region = region.Split(" (")[0];
-                }
+		// public void OnEnterRoom()
+		// {
+		// 	if (GateUI(_uiRoom))
+		// 	{
+		// 		// Get region from dropdown
+		// 		string region = string.Empty;
+		// 		if (_regionDropdown.value > 0)
+        //         {
+		// 			region = _regionDropdown.options[_regionDropdown.value].text;
+		// 			region = region.Split(" (")[0];
+        //         }
 
-				FusionLauncher.Launch(_gameMode, region, _room.text, _gameManagerPrefab, _levelManager, OnConnectionStatusUpdate);
+		// 		FusionLauncher.Launch(_gameMode, region, _room.text, _gameManagerPrefab, _levelManager, OnConnectionStatusUpdate);
+		// 	}
+		// }
+		public void OnEnterRoom()
+			{
+				string hardcodedRoom = "default-room-001";
+				string hardcodedRegion = "";
+
+				if (GateUI(_uiRoom)) 
+				{
+
+							FusionLauncher.Launch(
+								_gameMode,
+								hardcodedRegion,
+								hardcodedRoom,
+								_gameManagerPrefab,
+								_levelManager,
+								OnConnectionStatusUpdate
+							);
+				}
 			}
-		}
+
 
 		/// <summary>
 		/// Call this method from button events to close the current UI panel and check the return value to decide
