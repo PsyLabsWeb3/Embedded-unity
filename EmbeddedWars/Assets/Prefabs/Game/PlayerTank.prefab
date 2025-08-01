@@ -499,8 +499,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 14975994
   ObjectInterest: 1
-  _DestroyWhenStateAuthorityLeaves: 1
-  _AllowStateAuthorityOverride: 0
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
@@ -514,6 +512,7 @@ MonoBehaviour:
   - {fileID: 346593213666910495}
   - {fileID: 4046957960101304630}
   - {fileID: 2178422256488403281}
+  ForceRemoteRenderTimeframe: 0
 --- !u!114 &-3098922383743760179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,6 +526,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eventRelayPrefab: {fileID: 6216721781973090943, guid: b5b51c12e1e6446af8ad4a576d68eef6, type: 3}
+  _eventRelay: {fileID: 0}
+  _eventStub: {fileID: 0}
   _hull: {fileID: 8452678108642866672}
   _turret: {fileID: 1185371072849741531}
   _visualParent: {fileID: 6674640751963955606}
@@ -543,6 +544,7 @@ MonoBehaviour:
   _stage: 0
   _lives: 0
   _ready: 0
+  _deathExplosionInstance: {fileID: 0}
 --- !u!114 &6203864925880487117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,7 +615,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   SphereRadius: 1
+  CapsuleRadius: 0
   BoxExtents: {x: 0.7, y: 0.53, z: 0.8}
+  CapsuleExtents: 0
   Offset: {x: 0, y: 1, z: 0}
   Root: {fileID: 4937990569053503600}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -785,6 +789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
   gravity: -80
   jumpImpulse: 30
   acceleration: 100
@@ -818,8 +823,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8041608635261517176}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.32, z: 0}
+  m_LocalScale: {x: 0.14525844, y: 0.14525844, z: 0.14525844}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8413464888283590545}
@@ -834,7 +839,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8041608635261517176}
-  m_Mesh: {fileID: -2451315575946790210, guid: b1584132887524842a73d6a32fddb647, type: 3}
+  m_Mesh: {fileID: -1300520269578483486, guid: da1275de06fe61c48a9af8697c621475, type: 3}
 --- !u!23 &2302327643812161395
 MeshRenderer:
   m_ObjectHideFlags: 0
