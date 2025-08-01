@@ -159,11 +159,11 @@ namespace FusionExamples.Tanknarok
 			}
 
 			//Only if there are any meshes in the meshlist we change the mesh
-			if (newMesh != currentMesh)
-			{
-				meshFilter.mesh = newMesh; //Change the mesh
-				currentMesh = newMesh; //Save the mesh
-			}
+			// if (newMesh != currentMesh)
+			// {
+			// 	meshFilter.mesh = newMesh; //Change the mesh
+			// 	currentMesh = newMesh; //Save the mesh
+			// }
 		}
 
 		// Update the tanks damage particles based on how much health is left
