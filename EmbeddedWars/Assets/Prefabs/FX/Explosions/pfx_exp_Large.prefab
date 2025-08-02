@@ -9996,7 +9996,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.38202363, b: 0, a: 1}
+      maxColor: {r: 0.608366, g: 0, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -58793,6 +58793,7 @@ MonoBehaviour:
   startAction: 2
   stopAction: 2
   audioClip: {fileID: 11400000, guid: af34843be22cf6c4b9c756d07a1a33b1, type: 2}
+  _audioSource: {fileID: 0}
 --- !u!114 &3726879629887449942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63925,7 +63926,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.38202363, b: 0, a: 1}
+      maxColor: {r: 1, g: 0, b: 0.53460884, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
