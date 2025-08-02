@@ -2,14 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: mfx_LaserLava
   m_Shader: {fileID: 4800000, guid: 0eaaa691f134adb4daa4428d21162620, type: 3}
-  m_ShaderKeywords: 
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -70,10 +71,10 @@ Material:
     - _scrollSpeed: 0.08
     - _strength: 1
     m_Colors:
-    - _Color: {r: 0.9716981, g: 0.23360726, b: 0.01375042, a: 1}
+    - _Color: {r: 0.19407144, g: 0.015686259, b: 0.972549, a: 1}
     - _Color1: {r: 1, g: 0.31034476, b: 0, a: 1}
     - _Color2: {r: 0.17647058, g: 0.05467128, b: 0, a: 1}
-    - _DepthColor: {r: 1, g: 0, b: 0, a: 1}
+    - _DepthColor: {r: 0, g: 0.42820358, b: 1, a: 1}
     - _InnerColor: {r: 1, g: 0.47586206, b: 0, a: 1}
     - _IntersectionColor: {r: 0.875, g: 0, b: 0, a: 1}
     - _LightColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
