@@ -181,6 +181,7 @@ namespace FusionExamples.Tanknarok
 			{
 				// Show lobby scores and reset the score ui.
 				_scoreManager.ShowFinalGameScore(gameManager);
+				Debug.Log($"🏆 Reporting match from LevelManager result. MatchId:");
 			}
 
 			gameManager.lastPlayerStanding = null;
