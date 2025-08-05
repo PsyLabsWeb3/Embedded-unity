@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 37
+  controlID: 87
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 38
+  controlID: 88
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 39
+  controlID: 89
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -316,23 +316,23 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/LevelObjects
+    - Assets/Scripts/Tanknarok
     m_Globs: []
     m_OriginalText: 
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs/LevelObjects
+  - Assets/Scripts/Tanknarok
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /Volumes/Satechi SSD/embedded-unity/Embedded-unity/EmbeddedWars
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 289.98358}
-    m_SelectedIDs: 4e620000
-    m_LastClickedID: 25166
-    m_ExpandedIDs: 00000000a2610000a4610000a6610000a8610000aa610000ac610000ae610000b0610000b26100004a62000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 199.30609}
+    m_SelectedIDs: 7a6c0000
+    m_LastClickedID: 27770
+    m_ExpandedIDs: 00000000786c00007a6c00007c6c00007e6c0000806c0000826c0000846c000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -360,7 +360,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a2610000a4610000a6610000a8610000aa610000ac610000ae610000b0610000b2610000
+    m_ExpandedIDs: 00000000786c00007a6c00007c6c00007e6c0000806c0000826c0000846c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -387,7 +387,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c62300006cc700000000000036a8000086860000707500002a810000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -492,7 +492,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 90c9ffffdac9ffffa2ccffff2acfffff30cfffff7acfffffdad6ffff26d7ffffeed9ffff76dcffff7cdcffffc6dcffff14eaffff5eeaffffcaeeffff52f1ffff5af1ffffe8f1fffff0faffff1e5d0000445d0000825e0000f68100004482000020850000
+      m_ExpandedIDs: 0efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -907,9 +907,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -4.0438766, y: -2.4563982, z: -2.725195}
+    m_Target: {x: 537, y: 310.01953, z: 0}
     speed: 2
-    m_Value: {x: -0.6446229, y: 1.0285429, z: 0.019316196}
+    m_Value: {x: 537, y: 310.01953, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -956,13 +956,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.30542624, y: -0.20717412, z: 0.068290204, w: -0.9269181}
+    m_Target: {x: 0.061488677, y: 0.09268385, z: -0.0059010065, w: 0.99382764}
     speed: 2
-    m_Value: {x: -0.47795957, y: -0.330592, z: 0.20035502, w: -0.7887467}
+    m_Value: {x: -0.06148868, y: -0.09268386, z: 0.005901007, w: -0.9938277}
   m_Size:
-    m_Target: 13.178012
+    m_Target: 286.61734
     speed: 2
-    m_Value: 1.6305767
+    m_Value: 286.61734
   m_Ortho:
     m_Target: 0
     speed: 2

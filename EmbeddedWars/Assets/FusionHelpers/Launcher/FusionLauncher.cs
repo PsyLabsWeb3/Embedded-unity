@@ -5,6 +5,7 @@ using Fusion.Photon.Realtime;
 using Fusion.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using EmbeddedAPI;
 
 namespace FusionHelpers
 {
@@ -143,8 +144,13 @@ namespace FusionHelpers
 			}
 		}
 
-		public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+		public async void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
 		{
+			Debug.Log($"Player {player} Left");
+			string winnerWallet = PlayerSessionData.WalletAddress;
+            string matchId = PlayerSessionData.MatchId;
+            Debug.Log($"Reporting match: {matchId} result. Winner: {winnerWallet}");
+            await API.ReportMatchResultAsync(matchId, winnerWallet);
 			if(runner.TryGetSingleton(out FusionSession session))
 				session.PlayerLeft(player);
 		}

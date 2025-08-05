@@ -1,6 +1,7 @@
 using UnityEngine;
 using Fusion;
 using FusionHelpers;
+using EmbeddedAPI;
 
 namespace FusionExamples.Tanknarok
 {
@@ -27,7 +28,7 @@ namespace FusionExamples.Tanknarok
 			}	
 		}
 		
-		public const byte MAX_SCORE = 3;
+		public const byte MAX_SCORE = 2;
 
 		private bool _restart;
 
@@ -60,7 +61,7 @@ namespace FusionExamples.Tanknarok
 			Runner.GetLevelManager()?.cameraStrategy.RemoveTarget(((Player)fusionPlayer).cameraTarget);
 		}
 
-		public void OnTankDeath()
+		public async void OnTankDeath()
 		{
 			if (currentPlayState != PlayState.LOBBY)
 			{
@@ -89,6 +90,10 @@ namespace FusionExamples.Tanknarok
 	          score.Set(lastPlayerStanding.PlayerIndex, newScore);
           if (newScore >= MAX_SCORE)
             nextLevelIndex = -1;
+			string winnerWallet = PlayerSessionData.WalletAddress;
+			string matchId = PlayerSessionData.MatchId;
+			Debug.Log($"🏆 Reporting match result. MatchId: {matchId}, Winner: {winnerWallet}");
+			await API.ReportMatchResultAsync(matchId, winnerWallet);
           LoadLevel( nextLevelIndex );
         }
 			}

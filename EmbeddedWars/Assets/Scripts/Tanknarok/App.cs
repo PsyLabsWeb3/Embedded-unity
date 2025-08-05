@@ -62,9 +62,14 @@ namespace FusionExamples.Tanknarok
             _matchId = await API.RegisterPlayerAsync(wallet, tx);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
+			PlayerSessionData.WalletAddress = wallet;
+			PlayerSessionData.MatchId = _matchId;
+
+			// ✅ Verificar guardado
+			Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
+
 			// Define los valores hardcodeados
 			string region = "";           // o "us", "eu", etc.
-			string roomName = "room-001";
 
 			// Inicia conexión directamente
 			FusionLauncher.Launch(
@@ -156,6 +161,17 @@ namespace FusionExamples.Tanknarok
 							);
 				}
 			}
+
+
+        // public async void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+        // {
+        //     // Debug.Log($"Player {player.PlayerId} left.✅ ");
+		// 	Debug.Log($"ON PLAYER LEFT✅ ");
+        //     string winnerWallet = PlayerSessionData.WalletAddress;
+        //     string matchId = PlayerSessionData.MatchId;
+        //     Debug.Log($"Reporting match result. Winner: {winnerWallet}");
+        //     await API.ReportMatchResultAsync(matchId, winnerWallet);
+        // }
 
 
 		/// <summary>
