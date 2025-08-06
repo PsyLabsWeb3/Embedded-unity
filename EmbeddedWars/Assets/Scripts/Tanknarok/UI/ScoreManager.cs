@@ -20,6 +20,7 @@ namespace FusionExamples.Tanknarok
 		[SerializeField] private ParticleSystem _confetti;
 		[SerializeField] private AudioEmitter _audioEmitter;
 
+
 		private Dictionary<int, FinalGameScoreUI> _finalGameScoreUI = new ();
 		private Dictionary<PlayerRef, IntermediateLevelScoreUI> _intermediateLevelScoreUI = new Dictionary<PlayerRef, IntermediateLevelScoreUI>();
 
@@ -43,6 +44,12 @@ namespace FusionExamples.Tanknarok
 			int playerCount = 0;
 			foreach (FusionPlayer fusionPlayer in gameManager.AllPlayers)
 			{
+				GameObject embeddedLogo = GameObject.FindWithTag("LogoEmbedded");
+				if (embeddedLogo != null)
+				{
+					embeddedLogo.SetActive(false);
+				}
+
 				Player player = (Player) fusionPlayer;
 				if (!_finalGameScoreUI.TryGetValue(player.PlayerIndex, out FinalGameScoreUI scoreLobbyUI))
 				{

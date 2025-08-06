@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+using EmbeddedAPI;
 
 namespace FusionExamples.Tanknarok
 {
@@ -181,7 +182,18 @@ namespace FusionExamples.Tanknarok
 			{
 				// Show lobby scores and reset the score ui.
 				_scoreManager.ShowFinalGameScore(gameManager);
+
+				// Report match result to API
 				Debug.Log($"🏆 Reporting match from LevelManager result. MatchId:");
+				PlayerRef winnerRef = gameManager.matchWinner.Object.InputAuthority;
+				string winnerWallet = "";
+				if (gameManager.playerWalletMap.TryGet(winnerRef, out var wallet))
+				{
+					winnerWallet = wallet.ToString();
+					string matchId = PlayerSessionData.MatchId;
+					Debug.Log($"🏆 Reporting match from LevelManager result. MatchId: {matchId}, Wallet: {winnerWallet}");
+					API.ReportMatchResultAsync(matchId, winnerWallet);
+				}
 			}
 
 			gameManager.lastPlayerStanding = null;

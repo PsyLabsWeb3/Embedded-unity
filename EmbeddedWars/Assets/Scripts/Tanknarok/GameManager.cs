@@ -14,6 +14,10 @@ namespace FusionExamples.Tanknarok
 		[Networked] public PlayState currentPlayState { get; set; }
 		[Networked, Capacity(4)] private NetworkArray<int> score => default;
 
+		[Networked, Capacity(4)] 
+		public NetworkDictionary<PlayerRef, NetworkString<_64>> playerWalletMap => default;
+		public NetworkDictionary<PlayerRef, NetworkString<_64>> PlayerWalletMap => playerWalletMap;
+
 		public Player lastPlayerStanding { get; set; }
 		public Player matchWinner
 		{
@@ -42,6 +46,12 @@ namespace FusionExamples.Tanknarok
 			
 			if (Object.HasStateAuthority)
 			{
+					if (!string.IsNullOrEmpty(PlayerSessionData.WalletAddress))
+					{
+						var localPlayer = Runner.LocalPlayer;
+						playerWalletMap.Set(localPlayer, PlayerSessionData.WalletAddress);
+						Debug.Log($"✅ Wallet registrado: {localPlayer} → {PlayerSessionData.WalletAddress}");
+					}
 				LoadLevel(-1);
 			}
 			else if(currentPlayState!=PlayState.LOBBY)
