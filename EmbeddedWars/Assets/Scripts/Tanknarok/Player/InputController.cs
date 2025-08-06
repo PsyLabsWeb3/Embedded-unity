@@ -10,11 +10,18 @@ namespace FusionExamples.Tanknarok
 	/// Handle player input by responding to Fusion input polling, filling an input struct and then working with
 	/// that input struct in the Fusion Simulation loop.
 	/// </summary>
+		public enum InputMode
+		{
+			MOUSE_KEYBOARD,
+			MOBILE
+		}
 	public class InputController : NetworkBehaviour, INetworkRunnerCallbacks
 	{
 		[SerializeField] private LayerMask _mouseRayMask;
 
 		public static bool fetchInput = true;
+
+	
 
 		private Player _player;
 		private NetworkInputData _inputData = new NetworkInputData();
@@ -32,6 +39,8 @@ namespace FusionExamples.Tanknarok
 		private uint _buttonReset;
 		private uint _buttonSample;
 
+		 public static InputMode CurrentInputMode = InputMode.MOUSE_KEYBOARD;
+
 		/// <summary>
 		/// Hook up to the Fusion callbacks so we can handle the input polling
 		/// </summary>
@@ -44,9 +53,11 @@ namespace FusionExamples.Tanknarok
 			if (Object.HasInputAuthority)
 			{
 				Runner.AddCallbacks(this);
+
 			}
 
 			Debug.Log("Spawned [" + this + "] IsClient=" + Runner.IsClient + " IsServer=" + Runner.IsServer + " IsInputSrc=" + Object.HasInputAuthority + " IsStateSrc=" + Object.HasStateAuthority);
+
 		}
 
 		/// <summary>
@@ -56,12 +67,14 @@ namespace FusionExamples.Tanknarok
 		/// <param name="input">The target input handler that we'll pass our data to</param>
 		public void OnInput(NetworkRunner runner, NetworkInput input)
 		{
+				
 			if (_player!=null && _player.Object!=null && _player.stage == Player.Stage.Active)
 			{
 				_inputData.aimDirection = _aimDelta.normalized;
 				_inputData.moveDirection = _moveDelta.normalized;
 				_inputData.Buttons = _buttonSample;
 				_buttonReset |= _buttonSample; // This effectively delays the reset of the read button flags until next Update() in case we're ticking faster than we're rendering
+				Debug.Log($"🔁 OnInput called, move={_moveDelta}, aim={_aimDelta}, buttons={_buttonSample}");
 			}
 
 			// Hand over the data to Fusion
@@ -70,99 +83,70 @@ namespace FusionExamples.Tanknarok
 		}
 		
 		private void Update()
+{
+	_buttonSample &= ~_buttonReset;
+
+	if (CurrentInputMode == InputMode.MOUSE_KEYBOARD)
+	{
+		if (Input.GetMouseButton(0))
+			_buttonSample |= NetworkInputData.BUTTON_FIRE_PRIMARY;
+
+		if (Input.GetMouseButton(1))
+			_buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
+
+		_moveDelta = Vector2.zero;
+
+		if (Input.GetKey(KeyCode.W))
+			_moveDelta += Vector2.up;
+
+		if (Input.GetKey(KeyCode.S))
+			_moveDelta += Vector2.down;
+
+		if (Input.GetKey(KeyCode.A))
+			_moveDelta += Vector2.left;
+
+		if (Input.GetKey(KeyCode.D))
+			_moveDelta += Vector2.right;
+
+		Vector3 mousePos = Input.mousePosition;
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay(mousePos);
+		Vector3 mouseCollisionPoint = Vector3.zero;
+
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity, _mouseRayMask))
 		{
-			_buttonSample &= ~_buttonReset;
-
-			if (Input.mousePresent)
+			if (hit.collider != null)
 			{
-				if (Input.GetMouseButton(0) )
-					_buttonSample |= NetworkInputData.BUTTON_FIRE_PRIMARY;
-
-				if (Input.GetMouseButton(1) )
-					_buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
-
-				// if (Input.GetKey(KeyCode.R))
-				// 	_buttonSample |= NetworkInputData.BUTTON_TOGGLE_READY;
-
-				_moveDelta = Vector2.zero;
-				
-				if (Input.GetKey(KeyCode.W))
-					_moveDelta += Vector2.up;
-
-				if (Input.GetKey(KeyCode.S))
-					_moveDelta += Vector2.down;
-
-				if (Input.GetKey(KeyCode.A))
-					_moveDelta += Vector2.left;
-
-				if (Input.GetKey(KeyCode.D))
-					_moveDelta += Vector2.right;
-
-				Vector3 mousePos = Input.mousePosition;
-
-				RaycastHit hit;
-				Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-				Vector3 mouseCollisionPoint = Vector3.zero;
-				// Raycast towards the mouse collider box in the world
-				if (Physics.Raycast(ray, out hit, Mathf.Infinity, _mouseRayMask))
-				{
-					if (hit.collider != null)
-					{
-						mouseCollisionPoint = hit.point;
-					}
-				}
-
-				Vector3 aimDirection = mouseCollisionPoint - _player.turretPosition;
-				_aimDelta = new Vector2(aimDirection.x,aimDirection.z );
-			}
-			else if (Input.touchSupported)
-			{
-				bool leftIsDown = false;
-				bool rightIsDown = false;
-
-				foreach (Touch touch in Input.touches)
-				{
-					if (touch.position.x < Screen.width / 2)
-					{
-						leftIsDown = true;
-						_leftPos = touch.position;
-						if (_leftTouchWasDown)
-							_moveDelta += 10.0f * touch.deltaPosition / Screen.dpi;
-						else
-							_leftDown = touch.position;
-					}
-					else
-					{
-						rightIsDown = true;
-						_rightPos = touch.position;
-						if (_rightTouchWasDown && (touch.position-_rightDown).magnitude>(0.01f*Screen.dpi))
-							_aimDelta = (10.0f / Screen.dpi) * (touch.position-_rightDown);
-						else
-							_rightDown = touch.position;
-					}
-				}
-				if (_rightTouchWasDown && !rightIsDown )
-					_buttonSample |= NetworkInputData.BUTTON_FIRE_PRIMARY;
-				if (_leftTouchWasDown && !leftIsDown && _moveDelta.magnitude < 0.01f )
-					_buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
-
-				if( !leftIsDown )
-					_moveDelta = Vector2.zero;
-			
-				_mobileInput.gameObject.SetActive(true);
-				_mobileInput.SetLeft(leftIsDown, _leftDown, _leftPos);
-				_mobileInput.SetRight(rightIsDown,_rightDown, _rightPos);
-
-				_leftTouchWasDown = leftIsDown;
-				_rightTouchWasDown = rightIsDown;
-			}
-			else
-			{
-				_mobileInput.gameObject.SetActive(false);
+				mouseCollisionPoint = hit.point;
 			}
 		}
 
+		Vector3 aimDirection = mouseCollisionPoint - _player.turretPosition;
+		_aimDelta = new Vector2(aimDirection.x, aimDirection.z);
+	}
+	else if (CurrentInputMode == InputMode.MOBILE)
+	{
+		if (_mobileInput != null && _mobileInput.gameObject.activeInHierarchy)
+	{
+		_moveDelta = _mobileInput.MoveInput;
+		_aimDelta = _mobileInput.AimInput;
+
+		Debug.Log($"📲 MOBILE INPUT: moveDelta={_moveDelta}, aimDelta={_aimDelta}");
+
+		if (_mobileInput.RightReleasedThisFrame())
+		{
+			Debug.Log("🎯 Right joystick released → FIRE PRIMARY");
+			_buttonSample |= NetworkInputData.BUTTON_FIRE_PRIMARY;
+		}
+
+		if (_mobileInput.LeftReleasedThisFrame() && _moveDelta.magnitude < 0.01f)
+		{
+			Debug.Log("💣 Left joystick tap (no move) → FIRE SECONDARY");
+			_buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
+		}
+	}
+}
+}
 		public void ToggleReady()
 		{
 			_buttonSample |= NetworkInputData.BUTTON_TOGGLE_READY;
