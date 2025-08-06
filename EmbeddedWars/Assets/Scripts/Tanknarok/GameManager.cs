@@ -7,7 +7,7 @@ namespace FusionExamples.Tanknarok
 {
 	public class GameManager : FusionSession
 	{
-		public enum PlayState { LOBBY, LEVEL, TRANSITION }
+		public enum PlayState { LOBBY, LEVEL, TRANSITION, ENDED }
 
 		[SerializeField] private ForceField _forceField;
 
@@ -92,21 +92,20 @@ namespace FusionExamples.Tanknarok
 					lastPlayerStanding = null;
 				
 				Debug.Log($"Someone died - {playersLeft} left");
-        if (lastPlayerStanding != null)
-        {
-	        int nextLevelIndex = Runner.GetLevelManager().GetRandomLevelIndex();
-          int newScore = score[lastPlayerStanding.PlayerIndex] + 1;
-          if(HasStateAuthority)
-	          score.Set(lastPlayerStanding.PlayerIndex, newScore);
-          if (newScore >= MAX_SCORE)
-            nextLevelIndex = -1;
-			// string winnerWallet = PlayerSessionData.WalletAddress;
-			// string matchId = PlayerSessionData.MatchId;
-			Debug.Log($"🏆 Reporting match from GAMEMANAGER result. MatchId:");
-			// await API.ReportMatchResultAsync(matchId, winnerWallet);
-          LoadLevel( nextLevelIndex );
-		  return; 
-        }
+			if (lastPlayerStanding != null)
+			{
+				int nextLevelIndex = Runner.GetLevelManager().GetRandomLevelIndex();
+				int newScore = score[lastPlayerStanding.PlayerIndex] + 1;
+				if(HasStateAuthority)
+					score.Set(lastPlayerStanding.PlayerIndex, newScore);
+				if (newScore >= MAX_SCORE)
+					nextLevelIndex = -1;
+				
+					Debug.Log($"🏆 Reporting match from GAMEMANAGER result. MatchId:");
+					
+					LoadLevel( nextLevelIndex );
+				return; 
+			}
 			}
 		}
 
@@ -130,7 +129,18 @@ namespace FusionExamples.Tanknarok
 			}
 
 			LevelManager lm = Runner.GetLevelManager();
-			lm.readyUpManager.UpdateUI(currentPlayState, AllPlayers, OnAllPlayersReady);
+			// lm.readyUpManager.UpdateUI(currentPlayState, AllPlayers, OnAllPlayersReady);
+			//
+			if (currentPlayState != PlayState.ENDED)
+			{
+				lm.readyUpManager.UpdateUI(currentPlayState, AllPlayers, OnAllPlayersReady);
+			}
+			else
+			{
+				// Opcional: ocultar completamente el UI del ready
+				lm.readyUpManager.gameObject.SetActive(false);
+				lm.readyUpManager.enabled = false;  
+			}
 			
 			if (_restart || DisconnectByPrompt)
 			{

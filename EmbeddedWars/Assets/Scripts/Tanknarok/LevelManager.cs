@@ -170,7 +170,7 @@ namespace FusionExamples.Tanknarok
 			Debug.Log($"Stop glitching");
 			_transitionEffect.ToggleGlitch(false);
 			_audioEmitter.Stop();
-
+			//
 			GameManager gameManager;
 			while (!Runner.TryGetSingleton(out gameManager))
 			{
@@ -180,8 +180,12 @@ namespace FusionExamples.Tanknarok
 
 			if (gameManager.matchWinner!=null && newScene.AsIndex == _lobby)
 			{
+				// Set the game state to ended
+				gameManager.currentPlayState = GameManager.PlayState.ENDED;
 				// Show lobby scores and reset the score ui.
 				_scoreManager.ShowFinalGameScore(gameManager);
+
+				Debug.Log($"GameManager.currentPlayState✅: {gameManager.currentPlayState}");
 
 				// Report match result to API
 				Debug.Log($"🏆 Reporting match from LevelManager result. MatchId:");
