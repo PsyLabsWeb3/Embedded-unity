@@ -10,7 +10,7 @@ namespace FusionExamples.Tanknarok
 {
 	public class ReadyUpManager : MonoBehaviour
 	{
-		[SerializeField] private GameObject _disconnectInfoText;
+		// [SerializeField] private GameObject _disconnectInfoText;
 		[SerializeField] private GameObject _readyupInfoText;
 		[SerializeField] private Transform _readyUIParent;
 		[SerializeField] private ReadyupIndicator _readyPrefab;
@@ -114,7 +114,7 @@ namespace FusionExamples.Tanknarok
 
 			bool allPlayersReady = readyCount == playerCount;
 
-			_disconnectInfoText.SetActive(!allPlayersReady);
+			// _disconnectInfoText.SetActive(!allPlayersReady);
 			_readyupInfoText.SetActive(!allPlayersReady && playerCount > 1);
 
 			if (allPlayersReady)
