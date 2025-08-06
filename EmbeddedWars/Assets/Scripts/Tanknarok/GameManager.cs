@@ -73,7 +73,7 @@ namespace FusionExamples.Tanknarok
 
 		public void OnTankDeath()
 		{
-			if (currentPlayState != PlayState.LOBBY)
+			if (!HasStateAuthority || currentPlayState != PlayState.LOBBY)
 			{
 				int playersLeft = 0;
 				lastPlayerStanding = null;
@@ -94,6 +94,7 @@ namespace FusionExamples.Tanknarok
 				Debug.Log($"Someone died - {playersLeft} left");
 			if (lastPlayerStanding != null)
 			{
+				Debug.Log($"Score before: {score[lastPlayerStanding.PlayerIndex]}");
 				int nextLevelIndex = Runner.GetLevelManager().GetRandomLevelIndex();
 				int newScore = score[lastPlayerStanding.PlayerIndex] + 1;
 				if(HasStateAuthority)

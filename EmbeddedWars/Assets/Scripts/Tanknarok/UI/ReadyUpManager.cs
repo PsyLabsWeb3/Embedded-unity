@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Fusion;
 using FusionHelpers;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace FusionExamples.Tanknarok
 {
@@ -14,6 +16,8 @@ namespace FusionExamples.Tanknarok
 		[SerializeField] private ReadyupIndicator _readyPrefab;
 		[SerializeField] private AudioEmitter _audioEmitter;
 		[SerializeField] private GameObject _disconnectPrompt;
+		[SerializeField] private Button _readyUpButton;
+
 
 		private Dictionary<PlayerRef, ReadyupIndicator> _readyUIs = new Dictionary<PlayerRef, ReadyupIndicator>();
 		private float _delay;
@@ -23,6 +27,34 @@ namespace FusionExamples.Tanknarok
         {
 			_disconnectPrompt.SetActive(false);
         }
+
+		public void OnReadyUpClicked()
+		{
+			Debug.Log("OnReadyUpClicked🚨 ");
+			 var runner = FindObjectOfType<NetworkRunner>();
+			if (runner == null || runner.LocalPlayer == null)
+			{
+				Debug.LogWarning("❌ No NetworkRunner or LocalPlayer found");
+				return;
+			}
+
+			// Buscar al jugador local y su InputController
+			foreach (var player in FindObjectsOfType<Player>())
+			{
+				if (player.Object != null && player.Object.InputAuthority == runner.LocalPlayer)
+				{
+					var input = player.GetComponent<InputController>();
+					if (input != null)
+					{
+						Debug.Log("✅ Calling ToggleReady on local InputController");
+						input.ToggleReady();
+						return;
+					}
+				}
+			}
+
+			Debug.LogWarning("❌ No InputController with InputAuthority found!");
+		}
 
 		public void AttemptDisconnect()
 		{
@@ -41,7 +73,7 @@ namespace FusionExamples.Tanknarok
 				return;
 			}
 
-			if (playState != GameManager.PlayState.LOBBY)
+			if (playState != GameManager.PlayState.LOBBY )
 			{
 				foreach (ReadyupIndicator ui in _readyUIs.Values)
 					LocalObjectPool.Release(ui);
@@ -90,6 +122,7 @@ namespace FusionExamples.Tanknarok
 				_delay = 2.0f;
 				onAllPlayersReady();
 			}
+
 		}
 	}
 }

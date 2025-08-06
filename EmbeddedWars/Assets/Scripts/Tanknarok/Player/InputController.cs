@@ -81,8 +81,8 @@ namespace FusionExamples.Tanknarok
 				if (Input.GetMouseButton(1) )
 					_buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
 
-				if (Input.GetKey(KeyCode.R))
-					_buttonSample |= NetworkInputData.BUTTON_TOGGLE_READY;
+				// if (Input.GetKey(KeyCode.R))
+				// 	_buttonSample |= NetworkInputData.BUTTON_TOGGLE_READY;
 
 				_moveDelta = Vector2.zero;
 				

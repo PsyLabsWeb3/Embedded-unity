@@ -214,12 +214,22 @@ namespace FusionExamples.Tanknarok
 			}
 
 			// Set state to playing level
+			// if (_loadedScene.AsIndex == _lobby)
+			// {
+			// 	if(Runner.IsServer || Runner.IsSharedModeMasterClient)
+			// 		gameManager.currentPlayState = GameManager.PlayState.LOBBY;
+			// 	InputController.fetchInput = true;
+//		    Debug.Log($"Switched Scene from {prevScene} to {newScene}");
 			if (_loadedScene.AsIndex == _lobby)
 			{
-				if(Runner.IsServer || Runner.IsSharedModeMasterClient)
+				if ((Runner.IsServer || Runner.IsSharedModeMasterClient) && gameManager.currentPlayState != GameManager.PlayState.ENDED)
+				{
 					gameManager.currentPlayState = GameManager.PlayState.LOBBY;
+				}
+
 				InputController.fetchInput = true;
-//		    Debug.Log($"Switched Scene from {prevScene} to {newScene}");
+			
+
 			}
 			else
 			{
