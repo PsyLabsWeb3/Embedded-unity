@@ -39,6 +39,11 @@ namespace FusionExamples.Tanknarok
 		private uint _buttonReset;
 		private uint _buttonSample;
 
+		private bool _secondaryFirePressed;
+		public void OnSecondaryFireButtonDown() => _secondaryFirePressed = true;
+		public void OnSecondaryFireButtonUp() => _secondaryFirePressed = false;
+		public bool SecondaryFirePressed() => _secondaryFirePressed;
+
 		 public static InputMode CurrentInputMode = InputMode.MOUSE_KEYBOARD;
 
 		/// <summary>
@@ -74,7 +79,7 @@ namespace FusionExamples.Tanknarok
 				_inputData.moveDirection = _moveDelta.normalized;
 				_inputData.Buttons = _buttonSample;
 				_buttonReset |= _buttonSample; // This effectively delays the reset of the read button flags until next Update() in case we're ticking faster than we're rendering
-				Debug.Log($"🔁 OnInput called, move={_moveDelta}, aim={_aimDelta}, buttons={_buttonSample}");
+				// Debug.Log($"🔁 OnInput called, move={_moveDelta}, aim={_aimDelta}, buttons={_buttonSample}");
 			}
 
 			// Hand over the data to Fusion
@@ -131,19 +136,31 @@ namespace FusionExamples.Tanknarok
 		_moveDelta = _mobileInput.MoveInput;
 		_aimDelta = _mobileInput.AimInput;
 
-		Debug.Log($"📲 MOBILE INPUT: moveDelta={_moveDelta}, aimDelta={_aimDelta}");
+		      // Autofire: Disparo primario cuando mueves el joystick derecho
+        if (_aimDelta.magnitude > 0.2f)
+        {
+            _buttonSample |= NetworkInputData.BUTTON_FIRE_PRIMARY;
+        }
 
-		if (_mobileInput.RightReleasedThisFrame())
-		{
-			Debug.Log("🎯 Right joystick released → FIRE PRIMARY");
-			_buttonSample |= NetworkInputData.BUTTON_FIRE_PRIMARY;
-		}
+		 // Botón dedicado: Disparo secundario
+        if (_mobileInput.SecondaryFirePressed())
+        {
+            _buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
+        }
 
-		if (_mobileInput.LeftReleasedThisFrame() && _moveDelta.magnitude < 0.01f)
-		{
-			Debug.Log("💣 Left joystick tap (no move) → FIRE SECONDARY");
-			_buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
-		}
+		// Debug.Log($"📲 MOBILE INPUT: moveDelta={_moveDelta}, aimDelta={_aimDelta}");
+
+		// if (_mobileInput.RightReleasedThisFrame())
+		// {
+		// 	Debug.Log("🎯 Right joystick released → FIRE PRIMARY");
+		// 	_buttonSample |= NetworkInputData.BUTTON_FIRE_PRIMARY;
+		// }
+
+		// if (_mobileInput.LeftReleasedThisFrame() && _moveDelta.magnitude < 0.01f)
+		// {
+		// 	Debug.Log("💣 Left joystick tap (no move) → FIRE SECONDARY");
+		// 	_buttonSample |= NetworkInputData.BUTTON_FIRE_SECONDARY;
+		// }
 	}
 }
 }
