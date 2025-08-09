@@ -22,6 +22,12 @@ namespace Asteroids.SharedSimple
         [SerializeField] private ParticleSystem _destructionVFX = null;
         [SerializeField] private ParticleSystem _engineTrailVFX = null;
 
+        [SerializeField] private Material redMat;
+        [SerializeField] private Material greenMat;
+        [SerializeField] private Material blueMat;
+        [SerializeField] private Material yellowMat;
+
+
         // Game Session SPECIFIC Settings
         [Networked] private NetworkBool IsAlive { get; set; }
         [Networked] private TickTimer RespawnTimer { get; set; }
@@ -42,9 +48,11 @@ namespace Asteroids.SharedSimple
         {
             _playerDataNetworked = GetComponent<PlayerDataNetworked>();
 
-            // Colors the ship in the color assigned to the PlayerRef's index
+            // Material Colors the ship in the color assigned to the PlayerRef's index
             var playerRef = Object.InputAuthority;
-            _spaceshipModel.material.color = GetColor(playerRef.PlayerId);
+            // _spaceshipModel.material.color = GetColor(playerRef.PlayerId);
+            _spaceshipModel.material = GetPlayerMaterial(playerRef.PlayerId);
+
 
             // Grab a change detector for this NB so we can detect when a life is lost and play an appropriate effect
             _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
@@ -116,6 +124,23 @@ namespace Asteroids.SharedSimple
 
             return Color.black;
         }
+
+        public Material GetPlayerMaterial(int playerId)
+        {
+            switch (playerId)
+            {
+                case 0: return redMat;
+                case 1: return greenMat;
+                case 2: return blueMat;
+                case 3: return yellowMat;
+                // Puedes agregar más casos...
+                default:
+                    // fallback, o podrías devolver uno aleatorio, o uno por defecto
+                    return redMat;
+            }
+        }
+
+
 
         public override void FixedUpdateNetwork()
         {
