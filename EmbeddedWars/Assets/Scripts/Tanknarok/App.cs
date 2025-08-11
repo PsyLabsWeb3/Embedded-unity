@@ -52,9 +52,9 @@ namespace FusionExamples.Tanknarok
 			// Establece el modo de juego (Host, Client o Shared)
 			_gameMode = GameMode.Shared;
 
-			// string address = WalletManager.WalletAddress;
-			string address = "";
-			 string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+			string address = WalletManager.WalletAddress;
+
+			string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
 
             Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
 
