@@ -195,7 +195,7 @@ namespace FusionExamples.Tanknarok
 				{
 					winnerWallet = wallet.ToString();
 					string matchId = PlayerSessionData.MatchId;
-					Debug.Log($"🏆 Reporting match from LevelManager result. MatchId: {matchId}, Wallet: {winnerWallet}");
+					Debug.Log($"🏆🏆Reporting match from IF LevelManager result. MatchId: {matchId}, Wallet: {winnerWallet}");
 					API.ReportMatchResultAsync(matchId, winnerWallet);
 				}
 			}

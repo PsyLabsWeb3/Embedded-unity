@@ -52,6 +52,8 @@ namespace FusionExamples.Tanknarok
 			// Establece el modo de juego (Host, Client o Shared)
 			_gameMode = GameMode.Shared;
 
+			string gameName = "EmbeddedWars";
+
 			string address = WalletManager.WalletAddress;
 
 			string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
@@ -59,7 +61,7 @@ namespace FusionExamples.Tanknarok
             Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
 
             string tx = "player_tx_" + System.Guid.NewGuid();
-            _matchId = await API.RegisterPlayerAsync(wallet, tx);
+            _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
 			PlayerSessionData.WalletAddress = wallet;
