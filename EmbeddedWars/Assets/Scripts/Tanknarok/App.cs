@@ -82,6 +82,8 @@ namespace FusionExamples.Tanknarok
 				_levelManager,
 				OnConnectionStatusUpdate
 			);
+
+			 _ = API.JoinMatchAsync(_matchId, wallet);
 		}
 
 		private void Update()

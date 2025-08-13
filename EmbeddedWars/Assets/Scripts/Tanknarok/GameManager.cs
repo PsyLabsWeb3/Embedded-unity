@@ -14,6 +14,8 @@ namespace FusionExamples.Tanknarok
 		[Networked] public PlayState currentPlayState { get; set; }
 		[Networked, Capacity(4)] private NetworkArray<int> score => default;
 
+		[Networked] public int WinnerIndex { get; set; }
+
 		[Networked, Capacity(4)] 
 		public NetworkDictionary<PlayerRef, NetworkString<_64>> playerWalletMap => default;
 		public NetworkDictionary<PlayerRef, NetworkString<_64>> PlayerWalletMap => playerWalletMap;
@@ -26,6 +28,7 @@ namespace FusionExamples.Tanknarok
 				for (int i = 0; i < score.Length; i++)
 				{
 					if (score[i] >= MAX_SCORE)
+						
 						return GetPlayerByIndex<Player>(i);
 				}
 				return null;
@@ -90,7 +93,15 @@ namespace FusionExamples.Tanknarok
 
 				if (playersLeft > 1)
 					lastPlayerStanding = null;
-				
+				// Log para saber si el Runner es server/host
+				if (Runner.IsServer)
+				{
+					Debug.Log("✅ Este cliente ES el Server/Host (Runner.IsServer == true)");
+				}
+				else
+				{
+					Debug.Log("❌ Este cliente NO es el Server/Host (Runner.IsServer == false)");
+				}
 				Debug.Log($"Someone died - {playersLeft} left");
 			if (lastPlayerStanding != null)
 			{

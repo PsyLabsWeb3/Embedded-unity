@@ -3,6 +3,7 @@ using Fusion;
 using FusionHelpers;
 using UnityEngine;
 using UnityEngine.Serialization;
+using EmbeddedAPI;
 
 namespace FusionExamples.Tanknarok
 {
@@ -59,9 +60,17 @@ namespace FusionExamples.Tanknarok
 				}
 				scoreLobbyUI.SetScore(gameManager.GetScore(player));
 				scoreLobbyUI.ToggleCrown(player == gameManager.matchWinner);
+				
 				scoreLobbyUI.gameObject.SetActive(true);
 				playerCount++;
+
+				
 			}
+
+			// Verifica y reporta si el local ganó
+   			CheckAndReportIfLocalWinner(gameManager);
+
+
 
 			// Organize the scores and celebrate with confetti
 			OrganizeScoreBoards(gameManager);
@@ -71,6 +80,30 @@ namespace FusionExamples.Tanknarok
 
 			_audioEmitter.PlayOneShot();
 		}
+
+		
+			private void CheckAndReportIfLocalWinner(GameManager gameManager)
+			{
+				if (gameManager.matchWinner != null)
+				{
+					// Verifica si el ganador es el jugador local
+					if (gameManager.matchWinner.Object.InputAuthority == gameManager.Runner.LocalPlayer)
+					{
+						string matchId = PlayerSessionData.MatchId;
+						string wallet  = PlayerSessionData.WalletAddress;
+
+						if (!string.IsNullOrEmpty(matchId) && !string.IsNullOrEmpty(wallet))
+						{
+							Debug.Log($"🏆 Local player is winner. Reporting match. MatchId: {matchId}, Wallet: {wallet}");
+							_ = EmbeddedAPI.API.ReportMatchResultAsync(matchId, wallet);
+						}
+						else
+						{
+							Debug.LogWarning("[CheckAndReportIfLocalWinner] Missing matchId or wallet data.");
+						}
+					}
+				}
+			}
 
 		public void ResetAllGameScores()
 		{

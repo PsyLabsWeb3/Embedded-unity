@@ -186,18 +186,19 @@ namespace FusionExamples.Tanknarok
 				_scoreManager.ShowFinalGameScore(gameManager);
 
 				Debug.Log($"GameManager.currentPlayState✅: {gameManager.currentPlayState}");
+				Debug.Log($"MatchWinner:🏆 {gameManager.matchWinner}");
 
 				// Report match result to API
 				Debug.Log($"🏆 Reporting match from LevelManager result. MatchId:");
 				PlayerRef winnerRef = gameManager.matchWinner.Object.InputAuthority;
-				string winnerWallet = "";
-				if (gameManager.playerWalletMap.TryGet(winnerRef, out var wallet))
-				{
-					winnerWallet = wallet.ToString();
-					string matchId = PlayerSessionData.MatchId;
-					Debug.Log($"🏆🏆Reporting match from IF LevelManager result. MatchId: {matchId}, Wallet: {winnerWallet}");
-					API.ReportMatchResultAsync(matchId, winnerWallet);
-				}
+				// string winnerWallet = "";
+				// if (gameManager.playerWalletMap.TryGet(winnerRef, out var wallet))
+				// {
+				// 	winnerWallet = wallet.ToString();
+				// 	string matchId = PlayerSessionData.MatchId;
+				// 	Debug.Log($"🏆🏆Reporting match from IF LevelManager result. MatchId: {matchId}, Wallet: {winnerWallet}");
+				// 	API.ReportMatchResultAsync(matchId, winnerWallet);
+				// }
 			}
 
 			gameManager.lastPlayerStanding = null;
