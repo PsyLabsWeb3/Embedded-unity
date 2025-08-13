@@ -49,11 +49,12 @@ namespace BEKStudio
         {
             string address = WalletManager.WalletAddress;
             string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+            string gameName = "PingPong";
 
             Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
 
             string tx = "player_tx_" + System.Guid.NewGuid();
-            _matchId = await API.RegisterPlayerAsync(wallet, tx);
+            _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
             PlayerSessionData.WalletAddress = wallet;
