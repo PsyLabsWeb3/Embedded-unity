@@ -4904,7 +4904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7c8dcd07e81b849a059488b99a647b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetMarker: {fileID: 198168954900210092}
 --- !u!1 &10376113441393944
 GameObject:
   m_ObjectHideFlags: 0
@@ -5128,7 +5127,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.18137255, b: 0, a: 0.5019608}
+      maxColor: {r: 1, g: 0, b: 0.7256589, a: 0.5019608}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14892,7 +14891,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.18137255, b: 0, a: 0.5019608}
+      maxColor: {r: 1, g: 0, b: 0.70243263, a: 0.5019608}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -19774,7 +19773,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.18137255, b: 0, a: 0.5019608}
+      maxColor: {r: 1, g: 0, b: 0.65944386, a: 0.5019608}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
