@@ -60,7 +60,10 @@ namespace FusionExamples.Tanknarok
 
             Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
 
-            string tx = "player_tx_" + System.Guid.NewGuid();
+            // string tx = "player_tx_" + System.Guid.NewGuid();
+			string txID = WalletManager.TransactionId;
+			string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
+			Debug.Log(string.IsNullOrEmpty(txID) ? $"❌ TX ID no disponible, generado aleatorio: {tx}" : $"✅ Usando wallet del jugador: {tx}");
             _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
