@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -585149669, guid: b156eeaae3f741b40af66649a4748430, type: 3}
+  m_Name: CharacterController2DConfig
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/CharacterController2DConfig
+    Guid:
+      Value: 430405726440415877
+  Offset:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: 0
+  Radius:
+    RawValue: 65536
+  MaxPenetration:
+    RawValue: 655
+  PenetrationCorrection:
+    RawValue: 32768
+  Extent:
+    RawValue: 13107
+  MaxContacts: 4
+  LayerMask:
+    BitMask: 1847
+  UseManifoldNormal: 1
+  AirControl: 1
+  Acceleration:
+    RawValue: 6553600
+  Braking:
+    RawValue: 1310720
+  BaseJumpImpulse:
+    RawValue: 1310720
+  MaxSpeed:
+    RawValue: 720896
+  Gravity:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: -4063232
+  MaxSlope:
+    RawValue: 983040
+  MaxSlopeSpeed:
+    RawValue: 327680

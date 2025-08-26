@@ -1,0 +1,149 @@
+component KCC2D {
+    AssetRef<KCC2DConfig> Config;
+    
+    [ExcludeFromPrototype]
+    FPVector2 _kinematicVelocity;
+    [ExcludeFromPrototype]
+    FPVector2 _dynamicVelocity;
+
+    [ExcludeFromPrototype]
+    int LastInputDirection;
+    [ExcludeFromPrototype]
+    KCCQueryResult Closest;
+    [ExcludeFromPrototype]
+    KCCState _state;
+    [ExcludeFromPrototype]
+    FrameTimer _stateTimer;
+    [ExcludeFromPrototype]
+    FrameTimer GroundedJumpTimer;
+    
+    [ExcludeFromPrototype]
+    QuantumDemoInputPlatformer2D Input;
+    [ExcludeFromPrototype]
+    FPVector2 InitialPosition;
+    
+    [ExcludeFromPrototype]
+    bool IgnoreStep;
+}
+
+enum DashDirection
+{
+    Velocity, Input
+}
+
+struct KCC2DSettings {
+    FP CapsuleRadius;
+    FP CapsuleHeight;
+    FPVector2 Offset;
+    LayerMask Mask;
+
+    [Space(10)]
+    int SolverIterations;
+    [RangeEx(0, 1)]
+    FP IterationCorrectionRate;
+    [RangeEx(0, 1)]
+    FP AllowedPenetration;
+    bool CCD;
+    
+    [RangeEx(4, 60)]
+    FP Acceleration;
+    [RangeEx(1, 10)]
+    FP FlipDirectionMultiplier;
+    [RangeEx(4, 60)]
+    FP Deceleration;
+    [RangeEx(1, 10)]
+    FP MaxBaseSpeed;
+
+    [Space(5)]
+    DashDirection DirectionType;
+    bool DashSuspendsGravity;
+    [RangeEx(0, 1)]
+    FP DashDuration;
+    [RangeEx(5, 20)]
+    FP MaxDashSpeed;
+
+    [Space(5)]
+    FP BaseGravity;
+    [RangeEx(1, 4)]
+    FP DownGravityMultiplier;
+    FP MaxSlopeAngle;
+    [RangeEx(4, 25)]
+    FP SlopeMaxSpeed;
+    [RangeEx(10, 100)]
+    FP FreeFallMaxSpeed;
+
+    [Space(5)]
+    FP JumpImpulse;
+    [RangeEx(0, 1)]
+    FP AirControlFactor;
+    bool FastFlipOnAir;
+    bool DownGravityOnRelease;
+    [RangeEx(0, 1)]
+    FP CoyoteTime;
+    [RangeEx(0, 1)]
+    FP InputBufferTime;
+    bool DoubleJumpEnabled;
+    bool DoubleJumpWhenFreeFalling;
+    [RangeEx(0, 10)]
+    FP DecelerationOnAir;
+
+    [Space(5)]
+    bool WallJumpEnabled;
+    bool RequiresOppositeInput;
+    [RangeEx(0, 1)]
+    FP WalledStateExtention;
+    FP MinWallAngle;
+    FP MaxWallAngle;
+    FPVector2 WallJumpImpulse;
+    [RangeEx(1, 10)]
+    FP WallMaxSpeed;
+}
+
+struct KCCQueryResult
+{
+    FPVector2 SurfaceTangent;
+    FP ContactAngle;
+    bool Overlapping;
+    bool Ignore;
+    Hit Contact;
+    KCCContactType ContactType;
+}
+
+enum KCCContactType
+{
+    NONE = 0,
+    GROUND = 1,
+    CEIL = 2,
+    WALL = 3,
+    SLOPE = 4
+}
+
+enum KCCState {
+    FREE_FALLING = 0,
+    GROUNDED = 1,
+    SLOPED = 2,
+    WALLED = 3,
+    DASHING = 4,
+    JUMPED = 5,
+    DOUBLE_JUMPED = 6
+}
+
+signal OnKCC2DPreCollision(EntityRef entity, KCC2D* kcc, ref KCC2DSettings settings, KCCQueryResult* collision);
+signal OnKCC2DTrigger(EntityRef entity, KCC2D* kcc, ref KCC2DSettings settings, Hit trigger);
+signal OnKCC2DSolverCollision(EntityRef entity, KCC2D* kcc, ref KCC2DSettings settings, KCCQueryResult* collision, int iteration);
+signal OnKCC2DPostSolverCollision(EntityRef entity, KCC2D* kcc, ref KCC2DSettings settings, KCCQueryResult* collision);
+signal OnKCC2DAfterState(EntityRef entity, KCC2D* kcc, ref KCC2DSettings settings);
+
+event Jumped {
+    EntityRef Entity;
+    KCCState State;
+    KCCState PreviousState;
+    FPVector2 Impulse;
+}
+
+event Landed {
+    EntityRef Entity;
+    FP Velocity;
+    KCCState State;
+}
+

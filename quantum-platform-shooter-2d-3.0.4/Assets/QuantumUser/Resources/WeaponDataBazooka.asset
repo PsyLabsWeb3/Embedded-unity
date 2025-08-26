@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec162992688314a4e99b0a1234d5297b, type: 3}
+  m_Name: WeaponDataBazooka
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/WeaponDataBazooka
+    Guid:
+      Value: 491603686275695036
+  ShootAudioInfo:
+    Clip: {fileID: 8300000, guid: 6cc7a1609c1fe8147b5da77bdbb9ef2f, type: 3}
+    Volume: 0.66
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  UIIcon: {fileID: 21300000, guid: 4acf7b47b68bfb443a6f80d0d7235590, type: 3}
+  Prefab: {fileID: 1313875791127744, guid: 33d31530a115b2d4dbdf1856965a5b74, type: 3}
+  FireRate:
+    RawValue: 65536
+  ShootForce:
+    RawValue: 2621440
+  MaxAmmo: 4
+  RechargeTimer:
+    RawValue: 65536
+  TimeToRecharge:
+    RawValue: 131072
+  FireSpotOffset:
+    X:
+      RawValue: 13107
+    Y:
+      RawValue: 22937
+  PositionOffset:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: -12451
+  BulletData:
+    Id:
+      Value: 306924417286190481

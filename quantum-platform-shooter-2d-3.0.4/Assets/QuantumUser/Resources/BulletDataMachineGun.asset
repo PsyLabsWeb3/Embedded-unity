@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e11c8edbe09194492274c08e5e8232, type: 3}
+  m_Name: BulletDataMachineGun
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/BulletDataMachineGun
+    Guid:
+      Value: 478711165077005679
+  BulletDestroyFxGameObject: {fileID: 1162687388435498, guid: 4b398431589a43c4c8ae2bfeb7444a86, type: 3}
+  BulletDestroyAudioInfo:
+    Clip: {fileID: 8300000, guid: 73e046be84f5a224cbd14578fd54b983, type: 3}
+    Volume: 0.178
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  BulletPrototype:
+    Id:
+      Value: 1333473892945443554
+  Damage:
+    RawValue: 655360
+  Range:
+    RawValue: 1638400
+  CollisionCheckThreshold:
+    RawValue: 655

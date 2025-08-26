@@ -1,0 +1,30 @@
+﻿component SkillFields
+{
+	FP TimeToActivate;
+	entity_ref Source;
+	asset_ref<SkillData> SkillData;
+}
+
+component SkillInventory
+{
+	FrameTimer CastRateTimer;
+	asset_ref<SkillInventoryData> SkillInventoryData;
+}
+
+event OnSkillCasted
+{
+	entity_ref Skill;
+}
+
+event OnSkillActivated
+{
+	FPVector2 SkillPosition;
+}
+
+event OnSkillHitTarget
+{
+	FPVector2 SkillPosition;
+	Int64 SkillDataId;
+	entity_ref Target;
+}
+

@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7394018312052860504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7391879238238832358}
+  - component: {fileID: 7425684558485486414}
+  m_Layer: 0
+  m_Name: SfxController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7391879238238832358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394018312052860504}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -661.5381, y: -495.42343, z: -25.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7425684558485486414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394018312052860504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51425574ead034047b824b0adb5b9fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Updater: {fileID: 0}
+  UseFindUpdater: 0
+  AudioSourcePrefab: {fileID: 82847765423601352, guid: 716fff2d98eeca74cb91bc9f9be39cee, type: 3}
+  MaxAudioSources: 16
+  AudioSourceDefaultParent: {fileID: 7391879238238832358}
+  PlayerHitAudio:
+    Clip: {fileID: 8300000, guid: fe31e8ee097a68a4d8399eff0fc40177, type: 3}
+    Volume: 0.202
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  PlayerKillAudio:
+    Clip: {fileID: 8300000, guid: 7a05b28e3e0faee48ab7b103b15ccd3d, type: 3}
+    Volume: 1
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  PlayerDamageTakenAudio:
+    Clip: {fileID: 8300000, guid: 5889b455d7697eb4a8f4e20887d382b9, type: 3}
+    Volume: 0.23
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  SkillCastingAudio:
+    Clip: {fileID: 8300000, guid: 71e6dd265131c7549b1ad836fdce51fe, type: 3}
+    Volume: 0.5
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  SkillActivationAudio:
+    Clip: {fileID: 8300000, guid: 3053491dd8b9c8741be77a8bc80ace34, type: 3}
+    Volume: 0.5
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  ViewUpdater: {fileID: 0}

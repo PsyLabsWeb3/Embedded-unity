@@ -1,0 +1,26 @@
+﻿abstract event CharacterEvent
+{
+	entity_ref Character; 	
+}
+
+event OnCharacterTakeDamage : CharacterEvent
+{
+	FP Damage;
+	entity_ref Source; 	
+}
+
+synced event OnCharacterDeath : CharacterEvent
+{
+	entity_ref Killer; 	
+}
+
+event OnCharacterBlink : CharacterEvent {}
+event OnCharacterCreated : CharacterEvent {}
+event OnCharacterRespawn : CharacterEvent {}
+event OnCharacterChangeWeapon : CharacterEvent {}
+
+event OnCharacterChangeWeaponLocal
+{
+  local player_ref Player;
+  asset_ref<WeaponData> WeaponData;
+}

@@ -1,0 +1,4 @@
+signal OnCharacterRespawn(entity_ref character);
+signal OnCharacterHit(entity_ref bullet, entity_ref character, FP damage);
+signal OnCharacterSkillHit(entity_ref skill, entity_ref character);
+signal OnCharacterDeath(entity_ref deadCharacter, entity_ref killer);

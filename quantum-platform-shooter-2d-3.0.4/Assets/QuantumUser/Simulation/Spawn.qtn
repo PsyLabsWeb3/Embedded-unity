@@ -1,0 +1,6 @@
+﻿singleton component SpawnPlaces
+{
+    list<entity_ref> Spawners;
+}
+
+component SpawnIdentifier{ }

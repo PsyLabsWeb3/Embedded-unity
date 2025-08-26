@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec162992688314a4e99b0a1234d5297b, type: 3}
+  m_Name: WeaponDataMachineGun
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/WeaponDataMachineGun
+    Guid:
+      Value: 318686901349488445
+  ShootAudioInfo:
+    Clip: {fileID: 8300000, guid: 51a12c5c88654e84eb23747d2a28c3d1, type: 3}
+    Volume: 0.38
+    Is2D: 0
+    Loop: 0
+    Delay: 0
+  UIIcon: {fileID: 21300000, guid: 04d9396fa265be9499e0d0d5e604464e, type: 3}
+  Prefab: {fileID: 1820681744315722, guid: 861fae0ca61e2ba429636a9f3e2be70d, type: 3}
+  FireRate:
+    RawValue: 983040
+  ShootForce:
+    RawValue: 5242880
+  MaxAmmo: 40
+  RechargeTimer:
+    RawValue: 655
+  TimeToRecharge:
+    RawValue: 65536
+  FireSpotOffset:
+    X:
+      RawValue: 19660
+    Y:
+      RawValue: 26214
+  PositionOffset:
+    X:
+      RawValue: -6553
+    Y:
+      RawValue: -19660
+  BulletData:
+    Id:
+      Value: 478711165077005679

@@ -1,0 +1,25 @@
+component PlayerLink
+{
+	player_ref Player;
+}
+
+component Status
+{
+asset_ref<StatusData> StatusData;
+	FP CurrentHealth;
+	Boolean IsDead;
+	FrameTimer RespawnTimer;
+	FrameTimer RegenTimer;
+	FrameTimer InvincibleTimer;
+	FrameTimer DisconnectedTimer;
+}
+
+event OnPlayerSelectedCharacter
+{
+	local player_ref PlayerRef;
+}
+
+component MovementData
+{
+	Boolean IsFacingRight;
+}
