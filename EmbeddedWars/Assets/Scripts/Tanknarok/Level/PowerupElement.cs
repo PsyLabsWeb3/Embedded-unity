@@ -18,6 +18,7 @@ namespace FusionExamples.Tanknarok
 		public WeaponManager.WeaponInstallationType weaponInstallationType;
 		public PowerupType powerupType;
 		public Mesh powerupSpawnerMesh;
+		public Material powerupMaterial;    
 		public AudioClipData pickupSnd;
 	}
 }
