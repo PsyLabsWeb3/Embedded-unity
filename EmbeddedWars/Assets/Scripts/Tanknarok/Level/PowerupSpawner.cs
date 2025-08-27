@@ -67,14 +67,57 @@ namespace FusionExamples.Tanknarok
 
 			SetNextPowerup();
 		}
-
+		
 		private void InitPowerupVisuals()
 		{
-			PowerupElement powerup = GetPowerup(State.activePowerupIndex);
+			var powerup = GetPowerup(State.activePowerupIndex);
+
+			// 1) Asegurar referencias al renderer visual correcto
+			//    (busca en el mismo objeto del MeshFilter primero, luego en hijos/padres)
+			var visualRenderer = _meshFilter != null 
+				? _meshFilter.GetComponent<MeshRenderer>() 
+				: null;
+			if (visualRenderer == null)
+				visualRenderer = GetComponentInChildren<MeshRenderer>(true);
+			if (visualRenderer == null)
+				visualRenderer = GetComponent<MeshRenderer>();
+
+			// (opcional) si fuera Skinned:
+			var skinned = (visualRenderer == null) ? GetComponentInChildren<SkinnedMeshRenderer>(true) : null;
+
+			_renderer = (Renderer)(object)visualRenderer ?? skinned; // usa el que exista
+
+			// 2) Asignar la malla seleccionada en el ScriptableObject
+			_meshFilter.sharedMesh = powerup.powerupSpawnerMesh;
+
+			// 3) Eliminar posibles overrides de MaterialPropertyBlock
+			if (_renderer != null)
+				_renderer.SetPropertyBlock(null);
+
+			// 4) Asignar material del powerup a TODOS los submeshes
+			if (_renderer != null && powerup.powerupMaterial != null)
+			{
+				int subCount = _meshFilter.sharedMesh != null ? _meshFilter.sharedMesh.subMeshCount : 1;
+
+				var mats = _renderer.sharedMaterials;
+				if (mats == null || mats.Length != subCount)
+					System.Array.Resize(ref mats, subCount);
+
+				for (int i = 0; i < subCount; i++)
+					mats[i] = powerup.powerupMaterial;
+
+				_renderer.sharedMaterials = mats;
+			}
+
+			// 5) Efecto de aparición (escala)
 			_renderer.transform.localScale = Vector3.zero;
-			_meshFilter.mesh = powerup.powerupSpawnerMesh;
-			_rechargeCircle.material.color = GetPowerupColor(powerup.weaponInstallationType);
+
+			// 6) El aro de recarga sigue con su propio material/color
+			if (_rechargeCircle != null)
+				_rechargeCircle.material.color = GetPowerupColor(powerup.weaponInstallationType);
 		}
+
+
 
 		private void SetNextPowerup()
 		{

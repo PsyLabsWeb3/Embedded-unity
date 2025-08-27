@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponInstallationType: 2
   powerupType: 4
-  powerupSpawnerMesh: {fileID: 9066551424698584881, guid: b62d27968edc5d34aa96f87fbe979424, type: 3}
-  powerupMaterial: {fileID: 0}
+  powerupSpawnerMesh: {fileID: 1730848021627420428, guid: 6c35ede2f5cf8470eb2707ec85e15108, type: 3}
+  powerupMaterial: {fileID: 2100000, guid: bceeaa0f976bc469e82a5b182537ce1a, type: 2}
   pickupSnd: {fileID: 11400000, guid: 56ddfed2fd31f8442991bdf881993f15, type: 2}
