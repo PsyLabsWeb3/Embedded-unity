@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: audio_tank_healthrecovery
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 58a9394901f93874eaf00f8e47500ffb, type: 3}
-  - {fileID: 8300000, guid: f38859aa73a3f914ba6cdb371fc42ded, type: 3}
-  - {fileID: 8300000, guid: 34da3dc69816b514a96e9e18f24550d2, type: 3}
+  - {fileID: 8300000, guid: c215cdf64e65d48888d58665ccea0f2a, type: 3}
+  - {fileID: 8300000, guid: c215cdf64e65d48888d58665ccea0f2a, type: 3}
+  - {fileID: 8300000, guid: c215cdf64e65d48888d58665ccea0f2a, type: 3}
   _pitchBase: 1
   _pitchVariation: 0

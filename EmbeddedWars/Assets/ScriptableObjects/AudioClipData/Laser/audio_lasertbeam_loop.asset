@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: audio_lasertbeam_loop
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: b2c7a6de6880b5f49b4b713b3fd96d57, type: 3}
+  - {fileID: 8300000, guid: 7c8b3931121b345128292bfdc777a2d1, type: 3}
   _pitchBase: 1
   _pitchVariation: 0

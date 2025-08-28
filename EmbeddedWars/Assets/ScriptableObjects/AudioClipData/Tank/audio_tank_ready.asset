@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: audio_tank_ready
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: b3e000a7a44f34b44ae20abda9170bd7, type: 3}
-  - {fileID: 8300000, guid: 9bab9189bfe3fae4ba0b3363cf8cbf3d, type: 3}
-  - {fileID: 8300000, guid: 9bea2832efb229d40abb432adf9eed26, type: 3}
-  - {fileID: 8300000, guid: efe2dc9c32c4254418afe86a7a848998, type: 3}
-  - {fileID: 8300000, guid: 3ab0ca91924ba6947a72a8c421e17af9, type: 3}
+  - {fileID: 8300000, guid: 6543a3fbe51b541d7b0fdcb81bd08a1f, type: 3}
+  - {fileID: 8300000, guid: bb77ec68cfbe442d1a17ddc064ff5069, type: 3}
+  - {fileID: 8300000, guid: 6543a3fbe51b541d7b0fdcb81bd08a1f, type: 3}
+  - {fileID: 8300000, guid: bb77ec68cfbe442d1a17ddc064ff5069, type: 3}
+  - {fileID: 8300000, guid: 6543a3fbe51b541d7b0fdcb81bd08a1f, type: 3}
   _pitchBase: 1
   _pitchVariation: 0.1

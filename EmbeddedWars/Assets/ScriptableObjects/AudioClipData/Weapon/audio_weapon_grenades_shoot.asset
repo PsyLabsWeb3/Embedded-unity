@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: audio_weapon_grenades_shoot
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 0b66b68df9a3c5e468d9c6b4cd67de79, type: 3}
-  - {fileID: 8300000, guid: b5d92083ab5e7e94bbdbbb4687af2c09, type: 3}
-  - {fileID: 8300000, guid: cfa3c716c5b2783489bb43eb1fa0e1b7, type: 3}
-  - {fileID: 8300000, guid: 76c6c4f46768c204ca8d35f7e4c1515d, type: 3}
-  - {fileID: 8300000, guid: 20158069b9e3e1b41a84b259980d72b3, type: 3}
+  - {fileID: 8300000, guid: 1adac8fa2b6564a6cb2291acf1f2d2bc, type: 3}
+  - {fileID: 8300000, guid: 1adac8fa2b6564a6cb2291acf1f2d2bc, type: 3}
+  - {fileID: 8300000, guid: 1adac8fa2b6564a6cb2291acf1f2d2bc, type: 3}
+  - {fileID: 8300000, guid: 1adac8fa2b6564a6cb2291acf1f2d2bc, type: 3}
+  - {fileID: 8300000, guid: 1adac8fa2b6564a6cb2291acf1f2d2bc, type: 3}
   _pitchBase: 1
   _pitchVariation: 0.2

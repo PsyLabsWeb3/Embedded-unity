@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: audio_tank_hit
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: d824dc0d9e8820943ad1cfe496827eef, type: 3}
-  - {fileID: 8300000, guid: c2768fd388cb05f4fb9d786edc550f4e, type: 3}
-  - {fileID: 8300000, guid: 2c625013e8294644cb994abae7eb8418, type: 3}
-  - {fileID: 8300000, guid: 7e28bbd9bc044c54fa6d8e9931cb51f6, type: 3}
+  - {fileID: 8300000, guid: bbbc8484fac1b47ad9c743dc04171561, type: 3}
+  - {fileID: 8300000, guid: eeeaf207144e4468f82c8057c47d9f94, type: 3}
+  - {fileID: 8300000, guid: bae4e05e938e744c39266720b1f5161f, type: 3}
+  - {fileID: 8300000, guid: bbbc8484fac1b47ad9c743dc04171561, type: 3}
   _pitchBase: 1
   _pitchVariation: 0.1

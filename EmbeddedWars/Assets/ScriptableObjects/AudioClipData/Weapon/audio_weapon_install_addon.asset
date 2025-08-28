@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: audio_weapon_install_addon
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: cacf398c76bacd9408c92317109b1f5f, type: 3}
-  - {fileID: 8300000, guid: f788a2944ef715149a3255d701374cc6, type: 3}
-  - {fileID: 8300000, guid: f74e9a5fb240e6e4c9b0fd9c5bf106df, type: 3}
-  - {fileID: 8300000, guid: 2535c780633a63949a006867a1a0b491, type: 3}
+  - {fileID: 8300000, guid: a7e57c3b479364380b9a51fddf264b14, type: 3}
+  - {fileID: 8300000, guid: a7e57c3b479364380b9a51fddf264b14, type: 3}
+  - {fileID: 8300000, guid: a7e57c3b479364380b9a51fddf264b14, type: 3}
+  - {fileID: 8300000, guid: a7e57c3b479364380b9a51fddf264b14, type: 3}
   _pitchBase: 1
   _pitchVariation: 0

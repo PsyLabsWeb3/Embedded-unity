@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: audio_misc_scorechange
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: e7e66808a1e293444bf5de2d129e24cf, type: 3}
+  - {fileID: 8300000, guid: 0bc49602c4dda456bb1688a0234538ac, type: 3}
   _pitchBase: 2
   _pitchVariation: 0

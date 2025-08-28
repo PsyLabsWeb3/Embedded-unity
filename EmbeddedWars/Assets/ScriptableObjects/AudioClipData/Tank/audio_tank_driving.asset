@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: audio_tank_driving
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 924eab34f5a0d41458216e264ae2dd18, type: 3}
+  - {fileID: 8300000, guid: 08700d5078a3c432d90645a51720f476, type: 3}
   _pitchBase: 1
   _pitchVariation: 0.3

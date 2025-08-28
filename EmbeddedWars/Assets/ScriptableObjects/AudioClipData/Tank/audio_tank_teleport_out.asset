@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: audio_tank_teleport_out
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 7099959e7e2fc5946998b85373fdf2f9, type: 3}
-  - {fileID: 8300000, guid: df81f5b1f60000d4d8caca551f419e58, type: 3}
+  - {fileID: 8300000, guid: bda2ad334e51643c3a13685b4f7dd9a2, type: 3}
+  - {fileID: 8300000, guid: bda2ad334e51643c3a13685b4f7dd9a2, type: 3}
   _pitchBase: 1
   _pitchVariation: 0.1

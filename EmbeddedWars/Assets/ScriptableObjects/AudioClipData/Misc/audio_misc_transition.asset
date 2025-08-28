@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: audio_misc_transition
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 5dab343cd7db6ab418a741a32aec4720, type: 3}
+  - {fileID: 8300000, guid: 3590cf69ba31448a59959f3767a0e454, type: 3}
   _pitchBase: 1
   _pitchVariation: 0

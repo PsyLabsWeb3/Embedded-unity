@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: audio_tank_explosion
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 51a7b05461bab3140922e13c29c18224, type: 3}
-  - {fileID: 8300000, guid: abde00a204069044883f2f10772aee3d, type: 3}
+  - {fileID: 8300000, guid: a35149dfd9cca4e5ab22973c62a08ac6, type: 3}
+  - {fileID: 8300000, guid: 8d090c95bb14049788f6a3bf18ae47fc, type: 3}
   _pitchBase: 1
   _pitchVariation: 0.1

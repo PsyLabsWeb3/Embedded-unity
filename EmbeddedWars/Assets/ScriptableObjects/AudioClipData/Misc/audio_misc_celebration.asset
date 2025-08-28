@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: audio_misc_celebration
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: b860e897310c1d5408e159727f1fc886, type: 3}
+  - {fileID: 8300000, guid: 52392aab53a564f0fbc172a867601045, type: 3}
   _pitchBase: 1
   _pitchVariation: 0

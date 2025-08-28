@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: audio_weapon_install_barrel
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: eba67f6a0431e124b8b98a57d4bec984, type: 3}
-  - {fileID: 8300000, guid: 36213d6233c5b244685a989400ecbfb6, type: 3}
-  - {fileID: 8300000, guid: 01774267dbe6ada468e2954f29e46f83, type: 3}
-  - {fileID: 8300000, guid: 2abe40e2c4857d14a949febf73dd0de5, type: 3}
+  - {fileID: 8300000, guid: c5e6ee63a999647398a1e8cc053f5286, type: 3}
+  - {fileID: 8300000, guid: c5e6ee63a999647398a1e8cc053f5286, type: 3}
+  - {fileID: 8300000, guid: c5e6ee63a999647398a1e8cc053f5286, type: 3}
+  - {fileID: 8300000, guid: c5e6ee63a999647398a1e8cc053f5286, type: 3}
   _pitchBase: 1
   _pitchVariation: 0

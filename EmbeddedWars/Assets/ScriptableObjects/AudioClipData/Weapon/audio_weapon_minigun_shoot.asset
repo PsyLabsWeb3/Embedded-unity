@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: audio_weapon_minigun_shoot
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 466c2faafc8febe43985e9e0c1d383f7, type: 3}
-  - {fileID: 8300000, guid: 82eddc1a30ed77442a58a54e9adac1f5, type: 3}
-  - {fileID: 8300000, guid: 7c796e6f0af866346b8dad03589da454, type: 3}
-  - {fileID: 8300000, guid: d623781f5b476eb4f8310cc8f215325a, type: 3}
-  - {fileID: 8300000, guid: 26fb6640aca4775478489fe453e21ea0, type: 3}
+  - {fileID: 8300000, guid: 1db98e606db0a4cc8850a24fa4b92f38, type: 3}
+  - {fileID: 8300000, guid: 1db98e606db0a4cc8850a24fa4b92f38, type: 3}
+  - {fileID: 8300000, guid: 1db98e606db0a4cc8850a24fa4b92f38, type: 3}
+  - {fileID: 8300000, guid: 1db98e606db0a4cc8850a24fa4b92f38, type: 3}
+  - {fileID: 8300000, guid: 1db98e606db0a4cc8850a24fa4b92f38, type: 3}
   _pitchBase: 1
   _pitchVariation: 0.2
