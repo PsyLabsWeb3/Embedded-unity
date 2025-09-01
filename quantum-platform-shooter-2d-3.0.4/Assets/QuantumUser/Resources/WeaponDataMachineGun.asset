@@ -17,13 +17,13 @@ MonoBehaviour:
     Guid:
       Value: 318686901349488445
   ShootAudioInfo:
-    Clip: {fileID: 8300000, guid: 51a12c5c88654e84eb23747d2a28c3d1, type: 3}
+    Clip: {fileID: 0}
     Volume: 0.38
     Is2D: 0
     Loop: 0
     Delay: 0
   UIIcon: {fileID: 21300000, guid: 04d9396fa265be9499e0d0d5e604464e, type: 3}
-  Prefab: {fileID: 1820681744315722, guid: 861fae0ca61e2ba429636a9f3e2be70d, type: 3}
+  Prefab: {fileID: 1820681744315722, guid: 5565b5bc5d4a17246b2ee0c8ef278c5e, type: 3}
   FireRate:
     RawValue: 983040
   ShootForce:
