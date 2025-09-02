@@ -74,7 +74,7 @@ namespace FusionExamples.Tanknarok
 			Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
 
 			// Define los valores hardcodeados
-			string region = "";           // o "us", "eu", etc.
+			string region = "eu";           // o "us", "eu", etc.
 
 			// Inicia conexión directamente
 			FusionLauncher.Launch(
