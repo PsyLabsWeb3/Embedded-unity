@@ -1,0 +1,31 @@
+singleton component Race {
+    [ExcludeFromPrototype]
+    RaceState CurrentRaceState;
+    [ExcludeFromPrototype]
+    FP CurrentStateTime;
+    [ExcludeFromPrototype]
+    FrameTimer StateTimer;   
+    [ExcludeFromPrototype]
+    sbyte SpawnedAIDrivers;
+    [ExcludeFromPrototype]
+    int PreviousPlayerCount;
+    
+    sbyte PositionCalcInterval;
+}
+
+enum RaceState {
+    None, Waiting, Countdown, InProgress, Finishing, Finished
+}
+
+signal RaceStateChanged(RaceState state);
+signal PlayerFinished(entity_ref entity);
+
+synced event OnRaceStateChanged { RaceState state; }
+synced event OnCountdownStart { FP Time; }
+synced event OnRaceStart {}
+synced event OnFirstPlayerFinish { entity_ref entityRef;}
+synced event OnRaceOver {}
+synced event OnPositionsUpdated {}
+synced event OnPlayerCompletedLap { entity_ref entityRef; }
+synced event OnPlayerFinished { entity_ref entityRef; }
+

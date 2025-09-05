@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b0bf174c89241988f9fec8683ad007e, type: 3}
+  m_Name: EasyNimble
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/DB/AIConfig/EasyNimble
+    Guid:
+      Value: 298426750593110478
+  PredictionRange:
+    RawValue: 1310720
+  Difficulty:
+    RawValue: 19660
+  DriftingAngle:
+    RawValue: 3932160
+  DriftingStopAngle:
+    RawValue: 2949120
+  SteeringCurve:
+    Samples:
+    - RawValue: 124
+    - RawValue: 574
+    - RawValue: 1693
+    - RawValue: 3402
+    - RawValue: 5622
+    - RawValue: 8277
+    - RawValue: 11287
+    - RawValue: 14575
+    - RawValue: 18062
+    - RawValue: 21670
+    - RawValue: 25321
+    - RawValue: 28937
+    - RawValue: 32440
+    - RawValue: 35751
+    - RawValue: 38793
+    - RawValue: 41487
+    - RawValue: 43756
+    - RawValue: 45657
+    - RawValue: 47276
+    - RawValue: 48636
+    - RawValue: 49760
+    - RawValue: 50668
+    - RawValue: 51384
+    - RawValue: 51930
+    - RawValue: 52328
+    - RawValue: 52600
+    - RawValue: 52769
+    - RawValue: 52856
+    - RawValue: 52884
+    - RawValue: 52876
+    - RawValue: 52852
+    - RawValue: 52837
+    - RawValue: 52851
+    PreWrapMode: 0
+    PostWrapMode: 0
+    StartTime:
+      RawValue: 0
+    EndTime:
+      RawValue: 542517
+    Resolution: 32
+    OriginalPreWrapMode: 8
+    OriginalPostWrapMode: 8
+    Keys:
+    - Time:
+        RawValue: 0
+      Value:
+        RawValue: 124
+      InTangent:
+        RawValue: 349
+      OutTangent:
+        RawValue: 349
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 269548
+      Value:
+        RawValue: 43548
+      InTangent:
+        RawValue: 8038
+      OutTangent:
+        RawValue: 8038
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 542517
+      Value:
+        RawValue: 52851
+      InTangent:
+        RawValue: 140
+      OutTangent:
+        RawValue: 140
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+  KartVisuals:
+    Id:
+      Value: 373744011247375407
+  KartStats:
+    Id:
+      Value: 320393746909041164
+  Nickname: EzBot

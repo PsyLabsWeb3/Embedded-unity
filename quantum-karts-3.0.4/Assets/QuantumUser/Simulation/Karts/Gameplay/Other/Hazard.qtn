@@ -1,0 +1,17 @@
+﻿component Hazard {
+
+    [ExcludeFromPrototype]
+    entity_ref SpawnedBy;
+    FP TimeAlive;
+    [ExcludeFromPrototype]
+    FP TotalTime;
+    [ExcludeFromPrototype]
+    bool MarkedForDestruction;
+    
+    [ExcludeFromPrototype]
+    FPVector3 Movement;
+    
+    FP DamageRadius;
+    
+    FP HitDuration;
+}

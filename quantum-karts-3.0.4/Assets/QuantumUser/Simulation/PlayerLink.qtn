@@ -1,0 +1,10 @@
+component PlayerLink
+{
+    player_ref Player;
+    [ExcludeFromPrototype] bool Ready;
+}
+
+event LocalPlayerReady {
+    local player_ref player;
+    bool ready;
+}

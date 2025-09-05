@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b1d383c0620416ab0d34578672654e8, type: 3}
+  m_Name: WeaponSingleBomb
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/DB/Weapons/WeaponSingleBomb
+    Guid:
+      Value: 533829182145604400
+  WeaponSprite: {fileID: 21300000, guid: a5e27b7199e1b514a9e1c32fb3e02906, type: 3}
+  WeaponName: Bomb
+  Uses: 1
+  PrototypeRef:
+    Id:
+      Value: 1415041290912393118
+  LocalSpawnOffset:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: 32768
+    Z:
+      RawValue: 196608
+  LocalForceToApply:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: -327680
+    Z:
+      RawValue: 6553600

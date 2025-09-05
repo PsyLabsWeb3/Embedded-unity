@@ -1,0 +1,305 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733224c269dd4779a0fea890bb74ed79, type: 3}
+  m_Name: HeavyKart
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/DB/KartStats/HeavyKart
+    Guid:
+      Value: 364775326255726107
+  overlapShapeSize:
+    X:
+      RawValue: 45875
+    Y:
+      RawValue: 22937
+    Z:
+      RawValue: 58982
+  overlapShapeOffset:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: 29491
+    Z:
+      RawValue: 0
+  overlapLayerMask:
+    BitMask: 2369
+  acceleration:
+    Samples:
+    - RawValue: 655013
+    - RawValue: 1180227
+    - RawValue: 1719463
+    - RawValue: 1768068
+    - RawValue: 1796017
+    - RawValue: 1821659
+    - RawValue: 1844971
+    - RawValue: 1865928
+    - RawValue: 1884509
+    - RawValue: 1900690
+    - RawValue: 1914449
+    - RawValue: 1925762
+    - RawValue: 1934607
+    - RawValue: 1940960
+    - RawValue: 1944799
+    - RawValue: 1946100
+    - RawValue: 1944841
+    - RawValue: 1940999
+    - RawValue: 1934550
+    - RawValue: 1925472
+    - RawValue: 1913742
+    - RawValue: 1899337
+    - RawValue: 1875409
+    - RawValue: 1799036
+    - RawValue: 1671062
+    - RawValue: 1501575
+    - RawValue: 1300659
+    - RawValue: 1078402
+    - RawValue: 844889
+    - RawValue: 610206
+    - RawValue: 384439
+    - RawValue: 177675
+    - RawValue: 0
+    PreWrapMode: 0
+    PostWrapMode: 0
+    StartTime:
+      RawValue: 52
+    EndTime:
+      RawValue: 65536
+    Resolution: 32
+    OriginalPreWrapMode: 8
+    OriginalPostWrapMode: 8
+    Keys:
+    - Time:
+        RawValue: 52
+      Value:
+        RawValue: 655013
+      InTangent:
+        RawValue: 6277898
+      OutTangent:
+        RawValue: 6277898
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 4524
+      Value:
+        RawValue: 1743608
+      InTangent:
+        RawValue: 991184
+      OutTangent:
+        RawValue: 991184
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 44113
+      Value:
+        RawValue: 1890589
+      InTangent:
+        RawValue: -550417
+      OutTangent:
+        RawValue: -550417
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 65536
+      Value:
+        RawValue: 0
+      InTangent:
+        RawValue: -5116667
+      OutTangent:
+        RawValue: -5116667
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+  turningRate:
+    Samples:
+    - RawValue: 0
+    - RawValue: 2920213
+    - RawValue: 4122598
+    - RawValue: 4822361
+    - RawValue: 5153282
+    - RawValue: 5249137
+    - RawValue: 5243704
+    - RawValue: 5248134
+    - RawValue: 5251924
+    - RawValue: 5250317
+    - RawValue: 5243689
+    - RawValue: 5232413
+    - RawValue: 5216864
+    - RawValue: 5197416
+    - RawValue: 5174443
+    - RawValue: 5148321
+    - RawValue: 5119422
+    - RawValue: 5088123
+    - RawValue: 5054796
+    - RawValue: 5019817
+    - RawValue: 4983560
+    - RawValue: 4946398
+    - RawValue: 4908708
+    - RawValue: 4870862
+    - RawValue: 4833236
+    - RawValue: 4796204
+    - RawValue: 4760139
+    - RawValue: 4725417
+    - RawValue: 4692412
+    - RawValue: 4661499
+    - RawValue: 4633051
+    - RawValue: 4607443
+    - RawValue: 4585049
+    PreWrapMode: 0
+    PostWrapMode: 0
+    StartTime:
+      RawValue: 0
+    EndTime:
+      RawValue: 65625
+    Resolution: 32
+    OriginalPreWrapMode: 8
+    OriginalPostWrapMode: 8
+    Keys:
+    - Time:
+        RawValue: 0
+      Value:
+        RawValue: 0
+      InTangent:
+        RawValue: 77116424
+      OutTangent:
+        RawValue: 77116424
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 123
+      Value:
+        RawValue: 1212102
+      InTangent:
+        RawValue: 68886336
+      OutTangent:
+        RawValue: 68886336
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 13078
+      Value:
+        RawValue: 5242880
+      InTangent:
+        RawValue: 328525
+      OutTangent:
+        RawValue: 328525
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 65625
+      Value:
+        RawValue: 4585049
+      InTangent:
+        RawValue: -660276
+      OutTangent:
+        RawValue: -660276
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+  frictionEffect:
+    Samples:
+    - RawValue: 19660
+    - RawValue: 19637
+    - RawValue: 19566
+    - RawValue: 19451
+    - RawValue: 19292
+    - RawValue: 19091
+    - RawValue: 18850
+    - RawValue: 18569
+    - RawValue: 18251
+    - RawValue: 17897
+    - RawValue: 17509
+    - RawValue: 17087
+    - RawValue: 16634
+    - RawValue: 16151
+    - RawValue: 15640
+    - RawValue: 15101
+    - RawValue: 14537
+    - RawValue: 13949
+    - RawValue: 13339
+    - RawValue: 12707
+    - RawValue: 12056
+    - RawValue: 11388
+    - RawValue: 10702
+    - RawValue: 10002
+    - RawValue: 9289
+    - RawValue: 8563
+    - RawValue: 7827
+    - RawValue: 7082
+    - RawValue: 6330
+    - RawValue: 5572
+    - RawValue: 4809
+    - RawValue: 4043
+    - RawValue: 19660
+    PreWrapMode: 0
+    PostWrapMode: 0
+    StartTime:
+      RawValue: 0
+    EndTime:
+      RawValue: 65536
+    Resolution: 32
+    OriginalPreWrapMode: 0
+    OriginalPostWrapMode: 0
+    Keys:
+    - Time:
+        RawValue: 0
+      Value:
+        RawValue: 19660
+      InTangent:
+        RawValue: 0
+      OutTangent:
+        RawValue: 0
+      TangentMode: 0
+      TangentModeLeft: 4
+      TangentModeRight: 0
+      WeightedMode: 0
+    - Time:
+        RawValue: 65536
+      Value:
+        RawValue: 3276
+      InTangent:
+        RawValue: -24550
+      OutTangent:
+        RawValue: -24550
+      TangentMode: 0
+      TangentModeLeft: 0
+      TangentModeRight: 0
+      WeightedMode: 0
+  maxSpeed:
+    RawValue: 2621440
+  minThrottle:
+    RawValue: -26214
+  gravity:
+    RawValue: -1179648
+  drag:
+    RawValue: 65536
+  rotationCorrectionRate:
+    RawValue: 262144
+  rotationSmoothingThreshold:
+    RawValue: 327680
+  maxTilt:
+    RawValue: 1638400
+  groundDistance:
+    RawValue: -3276

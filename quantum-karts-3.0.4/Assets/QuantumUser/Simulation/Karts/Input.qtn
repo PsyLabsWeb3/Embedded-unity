@@ -1,0 +1,7 @@
+input
+{
+    button Drift;
+    button Powerup;
+    button Respawn;
+    byte Encoded;
+}

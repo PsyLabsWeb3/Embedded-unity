@@ -1,0 +1,29 @@
+component RaceProgress {
+
+    [ExcludeFromPrototype]
+    sbyte TargetCheckpointIndex;
+    [ExcludeFromPrototype]
+    sbyte CurrentLap;
+    [ExcludeFromPrototype]
+    sbyte TotalLaps;
+    [ExcludeFromPrototype]
+    bool Finished;
+    [ExcludeFromPrototype]
+    list<FP> LapTimes;
+    [ExcludeFromPrototype]
+    FP LapTimer;
+    [ExcludeFromPrototype]
+    sbyte Position;
+    [ExcludeFromPrototype]
+    FP FinishTime;
+    [ExcludeFromPrototype]
+    FP DistanceToCheckpoint;
+    [ExcludeFromPrototype]
+    bool LastWrongWay;
+
+}
+
+event OnWrongWayChanged{
+    local player_ref player;
+    bool wrongWay;
+}

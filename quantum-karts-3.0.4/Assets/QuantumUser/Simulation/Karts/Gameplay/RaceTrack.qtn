@@ -1,0 +1,12 @@
+singleton component RaceTrack {
+
+	list<EntityRef> StartPositions;
+	list<EntityRef> Checkpoints;
+	list<EntityRef> Pickups;
+	
+	sbyte TotalLaps;
+	
+	asset_ref<NavMesh> NavMesh;
+}
+
+enum SurfaceEffect { None, Sand, Snow, Grass }

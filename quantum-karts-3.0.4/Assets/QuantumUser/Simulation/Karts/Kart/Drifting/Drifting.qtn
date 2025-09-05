@@ -1,0 +1,21 @@
+﻿component Drifting {
+	
+	[ExcludeFromPrototype]
+	int Direction;
+	
+	[ExcludeFromPrototype]
+	FP AirTimer;
+		
+	FP SideAcceleration;
+	FP ForwardFactor;
+	FP MaxSteeringOffset;
+	FP MinimumSpeed;
+	FP MaxAirTime;
+	FP MaxNoSteerTime;
+	FP MinSidewaysSpeedSqr;
+	FP MaxOppositeSteerTime;
+
+}    
+
+event OnDriftStart {entity_ref kartEntity; Drifting driftComp;}
+event OnDriftEnd {entity_ref kartEntity; Drifting driftComp;}

@@ -1,0 +1,9 @@
+﻿component RespawnMover {
+    [ExcludeFromPrototype] FPVector3 StartPos;
+    [ExcludeFromPrototype] FPVector3 EndPos;
+    [ExcludeFromPrototype] FPQuaternion StartRot;
+    [ExcludeFromPrototype] FPQuaternion EndRot;
+    [ExcludeFromPrototype] bool Initialized;
+    
+    FP Progress;
+}

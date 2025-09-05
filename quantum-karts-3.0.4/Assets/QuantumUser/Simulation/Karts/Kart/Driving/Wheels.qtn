@@ -1,0 +1,34 @@
+[CodeGen(ForcePartialPrototype)]
+component Wheels {
+
+	[ExcludeFromPrototype]
+	array<WheelStatus>[4] WheelStatuses;
+	
+	[ExcludeFromPrototype]
+	array<PhysicsQueryRef>[4] WheelQueries;
+	
+	array<WheelConfig>[4] Configs;
+	
+	FP GroundedMinimumYFactor;
+    
+    LayerMask DriveableMask;
+    
+	[ExcludeFromPrototype]
+	FPVector3 AverageNormal;
+
+	[ExcludeFromPrototype]
+	FPVector3 AveragePoint;
+}
+
+struct WheelStatus {
+    FPVector3 HitPoint;
+    FPVector3 HitNormal;
+    Boolean Grounded;
+    asset_ref<DrivingSurface> HitSurface;
+}
+
+[Serializable]
+struct WheelConfig {
+    FPVector3 Position;
+    FP Height;
+}

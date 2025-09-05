@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f98ff78397bdc4a9886959982c466e, type: 3}
+  m_Name: KartMenuConfig
+  m_EditorClassIdentifier: 
+  _maxPlayers: 6
+  _adaptFramerateForMobilePlatform: 1
+  _availableAppVersions:
+  - 3.0
+  _availableRegions:
+  - 
+  - asia
+  - au
+  - eu
+  - in
+  - hk
+  - jp
+  - za
+  - sa
+  - kr
+  - us
+  - usw
+  _availableScenes:
+  - Name: Track 1
+    ScenePath: Assets/QuantumUser/Scenes/Track1.unity
+    Preview: {fileID: 21300000, guid: 621dc4c4774f5cd4191fae7a7220cfc7, type: 3}
+    RuntimeConfig:
+      Seed: 0
+      Map:
+        Id:
+          Value: 471814395261900693
+      SimulationConfig:
+        Id:
+          Value: 403729673721826128
+      SystemsConfig:
+        Id:
+          Value: 399019853600510514
+      RaceSettings:
+        Id:
+          Value: 433615666246549446
+      AICount: 0
+      DriverCount: 12
+      FillWithAI: 1
+      CountdownTime:
+        RawValue: 327680
+      MaxRaceTime:
+        RawValue: 19660800
+      FinishingTime:
+        RawValue: 983040
+      FinishedTime:
+        RawValue: 983040
+  - Name: Track 2
+    ScenePath: Assets/QuantumUser/Scenes/Track2.unity
+    Preview: {fileID: 21300000, guid: 44ea03da56828ba45a72cae567cd9817, type: 3}
+    RuntimeConfig:
+      Seed: 0
+      Map:
+        Id:
+          Value: 525406307484472419
+      SimulationConfig:
+        Id:
+          Value: 403729673721826128
+      SystemsConfig:
+        Id:
+          Value: 399019853600510514
+      RaceSettings:
+        Id:
+          Value: 433615666246549446
+      AICount: 0
+      DriverCount: 12
+      FillWithAI: 1
+      CountdownTime:
+        RawValue: 327680
+      MaxRaceTime:
+        RawValue: 19660800
+      FinishingTime:
+        RawValue: 983040
+      FinishedTime:
+        RawValue: 983040
+  _machineId: {fileID: -755480892457977500, guid: fbd1d0c57fd428c44b08e505acb8d851, type: 3}
+  _codeGenerator: {fileID: 11400000, guid: e38f1fac5a1a5c94da2b4ef21bd48419, type: 2}
+  DefaultScenePreview: {fileID: 0}
