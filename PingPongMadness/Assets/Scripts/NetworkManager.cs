@@ -329,7 +329,15 @@ namespace BEKStudio
 
             Debug.Log($"🏆 ¡{winner} gana!");
 
-             int localNumber = GetLocalPlayerNumber();     // 1 ó 2
+              // Mostrar mensaje de victoria en ambos clientes
+            if (GameStateManager.Instance != null)
+            {
+                
+                GameStateManager.Instance.SetWinner(winner);
+                
+            }
+
+            int localNumber = GetLocalPlayerNumber();     // 1 ó 2
             if (localNumber.ToString() == winner)         // ¿soy el ganador?
             {
                 string winnerWallet = PlayerSessionData.WalletAddress;
@@ -338,13 +346,6 @@ namespace BEKStudio
                 await API.ReportMatchResultAsync(matchId, winnerWallet);
                 }
 
-            // Mostrar mensaje de victoria en ambos clientes
-            if (GameStateManager.Instance != null)
-            {
-                
-                GameStateManager.Instance.SetWinner(winner);
-                
-            }
 
             // Opcional: despawn ball
             if (ballInstance != null)
