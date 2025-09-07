@@ -17,6 +17,10 @@ namespace EmbeddedAPI
         {
             public string walletAddress;
             public string txSignature;
+            public string game;
+            // public string? mode; // Optional, can be "Casual" or "Betting"
+            // public decimal? betAmount; // Optional, required if mode is "Betting"
+            // public decimal? matchFee; // Optional, required if mode is "Betting"
         }
 
         [Serializable]
@@ -65,12 +69,25 @@ namespace EmbeddedAPI
             request.downloadHandler = new DownloadHandlerBuffer();
         }
 
-        public static async Task<string> RegisterPlayerAsync(string walletAddress, string txSignature)
+        // ✅ Helper para hacer await de UnityWebRequest en Unity 2021.3
+        private static Task<UnityWebRequest> SendWebRequestAsync(UnityWebRequest request)
+        {
+            var tcs = new TaskCompletionSource<UnityWebRequest>();
+            var operation = request.SendWebRequest();
+            operation.completed += _ => tcs.SetResult(request);
+            return tcs.Task;
+        }
+
+        public static async Task<string> RegisterPlayerAsync(string walletAddress, string txSignature, string game)
         {
             var payload = new RegisterPayload
             {
                 walletAddress = walletAddress,
-                txSignature = txSignature
+                txSignature = txSignature,
+                game = game,
+                // mode = mode,
+                // betAmount = betAmount,
+                // matchFee = matchFee
             };
 
             var body = JsonUtility.ToJson(payload);
@@ -78,12 +95,12 @@ namespace EmbeddedAPI
 
             AddSecureHeaders(request, body);
 
-            await request.SendWebRequest();
+            await SendWebRequestAsync(request);
 
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Error: " + request.error);
-                throw new InvalidOperationException($"Failed to register player and retrieve match ID.");
+                throw new InvalidOperationException("Failed to register player and retrieve match ID.");
             }
 
             RegisterResponse responseData = JsonUtility.FromJson<RegisterResponse>(request.downloadHandler.text);
@@ -109,7 +126,7 @@ namespace EmbeddedAPI
 
             AddSecureHeaders(request, jsonBody);
 
-            await request.SendWebRequest();
+            await SendWebRequestAsync(request);
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -129,12 +146,11 @@ namespace EmbeddedAPI
             };
 
             var body = JsonUtility.ToJson(payload);
-
             var request = new UnityWebRequest(baseUrl + "/matchComplete", "POST");
 
             AddSecureHeaders(request, body);
 
-            await request.SendWebRequest();
+            await SendWebRequestAsync(request);
 
             if (request.result == UnityWebRequest.Result.Success)
                 Debug.Log("Success: " + request.downloadHandler.text);

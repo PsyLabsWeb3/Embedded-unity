@@ -35,6 +35,13 @@ namespace BEKStudio
         public event Action OnRoomFull;
         public bool RoomIsFull => _playersJoined >= 2;
 
+        private int GetLocalPlayerNumber()
+        {
+            // En Fusion Shared Mode normalmente PlayerId empieza en 1
+            // Ajusta si tu mapping es distinto.
+            return Runner != null ? Runner.LocalPlayer.PlayerId : 0;
+        }
+
         private void Awake()
         {
             if (Instance == null)
@@ -47,11 +54,14 @@ namespace BEKStudio
         {
             string address = WalletManager.WalletAddress;
             string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+            string gameName = "PingPongMadness";
 
             Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
 
-            string tx = "player_tx_" + System.Guid.NewGuid();
-            _matchId = await API.RegisterPlayerAsync(wallet, tx);
+            // string tx = "player_tx_" + System.Guid.NewGuid();
+            string txID = WalletManager.TransactionId;
+			string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
+            _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
             PlayerSessionData.WalletAddress = wallet;
@@ -74,6 +84,43 @@ namespace BEKStudio
 
             _ = API.JoinMatchAsync(_matchId, wallet);
         }
+        	// _gameMode = GameMode.Shared;
+
+			// string gameName = "EmbeddedWars";
+
+			// string address = WalletManager.WalletAddress;
+
+			// string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+
+            // Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
+
+            // // string tx = "player_tx_" + System.Guid.NewGuid();
+			// string txID = WalletManager.TransactionId;
+			// string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
+			// Debug.Log(string.IsNullOrEmpty(txID) ? $"❌ TX ID no disponible, generado aleatorio: {tx}" : $"✅ Usando wallet del jugador: {tx}");
+            // _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
+            // Debug.Log($"Match ID received from backend: {_matchId}");
+
+			// PlayerSessionData.WalletAddress = wallet;
+			// PlayerSessionData.MatchId = _matchId;
+
+			// // ✅ Verificar guardado
+			// Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
+
+			// // Define los valores hardcodeados
+			// string region = "eu";           // o "us", "eu", etc.
+
+			// // Inicia conexión directamente
+			// FusionLauncher.Launch(
+			// 	_gameMode,
+			// 	region,
+			// 	_matchId,
+			// 	_gameManagerPrefab,
+			// 	_levelManager,
+			// 	OnConnectionStatusUpdate
+			// );
+
+			//  _ = API.JoinMatchAsync(_matchId, wallet);
 
         // public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         // {
@@ -270,7 +317,7 @@ namespace BEKStudio
             Debug.Log("✅ GAME STARTED!");
         }
 
-        public void OnGoalScored(GoalZone.Side side)
+        public async void OnGoalScored(GoalZone.Side side)
         {
             if (gameEnded) return;
             gameEnded = true;
@@ -281,7 +328,15 @@ namespace BEKStudio
             string winner = (side == GoalZone.Side.Left) ? "2" : "1";
 
             Debug.Log($"🏆 ¡{winner} gana!");
-          
+
+             int localNumber = GetLocalPlayerNumber();     // 1 ó 2
+            if (localNumber.ToString() == winner)         // ¿soy el ganador?
+            {
+                string winnerWallet = PlayerSessionData.WalletAddress;
+                string matchId = PlayerSessionData.MatchId;
+                Debug.Log($"Reporting match result. Winner: {winnerWallet}");
+                await API.ReportMatchResultAsync(matchId, winnerWallet);
+                }
 
             // Mostrar mensaje de victoria en ambos clientes
             if (GameStateManager.Instance != null)
