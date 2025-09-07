@@ -6,8 +6,6 @@ using Fusion.Sockets;
 using UnityEngine.SceneManagement;
 using EmbeddedAPI;
 using System;
-using System.Threading.Tasks;
-
 
 namespace BEKStudio
 {
@@ -37,6 +35,13 @@ namespace BEKStudio
         public event Action OnRoomFull;
         public bool RoomIsFull => _playersJoined >= 2;
 
+        private int GetLocalPlayerNumber()
+        {
+            // En Fusion Shared Mode normalmente PlayerId empieza en 1
+            // Ajusta si tu mapping es distinto.
+            return Runner != null ? Runner.LocalPlayer.PlayerId : 0;
+        }
+
         private void Awake()
         {
             if (Instance == null)
@@ -49,11 +54,13 @@ namespace BEKStudio
         {
             string address = WalletManager.WalletAddress;
             string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
-            string gameName = "PingPong";
+            string gameName = "PingPongMadness";
 
             Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
 
-            string tx = "player_tx_" + System.Guid.NewGuid();
+            // string tx = "player_tx_" + System.Guid.NewGuid();
+            string txID = WalletManager.TransactionId;
+			string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
             _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
@@ -77,6 +84,43 @@ namespace BEKStudio
 
             _ = API.JoinMatchAsync(_matchId, wallet);
         }
+        	// _gameMode = GameMode.Shared;
+
+			// string gameName = "EmbeddedWars";
+
+			// string address = WalletManager.WalletAddress;
+
+			// string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+
+            // Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
+
+            // // string tx = "player_tx_" + System.Guid.NewGuid();
+			// string txID = WalletManager.TransactionId;
+			// string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
+			// Debug.Log(string.IsNullOrEmpty(txID) ? $"❌ TX ID no disponible, generado aleatorio: {tx}" : $"✅ Usando wallet del jugador: {tx}");
+            // _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
+            // Debug.Log($"Match ID received from backend: {_matchId}");
+
+			// PlayerSessionData.WalletAddress = wallet;
+			// PlayerSessionData.MatchId = _matchId;
+
+			// // ✅ Verificar guardado
+			// Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
+
+			// // Define los valores hardcodeados
+			// string region = "eu";           // o "us", "eu", etc.
+
+			// // Inicia conexión directamente
+			// FusionLauncher.Launch(
+			// 	_gameMode,
+			// 	region,
+			// 	_matchId,
+			// 	_gameManagerPrefab,
+			// 	_levelManager,
+			// 	OnConnectionStatusUpdate
+			// );
+
+			//  _ = API.JoinMatchAsync(_matchId, wallet);
 
         // public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         // {
@@ -110,6 +154,26 @@ namespace BEKStudio
         Debug.LogWarning($"⛔ Invalid PlayerId: {player.PlayerId}. Skipping spawn.");
         return;
     }
+
+    // Solo el host lógico (PlayerId == 1) debe hacer los spawns
+    // if (Runner.LocalPlayer.PlayerId == 1)
+    // {
+    //     Vector3 spawnPos = player.PlayerId == 1 ? new Vector3(-5, 1, 0) : new Vector3(5, 1, 0);
+
+    //     if (runner.GetPlayerObject(player) == null)
+    //     {
+    //         var obj = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
+    //         Debug.Log($"🚀 Spawning player {player.PlayerId} at {spawnPos}");
+
+    //         if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
+    //         {
+    //             walletComp.WalletAddress = PlayerSessionData.WalletAddress;
+    //             walletComp.MatchId = PlayerSessionData.MatchId;
+    //         }
+
+    //         runner.SetPlayerObject(player, obj);
+    //     }
+    // }
 
     if (_playersJoined == 2)
     {
@@ -169,14 +233,6 @@ namespace BEKStudio
 
             if (registeredPlayers.Count == 2 && !gameStarted)
             {
-                 PlayerMovement player1 = registeredPlayers[0];
-                 PlayerMovement player2 = registeredPlayers[1];
-                 string wallet1 = player1.WalletAddress;
-                 string wallet2 = player2.WalletAddress;
-
-                   Debug.Log($"📡 Player 1 Wallet: {wallet1}");
-                   Debug.Log($"📡 Player 2 Wallet: {wallet2}");
-
                 StartCoroutine(StartGameCountdown());
             }
         }
@@ -261,57 +317,41 @@ namespace BEKStudio
             Debug.Log("✅ GAME STARTED!");
         }
 
-      public async Task OnGoalScored(GoalZone.Side side)
-
+        public async void OnGoalScored(GoalZone.Side side)
         {
             if (gameEnded) return;
             gameEnded = true;
             GameStateManager.Instance.GameEnded  = true;
             GameStateManager.Instance.SetGameEnded();
-            
 
             // string winner = side == GoalZone.Side.Left ? "2" : "1";
             string winner = (side == GoalZone.Side.Left) ? "2" : "1";
 
             Debug.Log($"🏆 ¡{winner} gana!");
 
-            GameStateManager.Instance.SetWinner(winner);
-
-           // Determinar índice del ganador según el lado donde cayó el gol
-            int winnerIndex = (side == GoalZone.Side.Left) ? 1 : 0; // Si el gol fue en el lado izquierdo, gana el de la derecha
-
-            
-
-            if (registeredPlayers.Count == 2)
+             int localNumber = GetLocalPlayerNumber();     // 1 ó 2
+            if (localNumber.ToString() == winner)         // ¿soy el ganador?
             {
-                // Asegura que estás accediendo al jugador, no a un string
-                PlayerMovement winnerPlayer = registeredPlayers[winnerIndex];
-
-                // Ahora intenta obtener el componente NetworkWallet
-                if (winnerPlayer.TryGetComponent<NetworkWallet>(out var walletComp))
-                {
-                    string wallet = walletComp.WalletAddress;
-                    string matchId = PlayerSessionData.MatchId;
-
-                    Debug.Log($"🏆 Reportando ganador: Wallet={wallet}, MatchID={matchId}");
-
-                    wallet = wallet?.Trim();
-                    matchId = matchId?.Trim();
-
-                    await API.ReportMatchResultAsync(matchId, wallet);
-                  
+                string winnerWallet = PlayerSessionData.WalletAddress;
+                string matchId = PlayerSessionData.MatchId;
+                Debug.Log($"Reporting match result. Winner: {winnerWallet}");
+                await API.ReportMatchResultAsync(matchId, winnerWallet);
                 }
-                else
-                {
-                    Debug.LogWarning("⚠️ No se encontró NetworkWallet en el jugador ganador");
-                }
-                }
-                        // Opcional: despawn ball
-                        if (ballInstance != null)
-                        {
-                            Runner.Despawn(ballInstance);
-                        }
+
+            // Mostrar mensaje de victoria en ambos clientes
+            if (GameStateManager.Instance != null)
+            {
+                
+                GameStateManager.Instance.SetWinner(winner);
+                
             }
+
+            // Opcional: despawn ball
+            if (ballInstance != null)
+            {
+                Runner.Despawn(ballInstance);
+            }
+        }
 
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
