@@ -1,8 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Fusion.Photon.Realtime;
 using Fusion;
 using Fusion.Sockets;
+using ExitGames.Client.Photon; // AppSettings
 using UnityEngine.SceneManagement;
 using EmbeddedAPI;
 using System;
@@ -35,10 +40,22 @@ namespace BEKStudio
         public event Action OnRoomFull;
         public bool RoomIsFull => _playersJoined >= 2;
 
+        private AppSettings CopyAppSettings(AppSettings src) {
+            return new AppSettings {
+                AppIdFusion    = src.AppIdFusion,
+                AppIdRealtime  = src.AppIdRealtime,
+                AppVersion     = src.AppVersion,
+                UseNameServer  = src.UseNameServer,
+                FixedRegion    = src.FixedRegion,
+                Protocol       = src.Protocol,
+                NetworkLogging = src.NetworkLogging
+            };
+        }
+
+
         private int GetLocalPlayerNumber()
         {
-            // En Fusion Shared Mode normalmente PlayerId empieza en 1
-            // Ajusta si tu mapping es distinto.
+         
             return Runner != null ? Runner.LocalPlayer.PlayerId : 0;
         }
 
@@ -49,6 +66,25 @@ namespace BEKStudio
             else
                 Destroy(gameObject);
         }
+
+        private CancellationTokenSource _regionCts;
+
+        private async Task<string> PickBestRegionCodeAsync() {
+            _regionCts = new CancellationTokenSource();
+
+            var regions = await NetworkRunner.GetAvailableRegions(cancellationToken: _regionCts.Token);
+            if (regions == null || regions.Count == 0)
+                return null; // auto selección
+
+            // Filtra solo pings válidos y asegura que hay al menos uno:
+            var valid = regions.Where(r => r.RegionPing >= 0).ToList();
+            if (valid.Count == 0)
+                return null;
+
+            var best = valid.OrderBy(r => r.RegionPing).First(); // ya hay al menos uno
+            return best.RegionCode; // "usw", "use", "eu", "asia", "jp", etc.
+        }
+
 
         private async void Start()
         {
@@ -73,77 +109,44 @@ namespace BEKStudio
             _runnerInstance.ProvideInput = true;
             _runnerInstance.AddCallbacks(this);
 
-            await _runnerInstance.StartGame(new StartGameArgs
-            {
-                GameMode = GameMode.Shared,
-                SessionName = _matchId,
-                Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
-                SceneManager = null,
-                PlayerCount = 2
-            });
+
+        // Crear runner ANTES de medir regiones (requerido por GetAvailableRegions)
+        _runnerInstance = Instantiate(runnerPrefab);
+        _runnerInstance.name = "Runner";
+        DontDestroyOnLoad(_runnerInstance);
+        _runnerInstance.ProvideInput = true;
+        _runnerInstance.AddCallbacks(this);
+
+        // Medir región (Fusion 2) y fijarla en AppSettings
+        string bestRegionCode = await PickBestRegionCodeAsync();
+
+        var pa = Resources.Load<PhotonAppSettings>("PhotonAppSettings");
+        AppSettings baseSettings = pa != null ? pa.AppSettings : new AppSettings();
+        AppSettings appSettings  = CopyAppSettings(baseSettings);
+
+        appSettings.UseNameServer = true;
+        appSettings.FixedRegion   = bestRegionCode; // null => auto
+
+        // 🔁 Convertir AppSettings -> FusionAppSettings (hay conversor explícito)
+        FusionAppSettings fusionSettings = (FusionAppSettings)appSettings;
+
+        // 🚀 Lanzar
+        var result = await _runnerInstance.StartGame(new StartGameArgs {
+            GameMode = GameMode.Shared,
+            SessionName = _matchId,
+            Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
+            SceneManager = null,
+            PlayerCount = 2,
+            CustomPhotonAppSettings = fusionSettings   // ✅ tipo correcto
+        });
+
+        Debug.Log($"✅ Región efectiva: {_runnerInstance.SessionInfo.Region}");
+
+
 
             _ = API.JoinMatchAsync(_matchId, wallet);
         }
-        	// _gameMode = GameMode.Shared;
-
-			// string gameName = "EmbeddedWars";
-
-			// string address = WalletManager.WalletAddress;
-
-			// string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
-
-            // Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
-
-            // // string tx = "player_tx_" + System.Guid.NewGuid();
-			// string txID = WalletManager.TransactionId;
-			// string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
-			// Debug.Log(string.IsNullOrEmpty(txID) ? $"❌ TX ID no disponible, generado aleatorio: {tx}" : $"✅ Usando wallet del jugador: {tx}");
-            // _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
-            // Debug.Log($"Match ID received from backend: {_matchId}");
-
-			// PlayerSessionData.WalletAddress = wallet;
-			// PlayerSessionData.MatchId = _matchId;
-
-			// // ✅ Verificar guardado
-			// Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
-
-			// // Define los valores hardcodeados
-			// string region = "eu";           // o "us", "eu", etc.
-
-			// // Inicia conexión directamente
-			// FusionLauncher.Launch(
-			// 	_gameMode,
-			// 	region,
-			// 	_matchId,
-			// 	_gameManagerPrefab,
-			// 	_levelManager,
-			// 	OnConnectionStatusUpdate
-			// );
-
-			//  _ = API.JoinMatchAsync(_matchId, wallet);
-
-        // public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-        // {
-        //     _playersJoined++;
-        //     Debug.Log($"Player {player.PlayerId} joined. Total players: {_playersJoined}");
-
-        //     if (_playersJoined == 2)
-        //     {
-        //         Debug.Log("Game Ready");
-        //         OnRoomFull?.Invoke();
-
-        //         if (runner.LocalPlayer.PlayerId == 1)
-        //         {
-        //             Debug.Log("\ud83d\udc51 Este jugador actu\u00e1 como HOST forzado (PlayerId == 1)");
-        //             StartCoroutine(RegisterAllPlayersAfterSceneLoad());
-        //         }
-        //         else
-        //         {
-        //             Debug.Log("\ud83d\uded1 Este jugador no actuar\u00e1 como host");
-        //         }
-        //     }
-        // }
-
+        	
        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
 {
     _playersJoined++;
@@ -155,25 +158,7 @@ namespace BEKStudio
         return;
     }
 
-    // Solo el host lógico (PlayerId == 1) debe hacer los spawns
-    // if (Runner.LocalPlayer.PlayerId == 1)
-    // {
-    //     Vector3 spawnPos = player.PlayerId == 1 ? new Vector3(-5, 1, 0) : new Vector3(5, 1, 0);
-
-    //     if (runner.GetPlayerObject(player) == null)
-    //     {
-    //         var obj = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
-    //         Debug.Log($"🚀 Spawning player {player.PlayerId} at {spawnPos}");
-
-    //         if (obj.TryGetComponent<NetworkWallet>(out var walletComp))
-    //         {
-    //             walletComp.WalletAddress = PlayerSessionData.WalletAddress;
-    //             walletComp.MatchId = PlayerSessionData.MatchId;
-    //         }
-
-    //         runner.SetPlayerObject(player, obj);
-    //     }
-    // }
+  
 
     if (_playersJoined == 2)
     {
@@ -359,8 +344,7 @@ namespace BEKStudio
             Vector2 direction = Vector2.zero;
             if (Input.GetKey(KeyCode.UpArrow)) direction = Vector2.up;
             if (Input.GetKey(KeyCode.DownArrow)) direction = Vector2.down;
-            // if (Input.GetKey(KeyCode.LeftArrow)) direction = Vector2.left;
-            // if (Input.GetKey(KeyCode.RightArrow)) direction = Vector2.right;
+    
 
             input.Set(new SnakeInputData { direction = direction });
         }
