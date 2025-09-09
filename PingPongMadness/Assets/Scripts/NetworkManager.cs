@@ -53,6 +53,8 @@ namespace BEKStudio
         }
 
 
+
+
         private int GetLocalPlayerNumber()
         {
          
@@ -120,27 +122,29 @@ namespace BEKStudio
         // Medir región (Fusion 2) y fijarla en AppSettings
         string bestRegionCode = await PickBestRegionCodeAsync();
 
-        var pa = Resources.Load<PhotonAppSettings>("PhotonAppSettings");
-        AppSettings baseSettings = pa != null ? pa.AppSettings : new AppSettings();
-        AppSettings appSettings  = CopyAppSettings(baseSettings);
+// Cargar el asset global
+var pa = Resources.Load<PhotonAppSettings>("PhotonAppSettings");
+if (pa == null) {
+    Debug.LogError("PhotonAppSettings.asset no encontrado en Resources.");
+} else {
+    // Forzar uso de NameServer y fijar región elegida por ping
+    pa.AppSettings.UseNameServer = true;
+    pa.AppSettings.FixedRegion   = bestRegionCode; // puede ser null => Best Region
+}
 
-        appSettings.UseNameServer = true;
-        appSettings.FixedRegion   = bestRegionCode; // null => auto
+// Ahora inicia SIN CustomPhotonAppSettings
+var result = await _runnerInstance.StartGame(new StartGameArgs {
+    GameMode   = GameMode.Shared,
+    SessionName= _matchId,
+    Scene      = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
+    SceneManager = null,
+    PlayerCount  = 2
+});
 
-        // 🔁 Convertir AppSettings -> FusionAppSettings (hay conversor explícito)
-        FusionAppSettings fusionSettings = (FusionAppSettings)appSettings;
+// Obtener la región efectiva desde el runner
+var si = _runnerInstance.SessionInfo;
+Debug.Log($"✅ Región efectiva: {(si != null ? si.Region : "unknown")}");
 
-        // 🚀 Lanzar
-        var result = await _runnerInstance.StartGame(new StartGameArgs {
-            GameMode = GameMode.Shared,
-            SessionName = _matchId,
-            Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
-            SceneManager = null,
-            PlayerCount = 2,
-            CustomPhotonAppSettings = fusionSettings   // ✅ tipo correcto
-        });
-
-        Debug.Log($"✅ Región efectiva: {_runnerInstance.SessionInfo.Region}");
 
 
 
