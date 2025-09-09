@@ -20,6 +20,11 @@ public class BallController : NetworkBehaviour
     [SerializeField, Range(0.0f, 0.99f)] private float minXFracAtServe = 0.85f;
     [SerializeField, Range(0.0f, 0.99f)] private float minXFracOnBounce = 0.60f;
 
+    [Header("Paddle Bounce Shaping")]
+    [SerializeField, Range(10f, 80f)] private float maxBounceAngleDeg = 55f; // máximo ángulo desde el eje X
+    [SerializeField] private float spinFromPaddleVel = 0.15f;                 // influencia de vel Z de la paleta
+    [SerializeField] private float minZAfterAnyBounce = 0.12f;                // inclinación mínima en Z tras rebote
+
     private Vector3 lastVelocity;
 
     public override void Spawned()
@@ -120,15 +125,58 @@ public class BallController : NetworkBehaviour
         if (!HasStateAuthority || _rb == null) return;
 
         ContactPoint contact = collision.contacts[0];
-        Vector3 reflected = Vector3.Reflect(lastVelocity.normalized, contact.normal);
+        Vector3 newDir;
 
-        // Garantiza componente X significativa tras el rebote
-        Vector3 dir = EnforceMinX(reflected.normalized, minXFracOnBounce);
+        if (collision.collider.CompareTag("Paddle"))
+        {
+            // ===== Rebote tipo Pong clásico + spin =====
+            // 1) Desplazamiento relativo del golpe sobre el alto (Z) de la paleta
+            float halfZ = GetHalfExtentZ(collision.collider);
+            float offsetZ = 0f;
+            if (halfZ > 1e-4f)
+                offsetZ = Mathf.Clamp((transform.position.z - collision.collider.bounds.center.z) / halfZ, -1f, 1f);
+
+            // 2) Mapea offset a ángulo ±maxBounceAngleDeg respecto al eje X
+            float maxRad = maxBounceAngleDeg * Mathf.Deg2Rad;
+            float angle  = offsetZ * maxRad;
+
+            // 3) Sale hacia el lado opuesto al que venía en X
+            float xSign = Mathf.Sign(-lastVelocity.x);
+            newDir = new Vector3(Mathf.Cos(angle) * xSign, 0f, Mathf.Sin(angle));
+
+            // 4) Spin por velocidad de la paleta en Z (si tiene Rigidbody)
+            float paddleVelZ = 0f;
+            var prb = collision.rigidbody; // Rigidbody de la paleta (si existe)
+            if (prb != null) paddleVelZ = prb.linearVelocity.z;
+
+            newDir.z += paddleVelZ * spinFromPaddleVel;
+            newDir.y = 0f;
+
+            // 5) Asegurar inclinación mínima (Z) y suficiente X
+            if (Mathf.Abs(newDir.z) < minZAfterAnyBounce)
+                newDir.z = Mathf.Sign(newDir.z == 0 ? (Random.value < 0.5f ? -1f : 1f) : newDir.z) * minZAfterAnyBounce;
+
+            newDir = EnforceMinX(newDir.normalized, minXFracOnBounce);
+        }
+        else
+        {
+            // ===== Rebote genérico (paredes, etc.) con “anti-plano” =====
+            Vector3 reflected = Vector3.Reflect(lastVelocity.normalized, contact.normal);
+            newDir = reflected;
+
+            // Inyecta inclinación mínima en Z si quedó casi plano
+            if (Mathf.Abs(newDir.z) < minZAfterAnyBounce)
+                newDir.z = Mathf.Sign(newDir.z == 0 ? (Random.value < 0.5f ? -1f : 1f) : newDir.z) * minZAfterAnyBounce;
+
+            // Mantener suficiente X para que avance
+            newDir = EnforceMinX(newDir.normalized, minXFracOnBounce);
+        }
 
         // Plano XZ
-        if (lockToPlaneY) dir.y = 0f;
+        if (lockToPlaneY) newDir.y = 0f;
 
-        SetLinearVelocity(dir * CurrentSpeed);
+        // Aplica velocidad conservando magnitud actual programada
+        SetLinearVelocity(newDir.normalized * CurrentSpeed);
 
         // Re-coloca en el plano por si la normal tenía componente Y
         if (lockToPlaneY)
@@ -164,6 +212,12 @@ public class BallController : NetworkBehaviour
             dir = new Vector3(sx * x, 0f, sz * z);
         }
         return dir;
+    }
+
+    private static float GetHalfExtentZ(Collider col)
+    {
+        // Alto efectivo (en Z) de la paleta a partir de sus bounds
+        return col.bounds.extents.z;
     }
 
     private Vector3 GetLinearVelocity() => _rb.linearVelocity;

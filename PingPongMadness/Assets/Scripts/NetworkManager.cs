@@ -91,19 +91,26 @@ namespace BEKStudio
         private async void Start()
         {
             string address = WalletManager.WalletAddress;
-            string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+           // 🚨 Validar que exista WalletAddress
+            if (string.IsNullOrEmpty(address))
+            {
+                Debug.LogError("❌ WalletAddress no disponible en WalletManager");
+                throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
+            }
             string gameName = "PingPongMadness";
 
-            Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
+            // Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
 
             // string tx = "player_tx_" + System.Guid.NewGuid();
             string txID = WalletManager.TransactionId;
-			string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
-          
-            Debug.Log($"Match ID received from backend: {_matchId}");
+			
+            if (string.IsNullOrEmpty(txID))
+            {
+                Debug.LogError("❌ Transaction ID no disponible en WalletManager");
+                throw new System.Exception("Transaction ID requerido pero no encontrado en WalletManager");
+            }
 
-            PlayerSessionData.WalletAddress = wallet;
-            PlayerSessionData.MatchId = _matchId;
+            PlayerSessionData.WalletAddress = address;     
 
             _runnerInstance = Instantiate(runnerPrefab);
             _runnerInstance.name = "Runner";
@@ -111,18 +118,14 @@ namespace BEKStudio
             _runnerInstance.ProvideInput = true;
             _runnerInstance.AddCallbacks(this);
 
-
-        // Crear runner ANTES de medir regiones (requerido por GetAvailableRegions)
-        _runnerInstance = Instantiate(runnerPrefab);
-        _runnerInstance.name = "Runner";
-        DontDestroyOnLoad(_runnerInstance);
-        _runnerInstance.ProvideInput = true;
-        _runnerInstance.AddCallbacks(this);
-
         // Medir región (Fusion 2) y fijarla en AppSettings
         string bestRegionCode = await PickBestRegionCodeAsync();
 
-        _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName, bestRegionCode);
+        _matchId = await API.RegisterPlayerAsync(address, txID, gameName, bestRegionCode);
+
+        PlayerSessionData.MatchId = _matchId;
+
+        Debug.Log($"Match ID received from backend: {_matchId}");
 
         // Cargar el asset global
         var pa = Resources.Load<PhotonAppSettings>("PhotonAppSettings");
@@ -150,7 +153,7 @@ namespace BEKStudio
 
 
 
-            _ = API.JoinMatchAsync(_matchId, wallet);
+            _ = API.JoinMatchAsync(_matchId, address);
         }
         	
        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)

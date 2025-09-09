@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: -3223736114292797367}
   m_Layer: 0
   m_Name: PlayerCapsule
-  m_TagString: Untagged
+  m_TagString: Paddle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d9df424bf4d49dda2a4fbc9fc9bea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WalletAddress: 
   PlayerSpeed: 10
   _Blocked: 0
 --- !u!114 &-3223736114292797367

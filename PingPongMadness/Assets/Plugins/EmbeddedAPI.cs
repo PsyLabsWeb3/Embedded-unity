@@ -12,14 +12,14 @@ namespace EmbeddedAPI
         private static readonly string sharedSecret = "5f725f60-f959-4d54-a081-7a935bdf3194";
         private static readonly string baseUrl = "https://backend.embedded.games/api";
 
-        [Serializable]
+ [Serializable]
         public class RegisterPayload
         {
             public string walletAddress;
             public string txSignature;
             public string game;
-            public string? mode; // Optional, can be "Casual" or "Betting"
             public string region; // Photon region e.g., "eu", "us", "asia"
+            public string mode; // Optional, can be "Casual" or "Betting"
             public decimal? betAmount; // Optional, required if mode is "Betting"
         }
 
@@ -70,16 +70,16 @@ namespace EmbeddedAPI
         }
 
         public static async Task<string> RegisterPlayerAsync(string walletAddress, string txSignature, string game,
-                                                             string region)
+                                                             string region, string mode = null, decimal betAmount = 0.5m)
         {
             var payload = new RegisterPayload
             {
                 walletAddress = walletAddress,
                 txSignature = txSignature,
                 game = game,
-                // mode = mode,
+                mode = mode,
                 region = region,
-                // betAmount = betAmount
+                betAmount = betAmount
             };
 
             var body = JsonUtility.ToJson(payload);
