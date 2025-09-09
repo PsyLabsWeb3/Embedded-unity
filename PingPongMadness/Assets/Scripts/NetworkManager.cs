@@ -99,7 +99,7 @@ namespace BEKStudio
             // string tx = "player_tx_" + System.Guid.NewGuid();
             string txID = WalletManager.TransactionId;
 			string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
-            _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
+          
             Debug.Log($"Match ID received from backend: {_matchId}");
 
             PlayerSessionData.WalletAddress = wallet;
@@ -122,28 +122,30 @@ namespace BEKStudio
         // Medir región (Fusion 2) y fijarla en AppSettings
         string bestRegionCode = await PickBestRegionCodeAsync();
 
-// Cargar el asset global
-var pa = Resources.Load<PhotonAppSettings>("PhotonAppSettings");
-if (pa == null) {
-    Debug.LogError("PhotonAppSettings.asset no encontrado en Resources.");
-} else {
-    // Forzar uso de NameServer y fijar región elegida por ping
-    pa.AppSettings.UseNameServer = true;
-    pa.AppSettings.FixedRegion   = bestRegionCode; // puede ser null => Best Region
-}
+        _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName, bestRegionCode);
 
-// Ahora inicia SIN CustomPhotonAppSettings
-var result = await _runnerInstance.StartGame(new StartGameArgs {
-    GameMode   = GameMode.Shared,
-    SessionName= _matchId,
-    Scene      = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
-    SceneManager = null,
-    PlayerCount  = 2
-});
+        // Cargar el asset global
+        var pa = Resources.Load<PhotonAppSettings>("PhotonAppSettings");
+        if (pa == null) {
+            Debug.LogError("PhotonAppSettings.asset no encontrado en Resources.");
+        } else {
+            // Forzar uso de NameServer y fijar región elegida por ping
+            pa.AppSettings.UseNameServer = true;
+            pa.AppSettings.FixedRegion   = bestRegionCode; // puede ser null => Best Region
+        }
 
-// Obtener la región efectiva desde el runner
-var si = _runnerInstance.SessionInfo;
-Debug.Log($"✅ Región efectiva: {(si != null ? si.Region : "unknown")}");
+        // Ahora inicia SIN CustomPhotonAppSettings
+        var result = await _runnerInstance.StartGame(new StartGameArgs {
+            GameMode   = GameMode.Shared,
+            SessionName= _matchId,
+            Scene      = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
+            SceneManager = null,
+            PlayerCount  = 2
+        });
+
+        // Obtener la región efectiva desde el runner
+        var si = _runnerInstance.SessionInfo;
+        Debug.Log($"✅ Región efectiva: {(si != null ? si.Region : "unknown")}");
 
 
 
