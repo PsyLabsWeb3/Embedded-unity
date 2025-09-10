@@ -463,7 +463,7 @@ MonoBehaviour:
     PlayerNickname: Kart
     KartVisuals:
       Id:
-        Value: 394978345902034065
+        Value: 402275000480599817
     KartStats:
       Id:
         Value: 307833582402417101
@@ -781,6 +781,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1087774783805756916, guid: 0110ba34f174dd948a8db8ccc95c13ff, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5862178757147185847, guid: 0110ba34f174dd948a8db8ccc95c13ff, type: 3}
       propertyPath: m_Name
       value: RaceUI

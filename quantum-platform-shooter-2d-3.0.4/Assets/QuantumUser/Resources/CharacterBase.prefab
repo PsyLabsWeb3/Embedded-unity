@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Body: {fileID: 4109678706051459337}
-  CharacterAnimator: {fileID: 0}
+  CharacterAnimator: {fileID: 4056305982477183269}
   LookDirection: 0
 --- !u!114 &3908071451082131799
 MonoBehaviour:
@@ -1223,15 +1223,15 @@ PrefabInstance:
     - target: {fileID: 114460873997692602, guid: e45171e3709f57b448f2e24bb251b9f1, type: 3}
       propertyPath: JumpAudioClip.Clip
       value: 
-      objectReference: {fileID: 8300000, guid: 7de08273193c7044a97c55d03f9ef132, type: 3}
+      objectReference: {fileID: 8300000, guid: 2f2e42bc91991314eaa8c6104e6ffe75, type: 3}
     - target: {fileID: 114460873997692602, guid: e45171e3709f57b448f2e24bb251b9f1, type: 3}
       propertyPath: LandingAudioClip.Clip
       value: 
-      objectReference: {fileID: 8300000, guid: b0e999970730f7540bee7c8583d1f490, type: 3}
+      objectReference: {fileID: 8300000, guid: e6d765a9441e4aa428d9ef93ca4b7bf4, type: 3}
     - target: {fileID: 114460873997692602, guid: e45171e3709f57b448f2e24bb251b9f1, type: 3}
       propertyPath: DoubleJumpAudioClip.Clip
       value: 
-      objectReference: {fileID: 8300000, guid: 561d91b304f36d4439af2f7358febd56, type: 3}
+      objectReference: {fileID: 8300000, guid: d9ac17f8d482b4b4eaac9ba04c71ea2e, type: 3}
     - target: {fileID: 198458015681991074, guid: e45171e3709f57b448f2e24bb251b9f1, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
       value: 0.5320754
@@ -1285,6 +1285,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e45171e3709f57b448f2e24bb251b9f1, type: 3}
+--- !u!95 &4056305982477183269 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95297429795328202, guid: e45171e3709f57b448f2e24bb251b9f1, type: 3}
+  m_PrefabInstance: {fileID: 4114166134388652527}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4109678706051459337 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4775520382374118, guid: e45171e3709f57b448f2e24bb251b9f1, type: 3}

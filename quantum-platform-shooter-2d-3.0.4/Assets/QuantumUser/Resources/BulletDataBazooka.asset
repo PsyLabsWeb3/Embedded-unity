@@ -18,7 +18,7 @@ MonoBehaviour:
       Value: 306924417286190481
   BulletDestroyFxGameObject: {fileID: 1356215465006514, guid: 2bb733384e457234fafba421b881e10a, type: 3}
   BulletDestroyAudioInfo:
-    Clip: {fileID: 8300000, guid: 44d730ac72fd6b445ad2a72408d216df, type: 3}
+    Clip: {fileID: 8300000, guid: 4a994fae89bc3cb4791b72ef5418abb6, type: 3}
     Volume: 0.63
     Is2D: 0
     Loop: 0

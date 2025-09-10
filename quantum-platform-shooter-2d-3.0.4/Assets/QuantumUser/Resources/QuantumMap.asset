@@ -818,9 +818,9 @@ MonoBehaviour:
       RawValue: 0
     Position:
       X:
-        RawValue: 1966
+        RawValue: 655
       Y:
-        RawValue: 828375
+        RawValue: 562298
     Height:
       RawValue: 0
     VerticalOffset:
@@ -834,9 +834,9 @@ MonoBehaviour:
       RawValue: 0
     BoxExtents:
       X:
-        RawValue: 120259
+        RawValue: 163840
       Y:
-        RawValue: 58983
+        RawValue: 29819
     CapsuleSize:
       X:
         RawValue: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
     Guid:
       Value: 491603686275695036
   ShootAudioInfo:
-    Clip: {fileID: 8300000, guid: 6cc7a1609c1fe8147b5da77bdbb9ef2f, type: 3}
+    Clip: {fileID: 8300000, guid: 6c9c7b86aa22ae7429e5a7609ee76957, type: 3}
     Volume: 0.66
     Is2D: 0
     Loop: 0

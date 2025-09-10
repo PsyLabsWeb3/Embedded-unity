@@ -5,12 +5,25 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 978171244244648884, guid: cd72000d8bb2a774aa5c788f2f96a2da, type: 3}
       propertyPath: m_Name
       value: Character_Boy_Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4075425351964907349, guid: cd72000d8bb2a774aa5c788f2f96a2da, type: 3}
+      propertyPath: JumpAudioClip.Clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f2e42bc91991314eaa8c6104e6ffe75, type: 3}
+    - target: {fileID: 4075425351964907349, guid: cd72000d8bb2a774aa5c788f2f96a2da, type: 3}
+      propertyPath: LandingAudioClip.Clip
+      value: 
+      objectReference: {fileID: 8300000, guid: e6d765a9441e4aa428d9ef93ca4b7bf4, type: 3}
+    - target: {fileID: 4075425351964907349, guid: cd72000d8bb2a774aa5c788f2f96a2da, type: 3}
+      propertyPath: DoubleJumpAudioClip.Clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b5092073e9257743962779ff1134c9d, type: 3}
     - target: {fileID: 4115264459320149339, guid: cd72000d8bb2a774aa5c788f2f96a2da, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -72,6 +85,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 600468045763043337}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd72000d8bb2a774aa5c788f2f96a2da, type: 3}
 --- !u!95 &600468045763043337 stripped
 Animator:
