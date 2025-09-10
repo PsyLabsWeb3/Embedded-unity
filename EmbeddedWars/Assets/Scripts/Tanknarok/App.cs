@@ -5,6 +5,9 @@ using Tanknarok.UI;
 using TMPro;
 using UnityEngine;
 using EmbeddedAPI;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Linq;
 
 namespace FusionExamples.Tanknarok
 {
@@ -31,6 +34,24 @@ namespace FusionExamples.Tanknarok
 
 		private string _matchId = null;
 
+		private CancellationTokenSource _regionCts;
+
+		 private async Task<string> PickBestRegionCodeAsync() {
+            _regionCts = new CancellationTokenSource();
+
+            var regions = await NetworkRunner.GetAvailableRegions(cancellationToken: _regionCts.Token);
+            if (regions == null || regions.Count == 0)
+                return null; // auto selección
+
+            // Filtra solo pings válidos y asegura que hay al menos uno:
+            var valid = regions.Where(r => r.RegionPing >= 0).ToList();
+            if (valid.Count == 0)
+                return null;
+
+            var best = valid.OrderBy(r => r.RegionPing).First(); // ya hay al menos uno
+            return best.RegionCode; // "usw", "use", "eu", "asia", "jp", etc.
+        }
+
 		private void Awake()
 		{
 			Application.targetFrameRate = 60;
@@ -56,18 +77,25 @@ namespace FusionExamples.Tanknarok
 
 			string address = WalletManager.WalletAddress;
 
-			string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+			  if (string.IsNullOrEmpty(address))
+            {
+                Debug.LogError("❌ WalletAddress no disponible en WalletManager");
+                throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
+            }
 
-            Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
-
-            // string tx = "player_tx_" + System.Guid.NewGuid();
 			string txID = WalletManager.TransactionId;
-			string tx = !string.IsNullOrEmpty(txID) ? txID : "player_tx_" + System.Guid.NewGuid();
-			Debug.Log(string.IsNullOrEmpty(txID) ? $"❌ TX ID no disponible, generado aleatorio: {tx}" : $"✅ Usando wallet del jugador: {tx}");
-            _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName);
+			if (string.IsNullOrEmpty(txID))
+            {
+                Debug.LogError("❌ TransactionId no disponible en WalletManager");
+                throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
+            }
+			
+			string bestRegionCode = await PickBestRegionCodeAsync();
+
+            _matchId = await API.RegisterPlayerAsync(address, txID, gameName, bestRegionCode);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
-			PlayerSessionData.WalletAddress = wallet;
+			PlayerSessionData.WalletAddress = address;
 			PlayerSessionData.MatchId = _matchId;
 
 			// ✅ Verificar guardado
@@ -86,7 +114,7 @@ namespace FusionExamples.Tanknarok
 				OnConnectionStatusUpdate
 			);
 
-			 _ = API.JoinMatchAsync(_matchId, wallet);
+			 _ = API.JoinMatchAsync(_matchId, address);
 		}
 
 		private void Update()
