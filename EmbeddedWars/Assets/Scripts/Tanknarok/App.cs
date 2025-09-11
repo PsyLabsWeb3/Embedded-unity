@@ -89,10 +89,13 @@ namespace FusionExamples.Tanknarok
                 Debug.LogError("❌ TransactionId no disponible en WalletManager");
                 throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
             }
-			
-			string bestRegionCode = await PickBestRegionCodeAsync();
 
-            _matchId = await API.RegisterPlayerAsync(address, txID, gameName, bestRegionCode);
+				// Define los valores hardcodeados
+			string region = "ussc";           // o "us", "eu", etc.
+			
+			// string bestRegionCode = await PickBestRegionCodeAsync();
+
+            _matchId = await API.RegisterPlayerAsync(address, txID, gameName, region);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
 			PlayerSessionData.WalletAddress = address;
@@ -101,8 +104,7 @@ namespace FusionExamples.Tanknarok
 			// ✅ Verificar guardado
 			Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
 
-			// Define los valores hardcodeados
-			string region = "eu";           // o "us", "eu", etc.
+		
 
 			// Inicia conexión directamente
 			FusionLauncher.Launch(
