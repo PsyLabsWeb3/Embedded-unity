@@ -5,6 +5,7 @@ using Tanknarok.UI;
 using TMPro;
 using UnityEngine;
 using EmbeddedAPI;
+using System;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
@@ -34,23 +35,54 @@ namespace FusionExamples.Tanknarok
 
 		private string _matchId = null;
 
-		private CancellationTokenSource _regionCts;
+private CancellationTokenSource _regionCts;
 
-		 private async Task<string> PickBestRegionCodeAsync() {
-            _regionCts = new CancellationTokenSource();
+private async Task<string> PickBestRegionCodeAsync(string fallback = "us", int timeoutMs = 6000)
+{
+    _regionCts?.Cancel();
+    _regionCts?.Dispose();
+    _regionCts = new CancellationTokenSource();
 
-            var regions = await NetworkRunner.GetAvailableRegions(cancellationToken: _regionCts.Token);
-            if (regions == null || regions.Count == 0)
-                return null; // auto selección
+    using var timeout = new CancellationTokenSource(timeoutMs);
+    using var linked  = CancellationTokenSource.CreateLinkedTokenSource(_regionCts.Token, timeout.Token);
 
-            // Filtra solo pings válidos y asegura que hay al menos uno:
-            var valid = regions.Where(r => r.RegionPing >= 0).ToList();
-            if (valid.Count == 0)
-                return null;
+    try
+    {
+        var regions = await NetworkRunner.GetAvailableRegions(cancellationToken: linked.Token).ConfigureAwait(false);
+        if (regions == null || regions.Count == 0)
+            return fallback;
 
-            var best = valid.OrderBy(r => r.RegionPing).First(); // ya hay al menos uno
-            return best.RegionCode; // "usw", "use", "eu", "asia", "jp", etc.
-        }
+        var valid = regions.Where(r => r.RegionPing >= 0).ToList();
+        if (valid.Count == 0)
+            return fallback;
+
+        var best = valid.OrderBy(r => r.RegionPing).First(); // <-- ya no puede ser null
+        Debug.Log($"[RegionPicker] Mejor región: {best.RegionCode} ({best.RegionPing} ms)");
+        return best.RegionCode;
+    }
+    catch (ArgumentNullException ex) when (ex.ParamName == "scheduler")
+    {
+        Debug.LogWarning("[RegionPicker] scheduler==null al pedir regiones; usando fallback.");
+        return fallback;
+    }
+    catch (OperationCanceledException)
+    {
+        Debug.LogWarning("[RegionPicker] Timeout/cancel al obtener regiones; usando fallback.");
+        return fallback;
+    }
+    catch (Exception ex)
+    {
+        Debug.LogError($"[RegionPicker] Error inesperado: {ex.Message}; usando fallback.");
+        return fallback;
+    }
+    finally
+    {
+        _regionCts?.Dispose();
+        _regionCts = null;
+    }
+}
+
+
 
 		private void Awake()
 		{
@@ -93,7 +125,9 @@ namespace FusionExamples.Tanknarok
 				// Define los valores hardcodeados
 			string region = "ussc";           // o "us", "eu", etc.
 			
-			// string bestRegionCode = await PickBestRegionCodeAsync();
+			string bestRegionCode = await PickBestRegionCodeAsync(fallback: "us", timeoutMs: 6000);
+ 			Debug.Log($"Best region 🌏: {bestRegionCode}");
+			
 
             _matchId = await API.RegisterPlayerAsync(address, txID, gameName, region);
             Debug.Log($"Match ID received from backend: {_matchId}");
