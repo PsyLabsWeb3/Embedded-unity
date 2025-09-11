@@ -19,7 +19,8 @@ public class GoalZone : NetworkBehaviour
 
             if (NetworkManager.Instance != null)
             {
-                NetworkManager.Instance.OnGoalScored(goalSide);
+                 NetworkManager.Instance.OnGoalScored(goalSide);
+
             }
         }
     }

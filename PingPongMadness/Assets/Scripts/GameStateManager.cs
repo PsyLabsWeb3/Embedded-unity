@@ -11,6 +11,10 @@ public class GameStateManager : NetworkBehaviour
     
     [Networked] public string WinnerName { get; set; }
 
+    [Networked] public bool GameEnded { get; set; }
+
+
+
     public override void Spawned()
     {
         if (Instance == null)
@@ -25,6 +29,17 @@ public class GameStateManager : NetworkBehaviour
 
         WinnerName = name;
         Debug.Log($"📢 Ganador sincronizado: {WinnerName}");
+        
+    }
+
+    public void SetGameEnded(){
+         if (!HasStateAuthority) return;
+        GameEnded = true;
+          // Muestra u oculta la UI si el estado cambio
+            // gameEndPanel.SetActive(true);
+              Debug.Log($"GAME ENDED: {GameEnded}");
+
+        
     }
 
 }
