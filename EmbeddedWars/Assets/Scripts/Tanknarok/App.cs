@@ -1,4 +1,5 @@
 using Fusion;
+using System.Collections;
 using FusionExamples.UIHelpers;
 using FusionHelpers;
 using Tanknarok.UI;
@@ -34,24 +35,77 @@ namespace FusionExamples.Tanknarok
 
 		private string _matchId = null;
 
-		private CancellationTokenSource _regionCts;
+	// Removed _regionCts field; use local variable in PickBestRegionCodeAsync
 
-		 private async Task<string> PickBestRegionCodeAsync() {
-            _regionCts = new CancellationTokenSource();
+		private string _bestRegionCode;
 
-            var regions = await NetworkRunner.GetAvailableRegions(cancellationToken: _regionCts.Token);
-            if (regions == null || regions.Count == 0)
-                return null; // auto selección
+		/// <summary>
+		/// Coroutine: Calls available regions, selects the region with the best ping, and stores its code.
+		/// </summary>
+		public void PickBestRegionCodeCoroutine(System.Action<string> callback)
+		{
+			StartCoroutine(PickBestRegionCodeRoutine(callback));
+		}
 
-            // Filtra solo pings válidos y asegura que hay al menos uno:
-            var valid = regions.Where(r => r.RegionPing >= 0).ToList();
-            if (valid.Count == 0)
-                return null;
-
-            var best = valid.OrderBy(r => r.RegionPing).First(); // ya hay al menos uno
-            return best.RegionCode; // "usw", "use", "eu", "asia", "jp", etc.
-        }
-
+		private IEnumerator PickBestRegionCodeRoutine(System.Action<string> callback)
+		{
+			string resultCode = "usw";
+			bool error = false;
+			System.Exception caughtException = null;
+			var getRegionsTask = null as Task<System.Collections.Generic.List<Fusion.RegionInfo>>;
+			try
+			{
+				getRegionsTask = NetworkRunner.GetAvailableRegions();
+			}
+			catch (System.AggregateException ex)
+			{
+				error = true;
+				caughtException = ex;
+			}
+			catch (System.Exception ex)
+			{
+				error = true;
+				caughtException = ex;
+			}
+			if (error || getRegionsTask == null)
+			{
+				Debug.LogWarning($"Exception getting regions: {caughtException?.Message}. Using fallback region 'usw'.");
+				callback?.Invoke(resultCode);
+				yield break;
+			}
+			while (!getRegionsTask.IsCompleted)
+			{
+				yield return null;
+			}
+			if (getRegionsTask.Exception != null)
+			{
+				Debug.LogWarning($"Exception getting regions: {getRegionsTask.Exception.Message}. Using fallback region 'usw'.");
+				callback?.Invoke(resultCode);
+				yield break;
+			}
+			var regions = getRegionsTask.Result;
+			if (regions != null && regions.Count > 0)
+			{
+				var valid = regions.Where(r => r.RegionPing >= 0).ToList();
+				if (valid.Count > 0)
+				{
+					var best = valid.OrderBy(r => r.RegionPing).First();
+					_bestRegionCode = best.RegionCode;
+					Debug.Log($"Best region: {_bestRegionCode} with ping {best.RegionPing}");
+					resultCode = _bestRegionCode;
+				}
+				else
+				{
+					Debug.LogWarning("No valid region pings, using default fallback region 'usw'.");
+				}
+			}
+			else
+			{
+				Debug.LogWarning("No regions available, using default fallback region 'usw'.");
+			}
+			callback?.Invoke(resultCode);
+		}
+		
 		private void Awake()
 		{
 			Application.targetFrameRate = 60;
@@ -59,7 +113,7 @@ namespace FusionExamples.Tanknarok
 			_levelManager.onStatusUpdate = OnConnectionStatusUpdate;
 		}
 
-		private async void Start()
+		private void Start()
 		{
 			// OnConnectionStatusUpdate( null, FusionLauncher.ConnectionStatus.Disconnected, "");
 
@@ -77,26 +131,68 @@ namespace FusionExamples.Tanknarok
 
 			string address = WalletManager.WalletAddress;
 
-			  if (string.IsNullOrEmpty(address))
-            {
-                Debug.LogError("❌ WalletAddress no disponible en WalletManager");
-                throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
-            }
+			if (string.IsNullOrEmpty(address))
+			{
+				Debug.LogError("❌ WalletAddress no disponible en WalletManager");
+				throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
+			}
 
 			string txID = WalletManager.TransactionId;
 			if (string.IsNullOrEmpty(txID))
-            {
-                Debug.LogError("❌ TransactionId no disponible en WalletManager");
-                throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
-            }
+			{
+				Debug.LogError("❌ TransactionId no disponible en WalletManager");
+				throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
+			}
 
-				// Define los valores hardcodeados
-			string region = "ussc";           // o "us", "eu", etc.
-			
-			// string bestRegionCode = await PickBestRegionCodeAsync();
+			// Use coroutine for region selection
+			PickBestRegionCodeCoroutine((regionCode) =>
+			{
+				_bestRegionCode = regionCode;
+				Debug.Log($"Best region code selected🌏: {_bestRegionCode}");
 
-            _matchId = await API.RegisterPlayerAsync(address, txID, gameName, region);
-            Debug.Log($"Match ID received from backend: {_matchId}");
+				StartCoroutine(RegisterAndLaunch(gameName, address, txID));
+			});
+		}
+
+		private IEnumerator RegisterAndLaunch(string gameName, string address, string txID)
+		{
+			bool error = false;
+			System.Exception caughtException = null;
+			var registerTask = null as Task<string>;
+			try
+			{
+				registerTask = API.RegisterPlayerAsync(address, txID, gameName, _bestRegionCode);
+			}
+			catch (System.AggregateException ex)
+			{
+				error = true;
+				caughtException = ex;
+			}
+			catch (System.Exception ex)
+			{
+				error = true;
+				caughtException = ex;
+			}
+			if (error || registerTask == null)
+			{
+				Debug.LogWarning($"Exception registering player: {caughtException?.Message}. Using fallback matchId.");
+				_matchId = "default-match-id";
+				yield break;
+			}
+			while (!registerTask.IsCompleted)
+			{
+				yield return null;
+			}
+			if (registerTask.Exception != null)
+			{
+				Debug.LogWarning($"Exception registering player: {registerTask.Exception.Message}. Using fallback matchId.");
+				_matchId = "default-match-id";
+			}
+			else
+			{
+				_matchId = registerTask.Result;
+			}
+			Debug.Log($"Match ID received from backend: {_matchId}");
 
 			PlayerSessionData.WalletAddress = address;
 			PlayerSessionData.MatchId = _matchId;
@@ -104,19 +200,39 @@ namespace FusionExamples.Tanknarok
 			// ✅ Verificar guardado
 			Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
 
-		
-
 			// Inicia conexión directamente
 			FusionLauncher.Launch(
 				_gameMode,
-				region,
+				_bestRegionCode,
 				_matchId,
 				_gameManagerPrefab,
 				_levelManager,
 				OnConnectionStatusUpdate
 			);
 
-			 _ = API.JoinMatchAsync(_matchId, address);
+			var joinTask = null as Task;
+			try
+			{
+				joinTask = API.JoinMatchAsync(_matchId, address);
+			}
+			catch (System.AggregateException ex)
+			{
+				Debug.LogWarning($"AggregateException joining match: {ex.Message}.");
+				yield break;
+			}
+			catch (System.Exception ex)
+			{
+				Debug.LogWarning($"Exception joining match: {ex.Message}.");
+				yield break;
+			}
+			while (!joinTask.IsCompleted)
+			{
+				yield return null;
+			}
+			if (joinTask.Exception != null)
+			{
+				Debug.LogWarning($"Exception joining match: {joinTask.Exception.Message}.");
+			}
 		}
 
 		private void Update()
