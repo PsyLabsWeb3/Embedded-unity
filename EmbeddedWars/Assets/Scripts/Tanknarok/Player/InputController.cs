@@ -51,7 +51,7 @@ namespace FusionExamples.Tanknarok
 		/// </summary>
 		public override void Spawned()
 		{
-			_mobileInput = FindObjectOfType<MobileInput>(true);
+			_mobileInput = FindFirstObjectByType<MobileInput>(FindObjectsInactive.Include);
 			_player = GetComponent<Player>();
 			// Technically, it does not really matter which InputController fills the input structure, since the actual data will only be sent to the one that does have authority,
 			// but in the name of clarity, let's make sure we give input control to the gameobject that also has Input authority.
@@ -177,7 +177,6 @@ namespace FusionExamples.Tanknarok
 		public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
 		public void OnConnectedToServer(NetworkRunner runner) { }
 		public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) {}
-		
 		public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
 		public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
 		public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }

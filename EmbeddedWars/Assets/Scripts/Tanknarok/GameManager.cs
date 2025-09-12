@@ -164,7 +164,7 @@ namespace FusionExamples.Tanknarok
 
 			 if (Input.GetKeyDown(KeyCode.Escape))
             {
-				var readyUpManager = FindObjectOfType<ReadyUpManager>();
+				var readyUpManager = FindFirstObjectByType<ReadyUpManager>();
 				if (readyUpManager && !readyUpManager.DisconnectPrompt.activeSelf)
 					readyUpManager.DisconnectPrompt.SetActive(true);
             }

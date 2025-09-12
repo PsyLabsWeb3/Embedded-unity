@@ -160,7 +160,7 @@ namespace FusionExamples.Tanknarok
 			onStatusUpdate?.Invoke( Runner, FusionLauncher.ConnectionStatus.Loaded, "");
 			
 			// Activate the next level
-			_currentLevel = FindObjectOfType<LevelBehaviour>();
+			_currentLevel = FindFirstObjectByType<LevelBehaviour>();
 			if(_currentLevel!=null)
 				_currentLevel.Activate();
 			MusicPlayer.instance.SetLowPassTranstionDirection( newScene.AsIndex>_lobby ? 1f : -1f);

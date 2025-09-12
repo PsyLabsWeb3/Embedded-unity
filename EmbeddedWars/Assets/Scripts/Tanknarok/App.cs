@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine;
 using EmbeddedAPI;
 using System.Threading.Tasks;
-using System.Threading;
 using System.Linq;
 
 namespace FusionExamples.Tanknarok
@@ -241,7 +240,7 @@ namespace FusionExamples.Tanknarok
 			{
 				if (Input.GetKeyUp(KeyCode.Escape))
 				{
-					NetworkRunner runner = FindObjectOfType<NetworkRunner>();
+					NetworkRunner runner = FindFirstObjectByType<NetworkRunner>();
 					if (runner != null && !runner.IsShutdown)
 					{
 						// Calling with destroyGameObject false because we do this in the OnShutdown callback on FusionLauncher

@@ -31,7 +31,7 @@ namespace FusionExamples.Tanknarok
 		public void OnReadyUpClicked()
 		{
 			Debug.Log("OnReadyUpClicked🚨 ");
-			 var runner = FindObjectOfType<NetworkRunner>();
+			var runner = FindFirstObjectByType<NetworkRunner>();
 			if (runner == null || runner.LocalPlayer == null)
 			{
 				Debug.LogWarning("❌ No NetworkRunner or LocalPlayer found");
@@ -39,7 +39,7 @@ namespace FusionExamples.Tanknarok
 			}
 
 			// Buscar al jugador local y su InputController
-			foreach (var player in FindObjectsOfType<Player>())
+			foreach (var player in FindObjectsByType<Player>(FindObjectsSortMode.None))
 			{
 				if (player.Object != null && player.Object.InputAuthority == runner.LocalPlayer)
 				{
@@ -58,7 +58,7 @@ namespace FusionExamples.Tanknarok
 
 		public void AttemptDisconnect()
 		{
-			GameManager gm = FindObjectOfType<GameManager>();
+			GameManager gm = FindFirstObjectByType<GameManager>();
 			if (gm == null)
 				return;
 
