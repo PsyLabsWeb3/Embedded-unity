@@ -1,5 +1,4 @@
 using Fusion;
-using System.Collections;
 using FusionExamples.UIHelpers;
 using FusionHelpers;
 using Tanknarok.UI;
@@ -7,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using EmbeddedAPI;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Linq;
 
 namespace FusionExamples.Tanknarok
@@ -28,83 +28,35 @@ namespace FusionExamples.Tanknarok
 		[SerializeField] private TMP_Dropdown _regionDropdown;
 		[SerializeField] private TextMeshProUGUI _audioText;
 
+		[SerializeField] private NetworkRunner _runnerPrefab;
+
+
+		
+
 		private FusionLauncher.ConnectionStatus _status = FusionLauncher.ConnectionStatus.Disconnected;
 		private GameMode _gameMode;
 		private int _nextPlayerIndex;
 
 		private string _matchId = null;
 
-	// Removed _regionCts field; use local variable in PickBestRegionCodeAsync
+		// private CancellationTokenSource _regionCts;
 
-		private string _bestRegionCode;
+		//  private async Task<string> PickBestRegionCodeAsync() {
+        //     _regionCts = new CancellationTokenSource();
 
-		/// <summary>
-		/// Coroutine: Calls available regions, selects the region with the best ping, and stores its code.
-		/// </summary>
-		public void PickBestRegionCodeCoroutine(System.Action<string> callback)
-		{
-			StartCoroutine(PickBestRegionCodeRoutine(callback));
-		}
+        //     var regions = await NetworkRunner.GetAvailableRegions(cancellationToken: _regionCts.Token);
+        //     if (regions == null || regions.Count == 0)
+        //         return null; // auto selección
 
-		private IEnumerator PickBestRegionCodeRoutine(System.Action<string> callback)
-		{
-			string resultCode = "usw";
-			bool error = false;
-			System.Exception caughtException = null;
-			var getRegionsTask = null as Task<System.Collections.Generic.List<Fusion.RegionInfo>>;
-			try
-			{
-				getRegionsTask = NetworkRunner.GetAvailableRegions();
-			}
-			catch (System.AggregateException ex)
-			{
-				error = true;
-				caughtException = ex;
-			}
-			catch (System.Exception ex)
-			{
-				error = true;
-				caughtException = ex;
-			}
-			if (error || getRegionsTask == null)
-			{
-				Debug.LogWarning($"Exception getting regions: {caughtException?.Message}. Using fallback region 'usw'.");
-				callback?.Invoke(resultCode);
-				yield break;
-			}
-			while (!getRegionsTask.IsCompleted)
-			{
-				yield return null;
-			}
-			if (getRegionsTask.Exception != null)
-			{
-				Debug.LogWarning($"Exception getting regions: {getRegionsTask.Exception.Message}. Using fallback region 'usw'.");
-				callback?.Invoke(resultCode);
-				yield break;
-			}
-			var regions = getRegionsTask.Result;
-			if (regions != null && regions.Count > 0)
-			{
-				var valid = regions.Where(r => r.RegionPing >= 0).ToList();
-				if (valid.Count > 0)
-				{
-					var best = valid.OrderBy(r => r.RegionPing).First();
-					_bestRegionCode = best.RegionCode;
-					Debug.Log($"Best region: {_bestRegionCode} with ping {best.RegionPing}");
-					resultCode = _bestRegionCode;
-				}
-				else
-				{
-					Debug.LogWarning("No valid region pings, using default fallback region 'usw'.");
-				}
-			}
-			else
-			{
-				Debug.LogWarning("No regions available, using default fallback region 'usw'.");
-			}
-			callback?.Invoke(resultCode);
-		}
-		
+        //     // Filtra solo pings válidos y asegura que hay al menos uno:
+        //     var valid = regions.Where(r => r.RegionPing >= 0).ToList();
+        //     if (valid.Count == 0)
+        //         return null;
+
+        //     var best = valid.OrderBy(r => r.RegionPing).First(); // ya hay al menos uno
+        //     return best.RegionCode; // "usw", "use", "eu", "asia", "jp", etc.
+        // }
+
 		private void Awake()
 		{
 			Application.targetFrameRate = 60;
@@ -112,127 +64,60 @@ namespace FusionExamples.Tanknarok
 			_levelManager.onStatusUpdate = OnConnectionStatusUpdate;
 		}
 
-		private void Start()
-		{
-			// OnConnectionStatusUpdate( null, FusionLauncher.ConnectionStatus.Disconnected, "");
+	private async void Start()
+{
+	_status = FusionLauncher.ConnectionStatus.Disconnected;
 
-			_status = FusionLauncher.ConnectionStatus.Disconnected;
+	_uiStart.SetVisible(false);
+	_uiRoom.SetVisible(false);
+	_uiProgress.SetVisible(true);
 
-			// Ocultar UIs innecesarios
-			_uiStart.SetVisible(false);
-			_uiRoom.SetVisible(false);     // 👈 Oculta también el de Room
-			_uiProgress.SetVisible(true);  // Muestra que está conectando
+	_gameMode = GameMode.Shared;
 
-			// Establece el modo de juego (Host, Client o Shared)
-			_gameMode = GameMode.Shared;
+	string gameName = "EmbeddedWars";
+	string address = WalletManager.WalletAddress;
+	string txID = WalletManager.TransactionId;
 
-			string gameName = "EmbeddedWars";
+	if (string.IsNullOrEmpty(address))
+	{
+		Debug.LogError("❌ WalletAddress no disponible en WalletManager");
+		throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
+	}
 
-			string address = WalletManager.WalletAddress;
+	if (string.IsNullOrEmpty(txID))
+	{
+		Debug.LogError("❌ TransactionId no disponible en WalletManager");
+		throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
+	}
 
-			if (string.IsNullOrEmpty(address))
-			{
-				Debug.LogError("❌ WalletAddress no disponible en WalletManager");
-				throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
-			}
+	// ✅ Obtener mejor región con NetworkRunner temporal (evita error scheduler==null en WebGL)
+	string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
+	Debug.Log($"🌍 Región seleccionada: {regionCode}");
 
-			string txID = WalletManager.TransactionId;
-			if (string.IsNullOrEmpty(txID))
-			{
-				Debug.LogError("❌ TransactionId no disponible en WalletManager");
-				throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
-			}
+	// 🔐 Registrar jugador con backend
+	_matchId = await API.RegisterPlayerAsync(address, txID, gameName, regionCode);
+	Debug.Log($"Match ID recibido desde backend: {_matchId}");
 
-			// Use coroutine for region selection
-			PickBestRegionCodeCoroutine((regionCode) =>
-			{
-				_bestRegionCode = regionCode;
-				Debug.Log($"Best region code selected🌏: {_bestRegionCode}");
+	// 🧠 Guardar datos de sesión
+	PlayerSessionData.WalletAddress = address;
+	PlayerSessionData.MatchId = _matchId;
 
-				StartCoroutine(RegisterAndLaunch(gameName, address, txID));
-			});
-		}
+	Debug.Log($"📝 PlayerSessionData: Wallet = {address}, MatchId = {_matchId}");
 
-		private IEnumerator RegisterAndLaunch(string gameName, string address, string txID)
-		{
-			bool error = false;
-			System.Exception caughtException = null;
-			var registerTask = null as Task<string>;
-			try
-			{
-				registerTask = API.RegisterPlayerAsync(address, txID, gameName, _bestRegionCode);
-			}
-			catch (System.AggregateException ex)
-			{
-				error = true;
-				caughtException = ex;
-			}
-			catch (System.Exception ex)
-			{
-				error = true;
-				caughtException = ex;
-			}
-			if (error || registerTask == null)
-			{
-				Debug.LogWarning($"Exception registering player: {caughtException?.Message}. Using fallback matchId.");
-				_matchId = "default-match-id";
-				yield break;
-			}
-			while (!registerTask.IsCompleted)
-			{
-				yield return null;
-			}
-			if (registerTask.Exception != null)
-			{
-				Debug.LogWarning($"Exception registering player: {registerTask.Exception.Message}. Using fallback matchId.");
-				_matchId = "default-match-id";
-			}
-			else
-			{
-				_matchId = registerTask.Result;
-			}
-			Debug.Log($"Match ID received from backend: {_matchId}");
+	// 🚀 Lanzar juego
+	FusionLauncher.Launch(
+		_gameMode,
+		regionCode,
+		_matchId,
+		_gameManagerPrefab,
+		_levelManager,
+		OnConnectionStatusUpdate
+	);
 
-			PlayerSessionData.WalletAddress = address;
-			PlayerSessionData.MatchId = _matchId;
+	// 👉 Notificar que el jugador se ha unido
+	_ = API.JoinMatchAsync(_matchId, address);
+}
 
-			// ✅ Verificar guardado
-			Debug.Log($"📝 PlayerSessionData poblado: Wallet = {PlayerSessionData.WalletAddress}, MatchId = {PlayerSessionData.MatchId}");
-
-			// Inicia conexión directamente
-			FusionLauncher.Launch(
-				_gameMode,
-				_bestRegionCode,
-				_matchId,
-				_gameManagerPrefab,
-				_levelManager,
-				OnConnectionStatusUpdate
-			);
-
-			var joinTask = null as Task;
-			try
-			{
-				joinTask = API.JoinMatchAsync(_matchId, address);
-			}
-			catch (System.AggregateException ex)
-			{
-				Debug.LogWarning($"AggregateException joining match: {ex.Message}.");
-				yield break;
-			}
-			catch (System.Exception ex)
-			{
-				Debug.LogWarning($"Exception joining match: {ex.Message}.");
-				yield break;
-			}
-			while (!joinTask.IsCompleted)
-			{
-				yield return null;
-			}
-			if (joinTask.Exception != null)
-			{
-				Debug.LogWarning($"Exception joining match: {joinTask.Exception.Message}.");
-			}
-		}
 
 		private void Update()
 		{
@@ -240,7 +125,7 @@ namespace FusionExamples.Tanknarok
 			{
 				if (Input.GetKeyUp(KeyCode.Escape))
 				{
-					NetworkRunner runner = FindFirstObjectByType<NetworkRunner>();
+					NetworkRunner runner = FindObjectOfType<NetworkRunner>();
 					if (runner != null && !runner.IsShutdown)
 					{
 						// Calling with destroyGameObject false because we do this in the OnShutdown callback on FusionLauncher
