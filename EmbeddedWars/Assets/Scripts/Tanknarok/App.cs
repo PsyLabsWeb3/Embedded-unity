@@ -39,24 +39,6 @@ namespace FusionExamples.Tanknarok
 
 		private string _matchId = null;
 
-		// private CancellationTokenSource _regionCts;
-
-		//  private async Task<string> PickBestRegionCodeAsync() {
-        //     _regionCts = new CancellationTokenSource();
-
-        //     var regions = await NetworkRunner.GetAvailableRegions(cancellationToken: _regionCts.Token);
-        //     if (regions == null || regions.Count == 0)
-        //         return null; // auto selección
-
-        //     // Filtra solo pings válidos y asegura que hay al menos uno:
-        //     var valid = regions.Where(r => r.RegionPing >= 0).ToList();
-        //     if (valid.Count == 0)
-        //         return null;
-
-        //     var best = valid.OrderBy(r => r.RegionPing).First(); // ya hay al menos uno
-        //     return best.RegionCode; // "usw", "use", "eu", "asia", "jp", etc.
-        // }
-
 		private void Awake()
 		{
 			Application.targetFrameRate = 60;
@@ -90,12 +72,20 @@ namespace FusionExamples.Tanknarok
 		throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
 	}
 
+	string bettingMode = BetSettings.Mode;                 // "casual" | "betting"
+    float betAmount  = BetSettings.GetEffectiveBetAmount(); // 0.5 si casual
+
+	Debug.Log($"MODE 🎮 : {bettingMode}");
+	Debug.Log($"BET AMOUNT💰: {betAmount}");
+
+
+
 	// ✅ Obtener mejor región con NetworkRunner temporal (evita error scheduler==null en WebGL)
 	string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
 	Debug.Log($"🌍 Región seleccionada: {regionCode}");
 
 	// 🔐 Registrar jugador con backend
-	_matchId = await API.RegisterPlayerAsync(address, txID, gameName, regionCode);
+	_matchId = await API.RegisterPlayerAsync(address, txID, gameName, regionCode, bettingMode, betAmount);
 	Debug.Log($"Match ID recibido desde backend: {_matchId}");
 
 	// 🧠 Guardar datos de sesión

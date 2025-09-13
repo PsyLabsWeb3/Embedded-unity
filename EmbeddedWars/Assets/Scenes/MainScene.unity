@@ -18864,7 +18864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2055006365337649219, guid: 59699ef917f46429cb9cbf6606cfbe9b, type: 3}
       propertyPath: m_Name
-      value: RunnerPrefab
+      value: RunnerPrefabRegionPicker
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
