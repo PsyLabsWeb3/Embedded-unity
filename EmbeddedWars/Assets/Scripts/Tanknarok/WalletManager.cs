@@ -4,6 +4,9 @@ public class WalletManager : MonoBehaviour
 {
     public static string WalletAddress;
     public static string TransactionId { get; private set; }
+    public static string GameMode { get; private set; }
+    public static string BetAmount { get; private set; }
+
 
     public void SetWalletAddress(string address)
     {
@@ -17,6 +20,18 @@ public class WalletManager : MonoBehaviour
         Debug.Log("📥 Transaction ID received in Unity: " + TransactionId);
     }
 
+    public void SetGameMode (string mode) {
+         GameMode = mode;
+        Debug.Log("📥 Game Mode received in Unity: " + GameMode);
+
+    }
+
+     public void SetBetAmount(string amount)
+    {
+       BetAmount = amount;
+        Debug.Log("📥 BetAmount received in Unity: " + BetAmount);
+    }
+
     public static string GetWalletAddress()
     {
         return WalletAddress;
@@ -25,6 +40,16 @@ public class WalletManager : MonoBehaviour
       public static string GetTransactionId()
     {
         return TransactionId;
+    }
+
+     public static string GetGameMode()
+    {
+        return GameMode;
+    }
+
+      public static string GetBetAmount()
+    {
+        return BetAmount;
     }
 
 

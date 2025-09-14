@@ -39,6 +39,7 @@ namespace FusionExamples.Tanknarok
 
 		private string _matchId = null;
 
+
 		private void Awake()
 		{
 			Application.targetFrameRate = 60;
@@ -46,67 +47,67 @@ namespace FusionExamples.Tanknarok
 			_levelManager.onStatusUpdate = OnConnectionStatusUpdate;
 		}
 
-	private async void Start()
-{
-	_status = FusionLauncher.ConnectionStatus.Disconnected;
+		private async void Start()
+		{
+			_status = FusionLauncher.ConnectionStatus.Disconnected;
 
-	_uiStart.SetVisible(false);
-	_uiRoom.SetVisible(false);
-	_uiProgress.SetVisible(true);
+			_uiStart.SetVisible(false);
+			_uiRoom.SetVisible(false);
+			_uiProgress.SetVisible(true);
 
-	_gameMode = GameMode.Shared;
+			_gameMode = GameMode.Shared;
 
-	string gameName = "EmbeddedWars";
-	string address = WalletManager.WalletAddress;
-	string txID = WalletManager.TransactionId;
+			string gameName = "EmbeddedWars";
+			string address = WalletManager.WalletAddress;
+			string txID = WalletManager.TransactionId;
 
-	if (string.IsNullOrEmpty(address))
-	{
-		Debug.LogError("❌ WalletAddress no disponible en WalletManager");
-		throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
+			if (string.IsNullOrEmpty(address))
+			{
+				Debug.LogError("❌ WalletAddress no disponible en WalletManager");
+				throw new System.Exception("WalletAddress requerido pero no encontrado en WalletManager");
+			}
+
+			if (string.IsNullOrEmpty(txID))
+			{
+				Debug.LogError("❌ TransactionId no disponible en WalletManager");
+				throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
+			}
+
+			string bettingMode = WalletManager.GameMode;                 // "casual" | "betting"
+			string betForApi   = WalletManager.BetAmount; // <-betAmount en string
+
+			Debug.Log($"MODE 🎮 : {bettingMode}");
+			Debug.Log($"BET AMOUNT💰: {betForApi}");
+
+
+
+			// ✅ Obtener mejor región con NetworkRunner temporal (evita error scheduler==null en WebGL)
+			string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
+			Debug.Log($"🌍 Región seleccionada: {regionCode}");
+
+			// 🔐 Registrar jugador con backend
+			_matchId = await API.RegisterPlayerAsync(address, txID, gameName, regionCode, bettingMode, betForApi);
+			Debug.Log($"Match ID recibido desde backend: {_matchId}");
+
+			// 🧠 Guardar datos de sesión
+			PlayerSessionData.WalletAddress = address;
+			PlayerSessionData.MatchId = _matchId;
+
+			Debug.Log($"📝 PlayerSessionData: Wallet = {address}, MatchId = {_matchId}");
+
+			// 🚀 Lanzar juego
+			FusionLauncher.Launch(
+				_gameMode,
+				regionCode,
+				_matchId,
+				_gameManagerPrefab,
+				_levelManager,
+				OnConnectionStatusUpdate
+			);
+
+		// 👉 Notificar que el jugador se ha unido
+		_ = API.JoinMatchAsync(_matchId, address);
 	}
-
-	if (string.IsNullOrEmpty(txID))
-	{
-		Debug.LogError("❌ TransactionId no disponible en WalletManager");
-		throw new System.Exception("TransactionId requerido pero no encontrado en WalletManager");
-	}
-
-	string bettingMode = BetSettings.Mode;                 // "casual" | "betting"
-    float betAmount  = BetSettings.GetEffectiveBetAmount(); // 0.5 si casual
-
-	Debug.Log($"MODE 🎮 : {bettingMode}");
-	Debug.Log($"BET AMOUNT💰: {betAmount}");
-
-
-
-	// ✅ Obtener mejor región con NetworkRunner temporal (evita error scheduler==null en WebGL)
-	string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
-	Debug.Log($"🌍 Región seleccionada: {regionCode}");
-
-	// 🔐 Registrar jugador con backend
-	_matchId = await API.RegisterPlayerAsync(address, txID, gameName, regionCode, bettingMode, betAmount);
-	Debug.Log($"Match ID recibido desde backend: {_matchId}");
-
-	// 🧠 Guardar datos de sesión
-	PlayerSessionData.WalletAddress = address;
-	PlayerSessionData.MatchId = _matchId;
-
-	Debug.Log($"📝 PlayerSessionData: Wallet = {address}, MatchId = {_matchId}");
-
-	// 🚀 Lanzar juego
-	FusionLauncher.Launch(
-		_gameMode,
-		regionCode,
-		_matchId,
-		_gameManagerPrefab,
-		_levelManager,
-		OnConnectionStatusUpdate
-	);
-
-	// 👉 Notificar que el jugador se ha unido
-	_ = API.JoinMatchAsync(_matchId, address);
-}
 
 
 		private void Update()
