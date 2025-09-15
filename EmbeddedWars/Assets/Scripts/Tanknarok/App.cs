@@ -45,6 +45,10 @@ namespace FusionExamples.Tanknarok
 			Application.targetFrameRate = 60;
 			DontDestroyOnLoad(this);
 			_levelManager.onStatusUpdate = OnConnectionStatusUpdate;
+
+			 // 🔒 Bloquea ReadyUp durante la fase de conexión
+			if (_levelManager && _levelManager.readyUpManager)
+				_levelManager.readyUpManager.gameObject.SetActive(false);
 		}
 
 		private async void Start()
@@ -54,6 +58,8 @@ namespace FusionExamples.Tanknarok
 			_uiStart.SetVisible(false);
 			_uiRoom.SetVisible(false);
 			_uiProgress.SetVisible(true);
+
+			 if (_progress) _progress.text = "Connecting…";
 
 			_gameMode = GameMode.Shared;
 
@@ -279,10 +285,16 @@ namespace FusionExamples.Tanknarok
 					break;
 			}
 
-			_uiCurtain.SetVisible(!running);
-			_uiStart.SetVisible(intro);
-			_uiProgress.SetVisible(progress);
-			_uiGame.SetActive(running);
+				_uiCurtain.SetVisible(!running);
+				_uiStart.SetVisible(intro);
+				_uiProgress.SetVisible(progress);
+				_uiGame.SetActive(running);
+			 
+
+				  // 🟢 Al estar Loaded, habilita ReadyUp (Lobby real)
+			if (_levelManager && _levelManager.readyUpManager){
+				_levelManager.readyUpManager.gameObject.SetActive(running);
+			}
 			
 			if(intro)
 				MusicPlayer.instance.SetLowPassTranstionDirection( -1f);
