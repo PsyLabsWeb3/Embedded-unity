@@ -155,9 +155,11 @@ namespace FusionExamples.Tanknarok
 			// 	lm.readyUpManager.enabled = false;  
 			// }
 
-			 // 🛡️ Sal temprano si el ReadyUp aún NO debe mostrarse
-			if (lm == null || lm.readyUpManager == null || !lm.readyUpManager.gameObject.activeInHierarchy)
+	
+		 // ⛔ Sal si seguimos en boot o si ReadyUp no debe estar activo
+			if (BootGate.IsBooting || lm == null || lm.readyUpManager == null || !lm.readyUpManager.gameObject.activeInHierarchy)
 				return;
+
 
 			if (currentPlayState != PlayState.ENDED)
 				lm.readyUpManager.UpdateUI(currentPlayState, AllPlayers, OnAllPlayersReady);

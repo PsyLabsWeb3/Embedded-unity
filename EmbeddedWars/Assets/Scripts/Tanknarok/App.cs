@@ -14,6 +14,7 @@ namespace FusionExamples.Tanknarok
 	/// <summary>
 	/// App entry point and main UI flow management.
 	/// </summary>
+	[DefaultExecutionOrder(-1000)] // Asegura que App corre primero
 	public class App : MonoBehaviour
 	{
 		[SerializeField] private LevelManager _levelManager;
@@ -42,6 +43,7 @@ namespace FusionExamples.Tanknarok
 
 		private void Awake()
 		{
+			 BootGate.IsBooting = true; 
 			Application.targetFrameRate = 60;
 			DontDestroyOnLoad(this);
 			_levelManager.onStatusUpdate = OnConnectionStatusUpdate;
@@ -54,6 +56,10 @@ namespace FusionExamples.Tanknarok
 		private async void Start()
 		{
 			_status = FusionLauncher.ConnectionStatus.Disconnected;
+
+			var cv = _uiProgress.GetComponentInParent<Canvas>();
+			if (cv) { cv.overrideSorting = true; cv.sortingOrder = 5000; } // siempre encima
+			_uiProgress.SetVisible(true);
 
 			_uiStart.SetVisible(false);
 			_uiRoom.SetVisible(false);
@@ -244,6 +250,9 @@ namespace FusionExamples.Tanknarok
 
 			_status = status;
 			UpdateUI();
+			 if (status == FusionLauncher.ConnectionStatus.Loaded) {
+				BootGate.IsBooting = false; // 🔓 ya puede mostrarse el lobby real
+				}
 		}
 
 		public void ToggleAudio()
