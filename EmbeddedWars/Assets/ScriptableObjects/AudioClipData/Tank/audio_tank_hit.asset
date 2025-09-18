@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24c1c6e747fa0e94090e8bc59337a884, type: 3}
+  m_Name: audio_tank_hit
+  m_EditorClassIdentifier: 
+  _audioClips:
+  - {fileID: 8300000, guid: bbbc8484fac1b47ad9c743dc04171561, type: 3}
+  - {fileID: 8300000, guid: eeeaf207144e4468f82c8057c47d9f94, type: 3}
+  - {fileID: 8300000, guid: bae4e05e938e744c39266720b1f5161f, type: 3}
+  - {fileID: 8300000, guid: bbbc8484fac1b47ad9c743dc04171561, type: 3}
+  _pitchBase: 1
+  _pitchVariation: 0.1
