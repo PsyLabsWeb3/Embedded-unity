@@ -128,7 +128,7 @@ namespace FusionExamples.Tanknarok
 			{
 				if (Input.GetKeyUp(KeyCode.Escape))
 				{
-					NetworkRunner runner = FindObjectOfType<NetworkRunner>();
+					NetworkRunner runner = FindFirstObjectByType<NetworkRunner>();
 					if (runner != null && !runner.IsShutdown)
 					{
 						// Calling with destroyGameObject false because we do this in the OnShutdown callback on FusionLauncher
@@ -202,15 +202,14 @@ namespace FusionExamples.Tanknarok
 				}
 			}
 
-
+		//Esto se manda llamar en FusionLauncher en Fusion Helpers
         // public async void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         // {
-        //     // Debug.Log($"Player {player.PlayerId} left.✅ ");
-		// 	Debug.Log($"ON PLAYER LEFT✅ ");
-        //     string winnerWallet = PlayerSessionData.WalletAddress;
+          
         //     string matchId = PlayerSessionData.MatchId;
-        //     Debug.Log($"Reporting match result. Winner: {winnerWallet}");
-        //     await API.ReportMatchResultAsync(matchId, winnerWallet);
+		// 	JsBridge.NotifyGameOver("Dissconected", matchId );
+		// 	Debug.Log($" ✅ Notify Game Over From APP onPlayerleft Match Id: {matchId}");
+     
         // }
 
 

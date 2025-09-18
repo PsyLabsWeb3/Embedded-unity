@@ -149,8 +149,15 @@ namespace FusionHelpers
 			Debug.Log($"Player {player} Left");
 			string winnerWallet = PlayerSessionData.WalletAddress;
             string matchId = PlayerSessionData.MatchId;
-            Debug.Log($"Reporting match: {matchId} result. Winner: {winnerWallet}");
-            await API.ReportMatchResultAsync(matchId, winnerWallet);
+			bool matchReported = PlayerSessionData.MatchReported;
+
+			if(matchReported == false){
+				 Debug.Log($"Reporting match: {matchId} result. Winner: {winnerWallet}");
+				await API.ReportMatchResultAsync(matchId, winnerWallet);
+				JsBridge.NotifyGameOver("Dissconected", matchId );
+				Debug.Log($" ✅ Notify Game Over From FusionLauncher onPlayerleft Match Id: {matchId}");
+			}
+           
 			if(runner.TryGetSingleton(out FusionSession session))
 				session.PlayerLeft(player);
 		}

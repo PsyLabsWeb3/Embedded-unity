@@ -114,7 +114,7 @@ namespace FusionExamples.Tanknarok
 				if (newScore >= MAX_SCORE)
 					nextLevelIndex = -1;
 				
-					Debug.Log($"🏆 Reporting match from GAMEMANAGER result. MatchId:");
+					// Debug.Log($"🏆 Reporting match from GAMEMANAGER result. MatchId:");
 					
 					LoadLevel( nextLevelIndex );
 				return; 

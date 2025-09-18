@@ -96,6 +96,7 @@ namespace FusionExamples.Tanknarok
 						{
 							Debug.Log($"🏆 Local player is winner. Reporting match. MatchId: {matchId}, Wallet: {wallet}");
 							_ = EmbeddedAPI.API.ReportMatchResultAsync(matchId, wallet);
+							PlayerSessionData.MatchReported = true;
 						}
 						else
 						{
