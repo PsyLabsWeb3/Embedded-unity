@@ -172,6 +172,8 @@ namespace Asteroids.SharedSimple
 			
 			if (Timer.ExpiredOrNotRunning(Runner))
 			{
+				// ⏳ Tiempo agotado: elegir ganador por SCORE (preferentemente entre vivos)
+				DecideWinnerByScore(preferAlive: true);
 				GameHasEnded();
 				return;
 			}
@@ -220,6 +222,40 @@ namespace Asteroids.SharedSimple
 			}
 
 			GameHasEnded();
+		}
+		/// <summary>
+		/// Elige ganador por mayor Score. Si preferAlive = true y hay al menos uno vivo, solo considera vivos.
+		/// Desempate: más Lives -> menor PlayerId (determinista).
+		/// </summary>
+		private void DecideWinnerByScore(bool preferAlive)
+		{
+			if (_playerDataNetworkedIds.Count == 0) return;
+
+			// Reúne candidatos
+			var candidates = new List<(NetworkBehaviourId id, int score, int lives, int playerId)>();
+			foreach (var id in _playerDataNetworkedIds)
+			{
+				if (!Runner.TryFindBehaviour(id, out PlayerDataNetworked pd)) continue;
+				int pid = (pd.Object.InputAuthority != PlayerRef.None)
+							? pd.Object.InputAuthority.PlayerId
+							: int.MaxValue;
+
+				candidates.Add((id, pd.Score, pd.Lives, pid));
+			}
+			if (candidates.Count == 0) return;
+
+			// Si se prefiere vivos y existe al menos uno vivo, filtrar
+			// if (preferAlive && candidates.Any(c => c.lives > 0))
+			// 	candidates = candidates.Where(c => c.lives > 0).ToList();
+
+			// Orden: mayor score, luego más vidas, luego menor PlayerId (determinista)
+			var best = candidates
+				.OrderByDescending(c => c.score)
+				.ThenByDescending(c => c.lives)
+				.ThenBy(c => c.playerId)
+				.First();
+
+			Winner = best.id;
 		}
 		
 		private void GameHasEnded()
