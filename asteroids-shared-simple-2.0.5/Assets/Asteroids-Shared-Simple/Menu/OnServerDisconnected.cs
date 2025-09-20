@@ -29,10 +29,13 @@ namespace Asteroids.SharedSimple
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            Debug.Log("PLayer Joined");
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
+            Debug.Log("Player Left");
+
         }
 
         public void OnInput(NetworkRunner runner, NetworkInput input)

@@ -2,6 +2,7 @@ using UnityEngine;
 using Fusion;
 using TMPro;
 using UnityEngine.SceneManagement;
+using EmbeddedAPI;
 
 namespace Asteroids.SharedSimple
 {
@@ -20,11 +21,51 @@ namespace Asteroids.SharedSimple
 
         private NetworkRunner _runnerInstance = null;
 
-        // Attempts to start a new game session 
-        public void StartShared()
+        private string _matchId = "";
+
+        //Start
+        public void Start()
         {
+            Debug.Log("Start Application");
+            StartShared();
+        }
+
+
+        // Attempts to start a new game session 
+        public async void StartShared()
+        {
+            string address = WalletManager.WalletAddress;
+            string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
+
+            Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
+
+            string tx = WalletManager.TransactionId;
+
+            if (string.IsNullOrEmpty(tx))
+            {
+                Debug.LogWarning("❌ TransactionId no disponible, usando valor por defecto.");
+                return;
+            }
+            else
+            {
+                Debug.Log($"✅ Usando TransactionId del match: {tx}");
+            }
+
+            string gameName = "Asteroids";
+            string bestRegionCode = "ussc";  
+            string gameMode = "Betting";
+            string betAmount = "1";
+
+            //Log data before registering
+            Debug.Log($"Registering player with wallet: {wallet}, tx: {tx}, game: {gameName}, region: {bestRegionCode}, mode: {gameMode}, betAmount: {betAmount}");
+
+            // Register the player and get a match ID from the backend
+            _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName, bestRegionCode, gameMode, betAmount);
+            Debug.Log($"Match ID received from backend: {_matchId}");
+
+            // string matchId = "AsteroidsRoom";
             SetPlayerData();
-            StartGame(GameMode.Shared, _roomName.text, _gameScenePath);
+            StartGame(GameMode.Shared, _matchId, _gameScenePath);
         }
         
 
