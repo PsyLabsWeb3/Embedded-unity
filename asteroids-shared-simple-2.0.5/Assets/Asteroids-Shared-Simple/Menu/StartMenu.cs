@@ -45,7 +45,7 @@ namespace Asteroids.SharedSimple
             {
                 Debug.Log($"✅ Usando wallet address del jugador: {address}");
             }
-           
+
 
             string tx = WalletManager.TransactionId;
 
@@ -75,7 +75,7 @@ namespace Asteroids.SharedSimple
                 Debug.Log($"✅ Usando GameMode: {gameMode}");
             }
 
-        
+
 
             string betAmount = WalletManager.BetAmount;
 
@@ -95,12 +95,20 @@ namespace Asteroids.SharedSimple
             _matchId = await API.RegisterPlayerAsync(address, tx, gameName, bestRegionCode, gameMode, betAmount);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
-            // string matchId = "AsteroidsRoom";
+            // 🧠 Guardar datos de sesión
+            PlayerSessionData.WalletAddress = address;
+            PlayerSessionData.MatchId = _matchId;
+
+            Debug.Log($"📝 PlayerSessionData: Wallet = {address}, MatchId = {_matchId}");
+
             SetPlayerData();
             StartGame(GameMode.Shared, _matchId, _gameScenePath);
+            
+            // 👉 Notificar que el jugador se ha unido
+		    _ = API.JoinMatchAsync(_matchId, address);
         }
 
-        //Start game in lobyby mode to wait for an opponent
+    
        
 
         private void SetPlayerData()
