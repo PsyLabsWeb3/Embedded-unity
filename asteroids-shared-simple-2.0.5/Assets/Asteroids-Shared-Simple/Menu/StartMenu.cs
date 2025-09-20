@@ -35,9 +35,17 @@ namespace Asteroids.SharedSimple
         public async void StartShared()
         {
             string address = WalletManager.WalletAddress;
-            string wallet = !string.IsNullOrEmpty(address) ? address : "player_wallet_" + System.Guid.NewGuid();
 
-            Debug.Log(string.IsNullOrEmpty(address) ? $"❌ WalletAddress no disponible, generado aleatorio: {wallet}" : $"✅ Usando wallet del jugador: {wallet}");
+            if (string.IsNullOrEmpty(address))
+            {
+                Debug.LogWarning("❌ Wallet address no disponible, usando valor por defecto.");
+                return;
+            }
+            else
+            {
+                Debug.Log($"✅ Usando wallet address del jugador: {address}");
+            }
+           
 
             string tx = WalletManager.TransactionId;
 
@@ -52,33 +60,63 @@ namespace Asteroids.SharedSimple
             }
 
             string gameName = "Asteroids";
-            string bestRegionCode = "ussc";  
-            string gameMode = "Betting";
-            string betAmount = "1";
+            string bestRegionCode = "ussc";
+
+
+            string gameMode = WalletManager.GameMode;
+
+            if (string.IsNullOrEmpty(gameMode))
+            {
+                gameMode = "Casual"; // Default to casual
+                Debug.LogWarning("❌ GameMode no disponible, usando valor por defecto.");
+            }
+            else
+            {
+                Debug.Log($"✅ Usando GameMode: {gameMode}");
+            }
+
+        
+
+            string betAmount = WalletManager.BetAmount;
+
+            if (string.IsNullOrEmpty(betAmount))
+            {
+                betAmount = "0.5"; // Casual value
+            }
+            else
+            {
+                Debug.Log($"✅ Usando BetAmount: {betAmount}");
+            }
 
             //Log data before registering
-            Debug.Log($"Registering player with wallet: {wallet}, tx: {tx}, game: {gameName}, region: {bestRegionCode}, mode: {gameMode}, betAmount: {betAmount}");
+            Debug.Log($"Registering player with wallet: {address}, tx: {tx}, game: {gameName}, region: {bestRegionCode}, mode: {gameMode}, betAmount: {betAmount}");
 
             // Register the player and get a match ID from the backend
-            _matchId = await API.RegisterPlayerAsync(wallet, tx, gameName, bestRegionCode, gameMode, betAmount);
+            _matchId = await API.RegisterPlayerAsync(address, tx, gameName, bestRegionCode, gameMode, betAmount);
             Debug.Log($"Match ID received from backend: {_matchId}");
 
             // string matchId = "AsteroidsRoom";
             SetPlayerData();
             StartGame(GameMode.Shared, _matchId, _gameScenePath);
         }
-        
+
+        //Start game in lobyby mode to wait for an opponent
+       
 
         private void SetPlayerData()
         {
-            if (string.IsNullOrWhiteSpace(_nickName.text))
-            {
-                LocalPlayerData.NickName = _nickNamePlaceholder.text;
-            }
-            else
-            {
-                LocalPlayerData.NickName = _nickName.text;
-            }
+            //Slice wallet address to show only first 4 and last 4 characters
+            string address = WalletManager.WalletAddress;
+            string slicedAddress = address.Length > 8 ? address.Substring(0, 4) + "..." + address.Substring(address.Length - 4) : address;
+            LocalPlayerData.NickName = slicedAddress;
+            // if (string.IsNullOrWhiteSpace(_nickName.text))
+            // {
+            //     LocalPlayerData.NickName = _nickNamePlaceholder.text;
+            // }
+            // else
+            // {
+            //     LocalPlayerData.NickName = _nickName.text;
+            // }
         }
 
         private async void StartGame(GameMode mode, string roomName, string sceneName)
