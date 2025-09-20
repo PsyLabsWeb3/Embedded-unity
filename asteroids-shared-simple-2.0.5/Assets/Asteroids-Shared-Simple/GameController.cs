@@ -7,10 +7,11 @@ using UnityEngine;
 
 namespace Asteroids.SharedSimple
 {
-	public class GameController : NetworkBehaviour ,IPlayerJoined
+	public class GameController : NetworkBehaviour, IPlayerJoined
 	{
 		enum GamePhase
 		{
+			Lobby,
 			Starting,
 			Running,
 			Ending
@@ -19,7 +20,7 @@ namespace Asteroids.SharedSimple
 		[SerializeField] private float _startDelay = 4.0f;
 		[SerializeField] private float _endDelay = 4.0f;
 		[SerializeField] private float _gameSessionLength = 180.0f;
-		
+
 		[SerializeField] private TextMeshProUGUI _startEndDisplay;
 		[SerializeField] private TextMeshProUGUI _ingameTimerDisplay;
 		[SerializeField] private PlayerOverviewPanel _playerOverview;
@@ -27,7 +28,7 @@ namespace Asteroids.SharedSimple
 		[Networked] private TickTimer Timer { get; set; }
 		[Networked] private GamePhase Phase { get; set; }
 		[Networked] private NetworkBehaviourId Winner { get; set; }
-		
+
 		[Networked] public float ScreenBoundaryX { get; set; }
 		[Networked] public float ScreenBoundaryY { get; set; }
 
@@ -36,10 +37,12 @@ namespace Asteroids.SharedSimple
 		private SpawnPoint[] _spawnPoints;
 
 		private TickTimer _dontCheckforWinTimer;
-		
+
 		private List<NetworkBehaviourId> _playerDataNetworkedIds = new List<NetworkBehaviourId>();
-		
+
 		private static GameController _singleton;
+
+		private const int MIN_PLAYERS_TO_START = 2;
 
 		public static GameController Singleton
 		{
@@ -84,20 +87,29 @@ namespace Asteroids.SharedSimple
 			ScreenBoundaryY = Camera.main.orthographicSize;
 
 			Debug.Log($"ScreenBounds: {ScreenBoundaryX},{ScreenBoundaryY}");
-			
+
 			if (Object.HasStateAuthority)
 			{
 				// Initialize the game state on the master client
-				Phase = GamePhase.Starting;
-				Timer = TickTimer.CreateFromSeconds(Runner, _startDelay);
+				// Phase = GamePhase.Starting;
+				// Timer = TickTimer.CreateFromSeconds(Runner, _startDelay);
+
+				// Start in Lobby phase, waiting for players
+				Phase = GamePhase.Lobby;
+				Timer = TickTimer.None;
 			}
 		}
-		
+
+
 		public override void Render()
 		{
 			// Update the game display with the information relevant to the current game phase
 			switch (Phase)
 			{
+				case GamePhase.Lobby:
+					UpdateLobbyDisplay();
+					if (HasStateAuthority) TryStartCountdownIfReady();
+					break;
 				case GamePhase.Starting:
 					UpdateStartingDisplay();
 					break;
@@ -116,23 +128,48 @@ namespace Asteroids.SharedSimple
 			}
 		}
 
+		// ====== LOBBY ======
+		private void UpdateLobbyDisplay()
+		{
+			_startEndDisplay.gameObject.SetActive(true);
+			_ingameTimerDisplay.gameObject.SetActive(false);
+
+			int count = Runner.ActivePlayers.Count();
+			_startEndDisplay.text = (count >= MIN_PLAYERS_TO_START)
+				? "Opponent found! Starting..."
+				: $"Waiting for opponent... ({count}/{MIN_PLAYERS_TO_START})";
+		}
+
+		private void TryStartCountdownIfReady()
+		{
+			if (Phase != GamePhase.Lobby) return;
+
+			int count = Runner.ActivePlayers.Count();
+			if (count >= MIN_PLAYERS_TO_START)
+			{
+				Phase = GamePhase.Starting;
+				Timer = TickTimer.CreateFromSeconds(Runner, _startDelay);
+				_dontCheckforWinTimer = TickTimer.CreateFromSeconds(Runner, 5);
+			}
+		}
+
 		private void UpdateStartingDisplay()
 		{
 			// --- All clients
 			// Display the remaining time until the game starts in seconds (rounded down to the closest full second)
 			_startEndDisplay.text = $"Game Starts In {Mathf.RoundToInt(Timer.RemainingTime(Runner) ?? 0)}";
 
-			if (!Object.HasStateAuthority) 
+			if (!Object.HasStateAuthority)
 				return;
 
-			if (!Timer.Expired(Runner)) 
+			if (!Timer.Expired(Runner))
 				return;
 
 			// --- Master client
 			// Starts the Spaceship and Asteroids spawners once the game start delay has expired
 			FindObjectOfType<SpaceshipSpawner>().StartSpaceshipSpawner(this);
 			FindObjectOfType<AsteroidSpawner>().StartAsteroidSpawner();
-			
+
 			// Switches to the Running GameState and sets the time to the length of a game session
 			Phase = GamePhase.Running;
 			Timer = TickTimer.CreateFromSeconds(Runner, _gameSessionLength);
@@ -145,7 +182,7 @@ namespace Asteroids.SharedSimple
 			// Display the remaining time until the game ends in seconds (rounded down to the closest full second)
 			_startEndDisplay.gameObject.SetActive(false);
 			_ingameTimerDisplay.gameObject.SetActive(true);
-			_ingameTimerDisplay.text = $"{Mathf.RoundToInt(Timer.RemainingTime(Runner) ?? 0).ToString("000")} seconds left... Player RTT: {(int)(1000*Runner.GetPlayerRtt(Runner.LocalPlayer))}ms";
+			_ingameTimerDisplay.text = $"{Mathf.RoundToInt(Timer.RemainingTime(Runner) ?? 0).ToString("000")} seconds left... Player RTT: {(int)(1000 * Runner.GetPlayerRtt(Runner.LocalPlayer))}ms";
 		}
 
 		private void UpdateEndingDisplay()
@@ -153,7 +190,7 @@ namespace Asteroids.SharedSimple
 			// --- All clients
 			// Display the results and
 			// the remaining time until the current game session is shutdown
-			
+
 			if (Runner.TryFindBehaviour(Winner, out PlayerDataNetworked playerData) == false) return;
 
 			_startEndDisplay.gameObject.SetActive(true);
@@ -169,7 +206,7 @@ namespace Asteroids.SharedSimple
 		public void CheckIfGameHasEnded()
 		{
 			// --- Master client
-			
+
 			if (Timer.ExpiredOrNotRunning(Runner))
 			{
 				// ⏳ Tiempo agotado: elegir ganador por SCORE (preferentemente entre vivos)
@@ -183,14 +220,14 @@ namespace Asteroids.SharedSimple
 			{
 				return;
 			}
-			
+
 
 			int playersAlive = 0;
-			
+
 			for (int i = 0; i < _playerDataNetworkedIds.Count; i++)
 			{
 				if (Runner.TryFindBehaviour(_playerDataNetworkedIds[i],
-					    out PlayerDataNetworked playerDataNetworkedComponent) == false)
+						out PlayerDataNetworked playerDataNetworkedComponent) == false)
 				{
 					_playerDataNetworkedIds.RemoveAt(i);
 					i--;
@@ -199,8 +236,8 @@ namespace Asteroids.SharedSimple
 
 				if (playerDataNetworkedComponent.Lives > 0) playersAlive++;
 			}
-			
-			
+
+
 			// If more than 1 player is left alive, the game continues.
 			// If only 1 player is left, the game ends immediately.
 			if (playersAlive > 1 || (Runner.ActivePlayers.Count() == 1 && playersAlive == 1)) return;
@@ -208,8 +245,8 @@ namespace Asteroids.SharedSimple
 			foreach (var playerDataNetworkedId in _playerDataNetworkedIds)
 			{
 				if (Runner.TryFindBehaviour(playerDataNetworkedId,
-					    out PlayerDataNetworked playerDataNetworkedComponent) ==
-				    false) continue;
+						out PlayerDataNetworked playerDataNetworkedComponent) ==
+					false) continue;
 
 				if (playerDataNetworkedComponent.Lives > 0 == false) continue;
 
@@ -257,7 +294,7 @@ namespace Asteroids.SharedSimple
 
 			Winner = best.id;
 		}
-		
+
 		private void GameHasEnded()
 		{
 			Timer = TickTimer.CreateFromSeconds(Runner, _endDelay);
