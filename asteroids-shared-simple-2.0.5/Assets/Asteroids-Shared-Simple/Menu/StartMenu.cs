@@ -28,6 +28,7 @@ namespace Asteroids.SharedSimple
         {
             Debug.Log("Start Application");
             StartShared();
+
         }
 
 
@@ -103,13 +104,14 @@ namespace Asteroids.SharedSimple
 
             SetPlayerData();
             StartGame(GameMode.Shared, _matchId, _gameScenePath);
-            
+
             // 👉 Notificar que el jugador se ha unido
-		    _ = API.JoinMatchAsync(_matchId, address);
+            _ = API.JoinMatchAsync(_matchId, address);
+
         }
 
-    
-       
+
+
 
         private void SetPlayerData()
         {
@@ -154,6 +156,10 @@ namespace Asteroids.SharedSimple
             {
                 _runnerInstance.LoadScene(sceneName);
             }
+
+            Debug.Log($"Connected: {_runnerInstance.IsConnectedToServer}, " +
+              $"Session: {_runnerInstance.SessionInfo?.Name}, " +
+              $"Players: {_runnerInstance.SessionInfo?.PlayerCount}");
         }
     }
 }

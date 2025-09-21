@@ -24,6 +24,8 @@ namespace Asteroids.SharedSimple
 		[SerializeField] private TextMeshProUGUI _startEndDisplay;
 		[SerializeField] private TextMeshProUGUI _ingameTimerDisplay;
 		[SerializeField] private PlayerOverviewPanel _playerOverview;
+		[SerializeField] private GameObject endGamePanel;
+
 
 		[Networked] private TickTimer Timer { get; set; }
 		[Networked] private GamePhase Phase { get; set; }
@@ -181,6 +183,7 @@ namespace Asteroids.SharedSimple
 			// --- All clients
 			// Display the remaining time until the game ends in seconds (rounded down to the closest full second)
 			_startEndDisplay.gameObject.SetActive(false);
+			endGamePanel.SetActive(false);
 			_ingameTimerDisplay.gameObject.SetActive(true);
 			_ingameTimerDisplay.text = $"{Mathf.RoundToInt(Timer.RemainingTime(Runner) ?? 0).ToString("000")} seconds left... Player RTT: {(int)(1000 * Runner.GetPlayerRtt(Runner.LocalPlayer))}ms";
 		}
@@ -197,6 +200,7 @@ namespace Asteroids.SharedSimple
 			_ingameTimerDisplay.gameObject.SetActive(false);
 			_startEndDisplay.text = $"{playerData.NickName} won with {playerData.Score} points. Disconnecting in {Mathf.RoundToInt(Timer.RemainingTime(Runner) ?? 0)}";
 			_startEndDisplay.color = SpaceshipController.GetColor(playerData.Object.InputAuthority.PlayerId);
+			endGamePanel.SetActive(true);
 
 			// Shutdowns the current game session.
 			// if (Timer.Expired(Runner))
