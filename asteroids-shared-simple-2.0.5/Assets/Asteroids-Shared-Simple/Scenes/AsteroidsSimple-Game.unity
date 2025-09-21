@@ -880,6 +880,7 @@ MonoBehaviour:
   _startEndDisplay: {fileID: 6937138910423062703}
   _ingameTimerDisplay: {fileID: 8784352188582455544}
   _playerOverview: {fileID: 2939730403858339431}
+  endGamePanel: {fileID: 382992654}
   _ScreenBoundaryX: 0
   _ScreenBoundaryY: 0
 --- !u!114 &909896850
