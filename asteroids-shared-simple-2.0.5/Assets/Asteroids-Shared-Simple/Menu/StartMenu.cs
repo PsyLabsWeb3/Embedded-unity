@@ -2,6 +2,7 @@ using UnityEngine;
 using Fusion;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Fusion.Photon.Realtime;
 using EmbeddedAPI;
 
 namespace Asteroids.SharedSimple
@@ -22,6 +23,18 @@ namespace Asteroids.SharedSimple
         private NetworkRunner _runnerInstance = null;
 
         private string _matchId = null;
+
+        //      private AppSettings CopyAppSettings(AppSettings src) {
+        //     return new AppSettings {
+        //         AppIdFusion    = src.AppIdFusion,
+        //         AppIdRealtime  = src.AppIdRealtime,
+        //         AppVersion     = src.AppVersion,
+        //         UseNameServer  = src.UseNameServer,
+        //         FixedRegion    = src.FixedRegion,
+        //         Protocol       = src.Protocol,
+        //         NetworkLogging = src.NetworkLogging
+        //     };
+        // }
 
         //Start
         public void Start()
@@ -63,6 +76,19 @@ namespace Asteroids.SharedSimple
             string gameName = "Asteroids";
             string bestRegionCode = "ussc";
 
+            // Cargar el asset global
+            var pa = Resources.Load<PhotonAppSettings>("PhotonAppSettings");
+            if (pa == null)
+            {
+                Debug.LogError("PhotonAppSettings.asset no encontrado en Resources.");
+            }
+            else
+            {
+                // Forzar uso de NameServer y fijar región elegida por ping
+                pa.AppSettings.UseNameServer = true;
+                pa.AppSettings.FixedRegion = bestRegionCode; // puede ser null => Best Region
+            }
+
 
             string gameMode = WalletManager.GameMode;
 
@@ -90,8 +116,8 @@ namespace Asteroids.SharedSimple
             }
 
             // ✅ Obtener mejor región con NetworkRunner temporal (evita error scheduler==null en WebGL)
-			// string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
-			// Debug.Log($"🌍 Región seleccionada: {regionCode}");
+            // string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
+            // Debug.Log($"🌍 Región seleccionada: {regionCode}");
 
             //Log data before registering
             Debug.Log($"Registering player with wallet: {address}, tx: {tx}, game: {gameName}, region: {bestRegionCode}, mode: {gameMode}, betAmount: {betAmount}");
@@ -111,6 +137,10 @@ namespace Asteroids.SharedSimple
 
             // 👉 Notificar que el jugador se ha unido
             _ = API.JoinMatchAsync(_matchId, address);
+
+                // Obtener la región efectiva desde el runner
+            var si = _runnerInstance.SessionInfo;
+            Debug.Log($"✅ Región efectiva: {(si != null ? si.Region : "unknown")}");
 
         }
 
