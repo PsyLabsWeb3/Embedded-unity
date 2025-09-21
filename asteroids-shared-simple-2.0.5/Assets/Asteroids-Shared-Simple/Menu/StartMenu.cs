@@ -21,7 +21,7 @@ namespace Asteroids.SharedSimple
 
         private NetworkRunner _runnerInstance = null;
 
-        private string _matchId = "";
+        private string _matchId = null;
 
         //Start
         public void Start()
@@ -88,6 +88,10 @@ namespace Asteroids.SharedSimple
             {
                 Debug.Log($"✅ Usando BetAmount: {betAmount}");
             }
+
+            // ✅ Obtener mejor región con NetworkRunner temporal (evita error scheduler==null en WebGL)
+			// string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
+			// Debug.Log($"🌍 Región seleccionada: {regionCode}");
 
             //Log data before registering
             Debug.Log($"Registering player with wallet: {address}, tx: {tx}, game: {gameName}, region: {bestRegionCode}, mode: {gameMode}, betAmount: {betAmount}");
