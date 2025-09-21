@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Asteroids-Shared-Simple/Scenes/AsteroidsSimple-Game.unity
     guid: ba2d6bee897e95247b9dfc3a5b8680a6
+  - enabled: 1
+    path: Assets/Asteroids-Shared-Simple/Scenes/Disconnection.unity
+    guid: c6d35a877c70c40b5b79a1d3df5f5742
   m_configObjects: {}

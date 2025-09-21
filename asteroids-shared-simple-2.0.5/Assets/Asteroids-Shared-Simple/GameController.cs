@@ -329,6 +329,7 @@ namespace Asteroids.SharedSimple
 		public void PlayerJoined(PlayerRef player)
 		{
 			_dontCheckforWinTimer = TickTimer.CreateFromSeconds(Runner, 5);
+
 		}
 	}
 }

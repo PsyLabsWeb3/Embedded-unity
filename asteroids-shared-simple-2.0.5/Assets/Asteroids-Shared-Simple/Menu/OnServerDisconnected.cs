@@ -15,8 +15,10 @@ namespace Asteroids.SharedSimple
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
-            // When the local NetworkRunner has shut down, the menu scene is loaded.
-            SceneManager.LoadScene(_menuSceneName);
+             Debug.Log($"Runner shutdown. Reason={shutdownReason}");
+
+                // 👉 Aquí cargas tu nueva escena de desconexión
+                SceneManager.LoadScene("Disconnection");
         }
 
         public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
@@ -29,12 +31,32 @@ namespace Asteroids.SharedSimple
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            Debug.Log("PLayer Joined");
+            Debug.Log("Player Joined");
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             Debug.Log("Player Left");
+
+            //If Match not reported report it 
+            if (PlayerSessionData.MatchReported == false)
+            {
+                string matchId = PlayerSessionData.MatchId;
+				string wallet = PlayerSessionData.WalletAddress;
+
+                if (string.IsNullOrEmpty(wallet) || string.IsNullOrEmpty(matchId))
+                {
+                    Debug.LogWarning("❌ Wallet address or MatchId no disponible, no se puede reportar el abandono del match.");
+                    return;
+                }
+                else
+                {
+                    Debug.Log($"🏆 Local player is the WINNER. Reporting match. MatchId: {matchId}, Wallet: {wallet}");
+					_ = EmbeddedAPI.API.ReportMatchResultAsync(matchId, wallet);
+                    PlayerSessionData.MatchReported = true;
+                }
+
+            }
 
         }
 

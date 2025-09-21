@@ -11,7 +11,7 @@ namespace Asteroids.SharedSimple
     {
         // Game Session AGNOSTIC Settings
         [SerializeField] private float _respawnDelay = 2.0f;
-        [SerializeField] private float _spaceshipDamageRadius = 3.0f;
+        [SerializeField] private float _spaceshipDamageRadius = 5.0f;
         [SerializeField] private float _rotationSpeed = 12.0f;
         [SerializeField] private float _acceleration = 5000.0f;
         [SerializeField] private float _maxSpeed = 1000.0f;
