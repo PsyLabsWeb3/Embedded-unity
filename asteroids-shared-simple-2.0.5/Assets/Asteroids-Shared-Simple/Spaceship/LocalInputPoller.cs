@@ -7,12 +7,20 @@ using UnityEngine;
 
 namespace Asteroids.SharedSimple
 {
+    public enum InputMode
+		{
+			MOUSE_KEYBOARD,
+			MOBILE
+		}
+        
     public class LocalInputPoller : MonoBehaviour, INetworkRunnerCallbacks
     {
         private const string AXIS_HORIZONTAL = "Horizontal";
         private const string AXIS_VERTICAL = "Vertical";
         private const string BUTTON_FIRE1 = "Fire1";
         private const string BUTTON_JUMP = "Jump"; // Can be used as an alternative fire button to shoot with SPACE
+
+         public static InputMode CurrentInputMode = InputMode.MOUSE_KEYBOARD;
 
         // The INetworkRunnerCallbacks of this LocalInputPoller are automatically detected
         // because the script is located on the same object as the NetworkRunner and
