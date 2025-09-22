@@ -218,6 +218,7 @@ namespace Asteroids.SharedSimple
 				{
 					Debug.Log($"🏆 Local player is the WINNER. Reporting match. MatchId: {matchId}, Wallet: {wallet}");
 					_ = EmbeddedAPI.API.ReportMatchResultAsync(matchId, wallet);
+						JsBridge.NotifyGameOver("Normal", matchId );
 					PlayerSessionData.MatchReported = true;
 				}
 				else
