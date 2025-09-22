@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Fusion.Photon.Realtime;
 using EmbeddedAPI;
+using System.Threading.Tasks;
 
 namespace Asteroids.SharedSimple
 {
@@ -133,7 +134,7 @@ namespace Asteroids.SharedSimple
             Debug.Log($"📝 PlayerSessionData: Wallet = {address}, MatchId = {_matchId}");
 
             SetPlayerData();
-            StartGame(GameMode.Shared, _matchId, _gameScenePath);
+            await StartGame(GameMode.Shared, _matchId, _gameScenePath);
 
             // 👉 Notificar que el jugador se ha unido
             _ = API.JoinMatchAsync(_matchId, address);
@@ -163,7 +164,7 @@ namespace Asteroids.SharedSimple
             // }
         }
 
-        private async void StartGame(GameMode mode, string roomName, string sceneName)
+        private async Task StartGame(GameMode mode, string roomName, string sceneName)
         {
             _runnerInstance = FindObjectOfType<NetworkRunner>();
             if (_runnerInstance == null)
