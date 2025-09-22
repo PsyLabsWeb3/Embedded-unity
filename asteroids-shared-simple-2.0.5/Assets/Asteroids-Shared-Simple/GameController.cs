@@ -202,6 +202,10 @@ namespace Asteroids.SharedSimple
 			_startEndDisplay.color = SpaceshipController.GetColor(playerData.Object.InputAuthority.PlayerId);
 			endGamePanel.SetActive(true);
 
+			string matchId = PlayerSessionData.MatchId;
+			JsBridge.NotifyGameOver("Normal", matchId);
+
+
 			// Shutdowns the current game session.
 			// if (Timer.Expired(Runner))
 			// Runner.Shutdown();
@@ -211,21 +215,22 @@ namespace Asteroids.SharedSimple
 
 			if (playerData.Object.HasInputAuthority && !PlayerSessionData.MatchReported)
 			{
-				string matchId = PlayerSessionData.MatchId;
+
 				string wallet = PlayerSessionData.WalletAddress;
 
 				if (!string.IsNullOrEmpty(matchId) && !string.IsNullOrEmpty(wallet))
 				{
 					Debug.Log($"🏆 Local player is the WINNER. Reporting match. MatchId: {matchId}, Wallet: {wallet}");
 					_ = EmbeddedAPI.API.ReportMatchResultAsync(matchId, wallet);
-						JsBridge.NotifyGameOver("Normal", matchId );
-					PlayerSessionData.MatchReported = true;
+
 				}
 				else
 				{
 					Debug.LogWarning("[ReportWinner] Missing matchId or wallet data.");
 				}
+
 			}
+			PlayerSessionData.MatchReported = true;
 		}
 
 		public void CheckIfGameHasEnded()
