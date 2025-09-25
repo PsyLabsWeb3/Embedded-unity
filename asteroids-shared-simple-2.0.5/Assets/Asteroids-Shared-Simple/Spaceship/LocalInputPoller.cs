@@ -44,9 +44,9 @@ namespace Asteroids.SharedSimple
             if (!mobileInput)
                 mobileInput = FindFirstObjectByType<MobileInput>(FindObjectsInactive.Include);
 
-            Debug.Log($"[Poller] MobileInput: {mobileInput?.name} " +
-            $"active={mobileInput?.gameObject.activeInHierarchy} " +
-            $"left={mobileInput?.GetLeftName()} right={mobileInput?.GetRightName()}");
+            // Debug.Log($"[Poller] MobileInput: {mobileInput?.name} " +
+            // $"active={mobileInput?.gameObject.activeInHierarchy} " +
+            // $"left={mobileInput?.GetLeftName()} right={mobileInput?.GetRightName()}");
 
         }
 
@@ -74,7 +74,7 @@ namespace Asteroids.SharedSimple
                 var lj = mobileInput ? mobileInput.GetType().GetField("leftJoystick", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(mobileInput) as JoystickHandler : null;
                 Vector2 rawLeft = lj ? lj.Input : Vector2.zero;
 
-                Debug.Log($"[Poller] mobileInput={mobileInput?.name}#{mobileInput?.GetInstanceID()} left={left} (rawLeft={rawLeft}) right={right}");
+                // Debug.Log($"[Poller] mobileInput={mobileInput?.name}#{mobileInput?.GetInstanceID()} left={left} (rawLeft={rawLeft}) right={right}");
 
                 // Joystick izquierdo: X=rotar, Y=thrust
                 _h = Mathf.Clamp(left.x, -1f, 1f);

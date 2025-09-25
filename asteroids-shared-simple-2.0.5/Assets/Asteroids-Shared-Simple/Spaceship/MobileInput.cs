@@ -33,7 +33,7 @@ public class MobileInput : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"[MobileInput:{name}#{GetInstanceID()}] move={MoveInput} aim={AimInput} left={GetLeftName()} right={GetRightName()} active={gameObject.activeInHierarchy}");
+        // Debug.Log($"[MobileInput:{name}#{GetInstanceID()}] move={MoveInput} aim={AimInput} left={GetLeftName()} right={GetRightName()} active={gameObject.activeInHierarchy}");
         // Si NO hay botón, considera “held” si mueves el joystick derecho
         if (!fireButton)
         {
