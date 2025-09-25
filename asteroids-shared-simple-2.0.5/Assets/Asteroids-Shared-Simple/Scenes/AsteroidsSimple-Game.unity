@@ -1322,7 +1322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 666930623}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Room Limit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1360,7 +1360,7 @@ GameObject:
   - component: {fileID: 805225469}
   - component: {fileID: 805225468}
   - component: {fileID: 805225467}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pared Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1375,7 +1375,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805225465}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: -59}
+  m_LocalPosition: {x: 0, y: 0, z: 26.6}
   m_LocalScale: {x: 1, y: 186.70383, z: 467.19574}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1797,7 +1797,7 @@ GameObject:
   - component: {fileID: 1195948688}
   - component: {fileID: 1195948687}
   - component: {fileID: 1195948686}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pared Der
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1812,7 +1812,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195948684}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 205.9, y: 0, z: 112}
+  m_LocalPosition: {x: 151.7, y: 0, z: 112}
   m_LocalScale: {x: 1, y: 186.70383, z: 376.54742}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2460,7 +2460,7 @@ GameObject:
   - component: {fileID: 1682334378}
   - component: {fileID: 1682334377}
   - component: {fileID: 1682334376}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pared Izq
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2475,7 +2475,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682334374}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -166.3, y: 0, z: 112}
+  m_LocalPosition: {x: -89.1, y: 0, z: 112}
   m_LocalScale: {x: 1, y: 186.70383, z: 394.09564}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2557,7 +2557,7 @@ GameObject:
   - component: {fileID: 1815861022}
   - component: {fileID: 1815861021}
   - component: {fileID: 1815861020}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pared Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2572,7 +2572,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815861018}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 243}
+  m_LocalPosition: {x: -0, y: 0, z: 164.3}
   m_LocalScale: {x: 1, y: 186.70383, z: 454.33005}
   m_ConstrainProportionsScale: 0
   m_Children: []
