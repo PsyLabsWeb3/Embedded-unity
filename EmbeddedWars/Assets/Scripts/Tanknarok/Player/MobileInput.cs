@@ -16,7 +16,7 @@ public class MobileInput : MonoBehaviour
     private void Update()
     {
         // Solo para debug
-        Debug.Log($"📲 MOBILE INPUT: moveDelta={MoveInput}, aimDelta={AimInput}");
+        // Debug.Log($"📲 MOBILE INPUT: moveDelta={MoveInput}, aimDelta={AimInput}");
     }
 }
 
