@@ -76,7 +76,7 @@ namespace EmbeddedAPI
             request.downloadHandler = new DownloadHandlerBuffer();
         }
 
-        public static async Task<string> RegisterPlayerAsync(string walletAddress, string txSignature, string game,
+        public static async Task<RegisterResponse> RegisterPlayerAsync(string walletAddress, string txSignature, string game,
                                                              string region, string mode, string betAmount)
         {
             Debug.Log($"BETAMOUNT recibido API: {betAmount}, type {betAmount.GetType()}");
@@ -112,7 +112,7 @@ namespace EmbeddedAPI
                 throw new InvalidOperationException("Failed to register player and retrieve match ID.");
             }
 
-            return responseData.matchId;
+            return responseData;
         }
 
         public static async Task<string> JoinMatchAsync(string matchId, string walletAddress)

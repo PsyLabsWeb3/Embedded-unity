@@ -45,6 +45,10 @@ namespace FusionExamples.Tanknarok
 
 		public GameObject DisconnectPrompt => _disconnectPrompt;
 
+		// ✅ Flags anti-loop
+		private bool _defaultWinReported = false;
+		private bool _isReportingDefaultWin = false;
+
 		private void Start()
 		{
 			_disconnectPrompt.SetActive(false);
@@ -200,9 +204,58 @@ namespace FusionExamples.Tanknarok
 			}
 			else
 			{
+							// ✅ Solo dispara si hay 1 jugador y es el Player #2
+				if (playerCount == 1 && PlayerSessionData.PlayerNumber == "2")
+				{
+					TryReportDefaultWinOnce();
+				}
+
 				// Menos de 2 jugadores -> reset
 				if (_countdownActive)
 					StopAndResetCountdown();
+			}
+		}
+
+		//Helpers para reporte de Default Win
+		private async void TryReportDefaultWinOnce()
+		{
+			if (_defaultWinReported || _isReportingDefaultWin)
+				return;
+
+			// Solo Player #2 hace el reporte
+			if (PlayerSessionData.PlayerNumber == "2")
+			{
+
+
+
+				string matchId = PlayerSessionData.MatchId;
+				string wallet = PlayerSessionData.WalletAddress;
+				if (string.IsNullOrEmpty(matchId) || string.IsNullOrEmpty(wallet))
+				{
+					Debug.LogWarning("[ReadyUpManager] DefaultWin: MatchId/Wallet vacío(s).");
+					return;
+				}
+
+				try
+				{
+					_isReportingDefaultWin = true; // bloquea reentradas inmediatas
+
+					Debug.Log($"[ReadyUpManager] DefaultWin → ReportMatchResultAsync(matchId={matchId}, wallet={wallet})");
+					await API.ReportMatchResultAsync(matchId, wallet);
+
+					_defaultWinReported = true;     // marcado como realizado
+					Debug.Log("[ReadyUpManager] ReportMatchResultAsync OK");
+					JsBridge.NotifyGameOver("Default Win", matchId);
+
+
+
+				}
+				catch (Exception ex)
+				{
+					Debug.LogError($"[ReadyUpManager] DefaultWin error: {ex.Message}");
+					// Permite reintento si lo deseas:
+					// _isReportingDefaultWin = false;
+				}
 			}
 		}
 

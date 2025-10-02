@@ -195,12 +195,6 @@ namespace FusionExamples.Tanknarok
 				// cuando termine la partida:
 				JsBridge.NotifyGameOver("normal", matchId );
 
-				// string winnerWallet = "";
-				// if (gameManager.playerWalletMap.TryGet(winnerRef, out var wallet))
-				// {
-				// 	winnerWallet = wallet.ToString();
-				// 	string matchId = PlayerSessionData.MatchId;
-				// 	Debug.Log($"🏆🏆Reporting match from IF LevelManager result. MatchId: {matchId}, Wallet: {winnerWallet}");
 				// 	API.ReportMatchResultAsync(matchId, winnerWallet);
 				// }
 			}
