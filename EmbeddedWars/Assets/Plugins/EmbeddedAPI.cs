@@ -27,6 +27,7 @@ namespace EmbeddedAPI
         public class RegisterResponse
         {
             public string matchId;
+             public string playerNumber;
         }
 
         [Serializable]

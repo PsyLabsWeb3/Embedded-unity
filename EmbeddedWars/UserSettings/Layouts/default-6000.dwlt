@@ -69,8 +69,8 @@ MonoBehaviour:
     y: 0
     width: 570
     height: 886
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 76}
+  m_MaxSize: {x: 4001, y: 4026}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -272,14 +272,14 @@ MonoBehaviour:
     y: 0
     width: 1059
     height: 403
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 17}
+  m_MinSize: {x: 202, y: 226}
+  m_MaxSize: {x: 4002, y: 4026}
+  m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
   - {fileID: 17}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -487,7 +487,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 492
+    y: 427
     width: 1349
     height: 457
   m_SerializedDataModeController:
@@ -512,7 +512,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/TextMesh Pro/Resources/Fonts & Materials/fonts
+    - Assets/Photon/Fusion/Editor/EditorResources/Fonts
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -522,16 +522,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 80
   m_LastFolders:
-  - Assets/TextMesh Pro/Resources/Fonts & Materials/fonts
+  - Assets/Photon/Fusion/Editor/EditorResources/Fonts
   m_LastFoldersGridSize: 80
   m_LastProjectPath: /Volumes/Satechi SSD/embedded-unity/Embedded-unity/EmbeddedWars
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 47}
-    m_SelectedIDs: 1aa60000
-    m_LastClickedID: 42522
-    m_ExpandedIDs: 000000006e9e0000ea9e0000f09e00002aa4000018a6000000ca9a3b
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 689d0000
+    m_LastClickedID: 40296
+    m_ExpandedIDs: 00000000e29c0000e49c0000e69c0000e89c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -560,7 +560,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000006e9e0000
+    m_ExpandedIDs: 00000000e29c0000e49c0000e69c0000e89c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -588,7 +588,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c62300006cc700000000000036a8000086860000707500002a8100009a6d00005a7100000e70000010700000127000002c6f00005c70000080700000847000008670000082700000586d00008a2f0000cc6f000060a90000b0710000ca700000ce7a000072760000c88e0000647600006e760000e66f0000367200000eab00005cab0000aaab0000166f000046ac0000f8ab000070760000e875000072e60000d6770000fe7c00000a78000036780000267d00002a7d00002e7d0000007d0000647d0000826d0000be5f00000860000050a30000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -639,8 +639,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1350
-    y: 89
+    x: 1351
+    y: 24
     width: 569
     height: 860
   m_SerializedDataModeController:
@@ -689,7 +689,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 89
+    y: 24
     width: 290
     height: 377
   m_SerializedDataModeController:
@@ -708,7 +708,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: a8aeffffc0aeffffdab3ffffceb6ffffe0b6ffff8ab7ffffd6faffff409a0000a29b0000b69c0000
+      m_ExpandedIDs: f0faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -754,8 +754,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 291
-    y: 89
+    x: 292
+    y: 24
     width: 1057
     height: 377
   m_SerializedDataModeController:
@@ -1242,9 +1242,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 504.76263, y: 260.58902, z: 97.99797}
+    m_Target: {x: 508.35345, y: 207.28262, z: 148.48024}
     speed: 2
-    m_Value: {x: 504.76263, y: 260.58902, z: 97.99797}
+    m_Value: {x: 508.35345, y: 207.28262, z: 148.48024}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1290,13 +1290,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.06416962, y: -0.008462588, z: 0.00032499805, w: -0.99801487}
+    m_Target: {x: -0.01680352, y: 0.0050895573, z: 0.0007495984, w: -0.9999583}
     speed: 2
-    m_Value: {x: 0.06416246, y: -0.008461644, z: 0.0003249618, w: -0.9979035}
+    m_Value: {x: -0.01680352, y: 0.0050895573, z: 0.0007495984, w: -0.9999583}
   m_Size:
-    m_Target: 406.30438
+    m_Target: 272.8571
     speed: 2
-    m_Value: 406.30438
+    m_Value: 272.8571
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1372,7 +1372,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 633, y: 356}
+  m_TargetSize: {x: 1057, y: 356}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1381,14 +1381,14 @@ MonoBehaviour:
   m_VSyncEnabled: 0
   m_Gizmos: 0
   m_Stats: 0
-  m_SelectedSizes: 01000000000000000000000000000000000000000000000000000000000000000000000000000000
+  m_SelectedSizes: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
   m_ZoomArea:
     m_HRangeLocked: 0
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -316.5
-    m_HBaseRangeMax: 316.5
+    m_HBaseRangeMin: -528.5
+    m_HBaseRangeMax: 528.5
     m_VBaseRangeMin: -178
     m_VBaseRangeMax: 178
     m_HAllowExceedBaseRangeMin: 1

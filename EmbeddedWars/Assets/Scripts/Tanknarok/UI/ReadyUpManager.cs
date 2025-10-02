@@ -24,8 +24,15 @@ namespace FusionExamples.Tanknarok
 		// ⏱️ UI opcional para mostrar el tiempo restante
 		[SerializeField] private Text _timerText; // Asigna un Text (UGUI). Opcional.
 
-		[SerializeField] private Button _abortButton;       
+		[SerializeField] private Button _abortButton;
 		private bool _abortInProgress = false;
+
+		// Modal de confirmación (overlay en Canvas)
+		[SerializeField] private GameObject _abortModal;                  // Panel raíz del modal (fondo oscuro + tarjeta)
+		[SerializeField] private TextMeshProUGUI _abortModalTitle;
+		[SerializeField] private TextMeshProUGUI _abortModalBody;
+		[SerializeField] private Button _abortModalConfirm;
+		[SerializeField] private Button _abortModalCancel;
 
 
 		private Dictionary<PlayerRef, ReadyupIndicator> _readyUIs = new Dictionary<PlayerRef, ReadyupIndicator>();
@@ -46,8 +53,23 @@ namespace FusionExamples.Tanknarok
 			if (_abortButton)
 			{
 				_abortButton.onClick.RemoveAllListeners();
-				_abortButton.onClick.AddListener(OnAbortClicked);
+				_abortButton.onClick.AddListener(OnAbortClicked_OpenModal);
 				_abortButton.gameObject.SetActive(false);
+			}
+
+			if (_abortModal)
+			{
+				_abortModal.SetActive(false);
+				if (_abortModalConfirm)
+				{
+					_abortModalConfirm.onClick.RemoveAllListeners();
+					_abortModalConfirm.onClick.AddListener(OnAbortClicked);
+				}
+				if (_abortModalCancel)
+				{
+					_abortModalCancel.onClick.RemoveAllListeners();
+					_abortModalCancel.onClick.AddListener(HideAbortModal);
+				}
 			}
 
 		}
@@ -238,7 +260,39 @@ namespace FusionExamples.Tanknarok
 			_timerText.text = Mathf.CeilToInt(_countdownRemaining).ToString();
 		}
 
-		// ===== Botón de ABORTAR partida (solo en LOBBY con 1 jugador) =====
+		// ===== Botón y modal de ABORTAR partida (solo en LOBBY con 1 jugador) =====
+
+		private void ShowAbortModal()
+		{
+			if (_abortModalTitle) _abortModalTitle.text = "¿Abortar partida?";
+			if (_abortModalBody) _abortModalBody.text = "Se cancelará la sala si solo hay 1 jugador conectado. Esta acción no se puede deshacer.";
+			if (_abortModal) _abortModal.SetActive(true);
+
+			// Opcional: bloquear otros botones mientras el modal está abierto
+			if (_readyUpButton) _readyUpButton.interactable = false;
+			if (_abortButton) _abortButton.interactable = false;
+		}
+
+		private void OnAbortClicked_OpenModal()
+		{
+			if (_abortInProgress) return;
+
+			// Extra: solo mostrar el modal si el botón está visible (i.e., condición de 1 jugador)
+			ShowAbortModal();
+		}
+
+
+		private void HideAbortModal()
+		{
+			if (_abortModal) _abortModal.SetActive(false);
+
+			// Rehabilitar controles si no hay acción en curso
+			if (!_abortInProgress)
+			{
+				if (_readyUpButton) _readyUpButton.interactable = true;
+				if (_abortButton) _abortButton.interactable = true;
+			}
+		}
 		private async void OnAbortClicked()
 		{
 			if (_abortInProgress) return;
@@ -277,14 +331,15 @@ namespace FusionExamples.Tanknarok
 
 				await API.AbortMatchAsync(matchId, wallet);
 				Debug.Log("[ReadyUpManager] AbortMatchAsync OK — cerrando sesión.");
+				JsBridge.NotifyGameOver("Match Aborted", matchId);
 
 				await runner.Shutdown(false);
-		
+
 			}
 			catch (System.Exception ex)
 			{
 				Debug.LogError($"[ReadyUpManager] Abort error: {ex.Message}");
-			
+
 				_abortInProgress = false;
 				if (_abortButton) _abortButton.interactable = true;
 			}
