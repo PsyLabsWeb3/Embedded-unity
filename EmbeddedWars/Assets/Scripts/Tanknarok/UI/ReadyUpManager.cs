@@ -49,6 +49,9 @@ namespace FusionExamples.Tanknarok
 		private bool _defaultWinReported = false;
 		private bool _isReportingDefaultWin = false;
 
+		private float _soloSince = -1f;
+		[SerializeField] private float _soloGraceSeconds = 10f;
+
 		private void Start()
 		{
 			_disconnectPrompt.SetActive(false);
@@ -182,6 +185,7 @@ namespace FusionExamples.Tanknarok
 			// Arranca solo si hay 2+ jugadores y NO todos están ready
 			if (playerCount >= 2)
 			{
+				 _soloSince = -1f; // resetea el timer de "solo" si hay 2+ jugadores
 				if (!_countdownActive)
 					StartCountdown();
 
@@ -204,11 +208,29 @@ namespace FusionExamples.Tanknarok
 			}
 			else
 			{
-							// ✅ Solo dispara si hay 1 jugador y es el Player #2
-				if (playerCount == 1 && PlayerSessionData.PlayerNumber == "2")
+				if (playerCount == 1)
 				{
-					TryReportDefaultWinOnce();
+					// Marca el inicio del estado "solo" si no estaba marcado
+					if (_soloSince < 0f)
+						_soloSince = Time.time;
+
+					bool soloStable = (Time.time - _soloSince) >= _soloGraceSeconds;
+
+					// ✅ Solo dispara si:
+					// - el estado "1 jugador" fue estable por el período de gracia
+					// - el local es el Player #2
+					// - (opcional) no hay countdown activo
+					if (soloStable && PlayerSessionData.PlayerNumber == "2" && !_countdownActive)
+					{
+						TryReportDefaultWinOnce();
+					}
 				}
+				else
+				{
+					// 0 jugadores o estado no válido -> resetea el timer
+					_soloSince = -1f;
+				}
+
 
 				// Menos de 2 jugadores -> reset
 				if (_countdownActive)
@@ -216,10 +238,14 @@ namespace FusionExamples.Tanknarok
 			}
 		}
 
+
 		//Helpers para reporte de Default Win
 		private async void TryReportDefaultWinOnce()
 		{
-			if (_defaultWinReported || _isReportingDefaultWin)
+			//Variable player session match reporter
+			bool matchReported = PlayerSessionData.MatchReported;
+
+			if (_defaultWinReported || _isReportingDefaultWin || matchReported)
 				return;
 
 			// Solo Player #2 hace el reporte
@@ -246,6 +272,7 @@ namespace FusionExamples.Tanknarok
 					_defaultWinReported = true;     // marcado como realizado
 					Debug.Log("[ReadyUpManager] ReportMatchResultAsync OK");
 					JsBridge.NotifyGameOver("Default Win", matchId);
+					PlayerSessionData.MatchReported = true; // marca en PlayerSessionData
 
 
 
