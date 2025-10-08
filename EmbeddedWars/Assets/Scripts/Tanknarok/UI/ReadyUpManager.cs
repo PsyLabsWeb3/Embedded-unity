@@ -162,6 +162,20 @@ namespace FusionExamples.Tanknarok
 				if (indicator.Refresh(player))
 					_audioEmitter.PlayOneShot();
 			}
+			 // update _soloSince early so RefreshAbortButtonVisibility uses the same grace timer
+            if (playerCount >= 2)
+            {
+                _soloSince = -1f;
+            }
+            else if (playerCount == 1)
+            {
+                if (_soloSince < 0f)
+                    _soloSince = Time.time;
+            }
+            else
+            {
+                _soloSince = -1f;
+            }
 
 			RefreshAbortButtonVisibility(playState, playerCount);
 
@@ -293,8 +307,17 @@ namespace FusionExamples.Tanknarok
 				return;
 			}
 
-			// Mostrar solo en LOBBY y cuando hay exactamente 1 jugador
-			bool shouldShow = (playState == GameManager.PlayState.LOBBY) && (playerCount == 1);
+			  // Mostrar solo en LOBBY y cuando hay exactamente 1 jugador
+            // Además: mostrar solo después del periodo de gracia (_soloGraceSeconds),
+            // igual que el reporte de default win.
+            bool soloStable = false;
+            if (playerCount == 1 && _soloSince >= 0f)
+            {
+                soloStable = (Time.time - _soloSince) >= _soloGraceSeconds;
+            }
+
+            bool shouldShow = (playState == GameManager.PlayState.LOBBY) && (playerCount == 1) && soloStable;
+
 
 			_abortButton.gameObject.SetActive(shouldShow);
 			_abortButton.interactable = shouldShow && !_abortInProgress;
@@ -343,7 +366,7 @@ namespace FusionExamples.Tanknarok
 		private void ShowAbortModal()
 		{
 			if (_abortModalTitle) _abortModalTitle.text = "¿Abortar partida?";
-			if (_abortModalBody) _abortModalBody.text = "Se cancelará la sala si solo hay 1 jugador conectado. Esta acción no se puede deshacer.";
+			if (_abortModalBody) _abortModalBody.text = "Match will be canceled if there is no 2nd player. Entry fee will be refunded.";
 			if (_abortModal) _abortModal.SetActive(true);
 
 			// Opcional: bloquear otros botones mientras el modal está abierto
@@ -414,6 +437,9 @@ namespace FusionExamples.Tanknarok
 			{
 				_abortInProgress = true;
 				if (_abortButton) _abortButton.interactable = false;
+				if (_abortModalConfirm) _abortModalConfirm.interactable = false;
+				if (_abortModalBody) _abortModalBody.text = "Aborting match… please wait.";
+				if (_abortModalCancel) _abortModalCancel.interactable = false;
 
 				Debug.Log($"[ReadyUpManager] Abortando matchID: {matchId}, Player: {wallet}");
 
@@ -426,6 +452,9 @@ namespace FusionExamples.Tanknarok
 					// ⚠️ Actualiza UI ANTES del throw
 					_abortModalBody.text = "Abort failed — something went wrong.";
 					Debug.LogError("[ReadyUpManager] AbortMatchAsync failed (success=false)");
+					// Rehabilitar botones antes de lanzar la excepción para que la UI quede consistente
+					if (_abortModalConfirm) _abortModalConfirm.interactable = true;
+					if (_abortModalCancel) _abortModalCancel.interactable = true;
 					throw new Exception("AbortMatchAsync failed");
 				}
 
