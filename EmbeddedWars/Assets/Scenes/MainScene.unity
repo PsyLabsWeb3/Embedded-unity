@@ -20359,9 +20359,10 @@ MonoBehaviour:
   _abortButton: {fileID: 1214345150}
   _abortModal: {fileID: 989995834}
   _abortModalTitle: {fileID: 0}
-  _abortModalBody: {fileID: 0}
+  _abortModalBody: {fileID: 853847918}
   _abortModalConfirm: {fileID: 283305907}
   _abortModalCancel: {fileID: 1365478363}
+  _soloGraceSeconds: 10
 --- !u!114 &7691493862340334796
 MonoBehaviour:
   m_ObjectHideFlags: 0

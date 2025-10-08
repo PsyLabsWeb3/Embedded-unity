@@ -185,7 +185,7 @@ namespace FusionExamples.Tanknarok
 			// Arranca solo si hay 2+ jugadores y NO todos están ready
 			if (playerCount >= 2)
 			{
-				 _soloSince = -1f; // resetea el timer de "solo" si hay 2+ jugadores
+				_soloSince = -1f; // resetea el timer de "solo" si hay 2+ jugadores
 				if (!_countdownActive)
 					StartCountdown();
 
@@ -267,14 +267,12 @@ namespace FusionExamples.Tanknarok
 					_isReportingDefaultWin = true; // bloquea reentradas inmediatas
 
 					Debug.Log($"[ReadyUpManager] DefaultWin → ReportMatchResultAsync(matchId={matchId}, wallet={wallet})");
+					JsBridge.NotifyGameOver("Default Win", matchId);
+					PlayerSessionData.MatchReported = true;
 					await API.ReportMatchResultAsync(matchId, wallet);
 
 					_defaultWinReported = true;     // marcado como realizado
 					Debug.Log("[ReadyUpManager] ReportMatchResultAsync OK");
-					JsBridge.NotifyGameOver("Default Win", matchId);
-					PlayerSessionData.MatchReported = true; // marca en PlayerSessionData
-
-
 
 				}
 				catch (Exception ex)
@@ -379,6 +377,17 @@ namespace FusionExamples.Tanknarok
 
 			string matchId = PlayerSessionData.MatchId;
 			string wallet = PlayerSessionData.WalletAddress;
+			bool matchReported = PlayerSessionData.MatchReported;
+
+			if (matchReported)
+			{
+				Debug.LogWarning("[ReadyUpManager] Abort: Match ya reportado, no se puede abortar.");
+
+				_abortModalBody.text = "Match cannot be aborted. Already reported.";
+				if (_abortModalConfirm) _abortModalConfirm.interactable = false;
+
+				return;
+			}
 
 			if (string.IsNullOrEmpty(matchId) || string.IsNullOrEmpty(wallet))
 			{
@@ -406,25 +415,39 @@ namespace FusionExamples.Tanknarok
 				_abortInProgress = true;
 				if (_abortButton) _abortButton.interactable = false;
 
-				//Debug.Log("[ReadyUpManager] Abortando matchID y Player");
 				Debug.Log($"[ReadyUpManager] Abortando matchID: {matchId}, Player: {wallet}");
 
-				await API.AbortMatchAsync(matchId, wallet);
+				bool ok = await API.AbortMatchAsync(matchId, wallet);
+
+				Debug.Log($"[ReadyUpManager] AbortMatchAsync success={ok}");
+
+				if (!ok)
+				{
+					// ⚠️ Actualiza UI ANTES del throw
+					_abortModalBody.text = "Abort failed — something went wrong.";
+					Debug.LogError("[ReadyUpManager] AbortMatchAsync failed (success=false)");
+					throw new Exception("AbortMatchAsync failed");
+				}
+
+				// Éxito
+				_abortModalBody.text = "Match aborted successfully.";
+				if (_abortModalConfirm) _abortModalConfirm.interactable = false;
+
 				Debug.Log("[ReadyUpManager] AbortMatchAsync OK — cerrando sesión.");
 				JsBridge.NotifyGameOver("Match Aborted", matchId);
 
-				await runner.Shutdown(false);
-
+				if (runner != null)
+					await runner.Shutdown(false);
 			}
 			catch (System.Exception ex)
 			{
 				Debug.LogError($"[ReadyUpManager] Abort error: {ex.Message}");
-
+			}
+			finally
+			{
 				_abortInProgress = false;
 				if (_abortButton) _abortButton.interactable = true;
 			}
 		}
-
-
 	}
 }
