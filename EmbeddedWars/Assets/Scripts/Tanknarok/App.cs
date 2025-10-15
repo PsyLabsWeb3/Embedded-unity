@@ -40,15 +40,17 @@ namespace FusionExamples.Tanknarok
 
 		private string _matchId = null;
 
+		private string _playerNumber = null;
+
 
 		private void Awake()
 		{
-			 BootGate.IsBooting = true; 
+			BootGate.IsBooting = true;
 			Application.targetFrameRate = 60;
 			DontDestroyOnLoad(this);
 			_levelManager.onStatusUpdate = OnConnectionStatusUpdate;
 
-			 // 🔒 Bloquea ReadyUp durante la fase de conexión
+			// 🔒 Bloquea ReadyUp durante la fase de conexión
 			if (_levelManager && _levelManager.readyUpManager)
 				_levelManager.readyUpManager.gameObject.SetActive(false);
 		}
@@ -98,8 +100,15 @@ namespace FusionExamples.Tanknarok
 			Debug.Log($"🌍 Región seleccionada: {regionCode}");
 
 			// 🔐 Registrar jugador con backend
-			_matchId = await API.RegisterPlayerAsync(address, txID, gameName, regionCode, bettingMode, betForApi);
-			Debug.Log($"Match ID recibido desde backend: {_matchId}");
+			API.RegisterResponse responseData = await API.RegisterPlayerAsync(address, txID, gameName, regionCode, bettingMode, betForApi);
+
+			_matchId = responseData.matchId;
+
+			_playerNumber = responseData.playerNumber;
+
+			PlayerSessionData.PlayerNumber = _playerNumber;
+
+			Debug.Log($"Match ID recibido desde backend: {responseData}");
 
 			// 🧠 Guardar datos de sesión
 			PlayerSessionData.WalletAddress = address;

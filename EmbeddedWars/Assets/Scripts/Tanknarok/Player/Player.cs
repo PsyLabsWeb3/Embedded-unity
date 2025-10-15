@@ -1,6 +1,7 @@
 using Fusion;
 using FusionHelpers;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FusionExamples.Tanknarok
 {
@@ -13,23 +14,27 @@ namespace FusionExamples.Tanknarok
 		private const int MAX_LIVES = 3;
 		private const int MAX_HEALTH = 100;
 
-		[Header("Visuals")] [SerializeField] private Transform _hull;
+		[Header("Visuals")][SerializeField] private Transform _hull;
 		[SerializeField] private Transform _turret;
 		[SerializeField] private Transform _visualParent;
 		[SerializeField] private Material[] _playerMaterials;
 		[SerializeField] private TankTeleportInEffect _teleportIn;
 		[SerializeField] private TankTeleportOutEffect _teleportOutPrefab;
 
-		[Space(10)] [SerializeField] private GameObject _deathExplosionPrefab;
+		[Space(10)][SerializeField] private GameObject _deathExplosionPrefab;
 		[SerializeField] private float _respawnTime;
 		[SerializeField] private WeaponManager weaponManager;
+
+		[Header("UI")]
+		[SerializeField] private Slider _healthSlider;
+		[SerializeField] private Canvas _healthCanvas;
 
 		public struct DamageEvent : INetworkEvent
 		{
 			public Vector3 impulse;
 			public int damage;
 		}
-		
+
 		public struct PickupEvent : INetworkEvent
 		{
 			public int powerup;
@@ -120,9 +125,28 @@ namespace FusionExamples.Tanknarok
 			OnStageChanged();
 
 			_respawnInSeconds = 0;
-			
-			RegisterEventListener( (DamageEvent evt) => ApplyAreaDamage(evt.impulse, evt.damage) );
-			RegisterEventListener( (PickupEvent evt) => OnPickup(evt));
+
+			RegisterEventListener((DamageEvent evt) => ApplyAreaDamage(evt.impulse, evt.damage));
+			RegisterEventListener((PickupEvent evt) => OnPickup(evt));
+
+			// Setup health bar
+
+			if (_healthSlider != null)
+			{
+				_healthSlider.minValue = 0f;
+				_healthSlider.maxValue = 1f;
+				UpdateHealthBarInstant((float)life / MAX_HEALTH);
+			}
+
+			if (_healthCanvas != null)
+				_healthCanvas.enabled = true;
+		}
+
+		private void UpdateHealthBarInstant(float normalized)
+		{
+			// Normaliza por seguridad
+			if (_healthSlider != null)
+				_healthSlider.value = Mathf.Clamp01(normalized);
 		}
 
 		public override void Despawned(NetworkRunner runner, bool hasState)
@@ -133,7 +157,7 @@ namespace FusionExamples.Tanknarok
 			Destroy(_deathExplosionInstance);
 		}
 
-		private void OnPickup( PickupEvent evt)
+		private void OnPickup(PickupEvent evt)
 		{
 			PowerupElement powerup = PowerupSpawner.GetPowerup(evt.powerup);
 
@@ -203,10 +227,14 @@ namespace FusionExamples.Tanknarok
 						break;
 				}
 			}
-				
+
 			var interpolated = new NetworkBehaviourBufferInterpolator(this);
 			_turret.rotation = Quaternion.Euler(0, interpolated.Angle(nameof(aimDirection)), 0);
 			_damageVisuals.CheckHealth(GetPropertyReader<int>(nameof(life)).Read(interpolated.From), MAX_HEALTH);
+
+			// Update health bar
+			if (_healthSlider != null)
+				UpdateHealthBarInstant((float)life / MAX_HEALTH);
 		}
 
 		private void SetMaterial()
@@ -269,7 +297,7 @@ namespace FusionExamples.Tanknarok
 					Debug.Log($"Player {PlayerId} took {damage} damage, life = {life}");
 				}
 
-				_damageVisuals.CheckHealth(life , MAX_HEALTH);
+				_damageVisuals.CheckHealth(life, MAX_HEALTH);
 			}
 
 			invulnerabilityTimer = TickTimer.CreateFromSeconds(Runner, 0.1f);
@@ -282,7 +310,7 @@ namespace FusionExamples.Tanknarok
 			lives = MAX_LIVES;
 		}
 
-		public void Respawn( float inSeconds=0 )
+		public void Respawn(float inSeconds = 0)
 		{
 			_respawnInSeconds = inSeconds;
 		}
@@ -295,7 +323,7 @@ namespace FusionExamples.Tanknarok
 
 				if (_respawnInSeconds <= 0)
 				{
-					SpawnPoint spawnpt = Runner.GetLevelManager().GetPlayerSpawnPoint( PlayerIndex );
+					SpawnPoint spawnpt = Runner.GetLevelManager().GetPlayerSpawnPoint(PlayerIndex);
 					if (spawnpt == null)
 					{
 						_respawnInSeconds = Runner.DeltaTime;
@@ -317,7 +345,7 @@ namespace FusionExamples.Tanknarok
 
 					// Place the tank at its spawn point. This has to be done in FUN() because the transform gets reset otherwise
 					Transform spawn = spawnpt.transform;
-					_cc.Teleport( spawn.position, spawn.rotation );
+					_cc.Teleport(spawn.position, spawn.rotation);
 
 					// If the player was already here when we joined, it might already be active, in which case we don't want to trigger any spawn FX, so just leave it ACTIVE
 					if (stage != Stage.Active)
@@ -347,8 +375,8 @@ namespace FusionExamples.Tanknarok
 
 					_visualParent.gameObject.SetActive(false);
 					_damageVisuals.OnDeath();
-					
-					if(Runner.TryGetSingleton( out GameManager gameManager))
+
+					if (Runner.TryGetSingleton(out GameManager gameManager))
 						gameManager.OnTankDeath();
 
 					break;
@@ -375,7 +403,7 @@ namespace FusionExamples.Tanknarok
 
 		public void TeleportOut()
 		{
-			if (stage == Stage.Dead || stage==Stage.TeleportOut)
+			if (stage == Stage.Dead || stage == Stage.TeleportOut)
 				return;
 
 			if (Object.HasStateAuthority)
@@ -383,5 +411,5 @@ namespace FusionExamples.Tanknarok
 		}
 	}
 
-	
+
 }

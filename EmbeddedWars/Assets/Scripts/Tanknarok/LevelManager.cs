@@ -178,7 +178,7 @@ namespace FusionExamples.Tanknarok
 				yield return null;
 			}
 
-			if (gameManager.matchWinner!=null && newScene.AsIndex == _lobby)
+			if (gameManager.matchWinner != null && newScene.AsIndex == _lobby)
 			{
 				// Set the game state to ended
 				gameManager.currentPlayState = GameManager.PlayState.ENDED;
@@ -193,14 +193,12 @@ namespace FusionExamples.Tanknarok
 				PlayerRef winnerRef = gameManager.matchWinner.Object.InputAuthority;
 				string matchId = PlayerSessionData.MatchId;
 				// cuando termine la partida:
-				JsBridge.NotifyGameOver("normal", matchId );
+				JsBridge.NotifyGameOver("normal", matchId);
 
-				// string winnerWallet = "";
-				// if (gameManager.playerWalletMap.TryGet(winnerRef, out var wallet))
-				// {
-				// 	winnerWallet = wallet.ToString();
-				// 	string matchId = PlayerSessionData.MatchId;
-				// 	Debug.Log($"🏆🏆Reporting match from IF LevelManager result. MatchId: {matchId}, Wallet: {winnerWallet}");
+				//change playersessiondata match reported to true
+				PlayerSessionData.MatchReported = true;
+				Debug.Log($" ✅ Notify Game Over From LevelManager Match Id: {matchId}");
+
 				// 	API.ReportMatchResultAsync(matchId, winnerWallet);
 				// }
 			}
