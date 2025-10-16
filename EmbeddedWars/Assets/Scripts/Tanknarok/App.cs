@@ -32,7 +32,7 @@ namespace FusionExamples.Tanknarok
 		[SerializeField] private NetworkRunner _runnerPrefab;
 
 
-		
+
 
 		private FusionLauncher.ConnectionStatus _status = FusionLauncher.ConnectionStatus.Disconnected;
 		private GameMode _gameMode;
@@ -67,7 +67,7 @@ namespace FusionExamples.Tanknarok
 			_uiRoom.SetVisible(false);
 			_uiProgress.SetVisible(true);
 
-			 if (_progress) _progress.text = "Connecting…";
+			if (_progress) _progress.text = "Connecting…";
 
 			_gameMode = GameMode.Shared;
 
@@ -88,16 +88,12 @@ namespace FusionExamples.Tanknarok
 			}
 
 			string bettingMode = WalletManager.GameMode;                 // "casual" | "betting"
-			string betForApi   = WalletManager.BetAmount; // <-betAmount en string
-
-			Debug.Log($"MODE 🎮 : {bettingMode}");
-			Debug.Log($"BET AMOUNT💰: {betForApi}");
-
+			string betForApi = WalletManager.BetAmount; // <-betAmount en string
 
 
 			// ✅ Obtener mejor región con NetworkRunner temporal (evita error scheduler==null en WebGL)
 			string regionCode = await RegionPicker.GetBestRegionViaRunnerAsync(_runnerPrefab, fallback: "us", timeoutMs: 6000);
-			Debug.Log($"🌍 Región seleccionada: {regionCode}");
+
 
 			// 🔐 Registrar jugador con backend
 			API.RegisterResponse responseData = await API.RegisterPlayerAsync(address, txID, gameName, regionCode, bettingMode, betForApi);
@@ -108,13 +104,12 @@ namespace FusionExamples.Tanknarok
 
 			PlayerSessionData.PlayerNumber = _playerNumber;
 
-			Debug.Log($"Match ID recibido desde backend: {responseData}");
 
 			// 🧠 Guardar datos de sesión
 			PlayerSessionData.WalletAddress = address;
 			PlayerSessionData.MatchId = _matchId;
 
-			Debug.Log($"📝 PlayerSessionData: Wallet = {address}, MatchId = {_matchId}");
+
 
 			// 🚀 Lanzar juego
 			FusionLauncher.Launch(
@@ -126,9 +121,9 @@ namespace FusionExamples.Tanknarok
 				OnConnectionStatusUpdate
 			);
 
-		// 👉 Notificar que el jugador se ha unido
-		_ = API.JoinMatchAsync(_matchId, address);
-	}
+			// 👉 Notificar que el jugador se ha unido
+			_ = API.JoinMatchAsync(_matchId, address);
+		}
 
 
 		private void Update()
@@ -165,10 +160,10 @@ namespace FusionExamples.Tanknarok
 		}
 
 		public void OnCancel()
-        {
+		{
 			if (GateUI(_uiRoom))
 				_uiStart.SetVisible(true);
-        }
+		}
 
 		private void SetGameMode(GameMode gamemode)
 		{
@@ -184,42 +179,42 @@ namespace FusionExamples.Tanknarok
 		// 		// Get region from dropdown
 		// 		string region = string.Empty;
 		// 		if (_regionDropdown.value > 0)
-        //         {
+		//         {
 		// 			region = _regionDropdown.options[_regionDropdown.value].text;
 		// 			region = region.Split(" (")[0];
-        //         }
+		//         }
 
 		// 		FusionLauncher.Launch(_gameMode, region, _room.text, _gameManagerPrefab, _levelManager, OnConnectionStatusUpdate);
 		// 	}
 		// }
 		public void OnEnterRoom()
+		{
+			string hardcodedRoom = "default-room-001";
+			string hardcodedRegion = "";
+
+			if (GateUI(_uiRoom))
 			{
-				string hardcodedRoom = "default-room-001";
-				string hardcodedRegion = "";
 
-				if (GateUI(_uiRoom)) 
-				{
-
-							FusionLauncher.Launch(
-								_gameMode,
-								hardcodedRegion,
-								hardcodedRoom,
-								_gameManagerPrefab,
-								_levelManager,
-								OnConnectionStatusUpdate
-							);
-				}
+				FusionLauncher.Launch(
+					_gameMode,
+					hardcodedRegion,
+					hardcodedRoom,
+					_gameManagerPrefab,
+					_levelManager,
+					OnConnectionStatusUpdate
+				);
 			}
+		}
 
 		//Esto se manda llamar en FusionLauncher en Fusion Helpers
-        // public async void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
-        // {
-          
-        //     string matchId = PlayerSessionData.MatchId;
+		// public async void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+		// {
+
+		//     string matchId = PlayerSessionData.MatchId;
 		// 	JsBridge.NotifyGameOver("Dissconected", matchId );
 		// 	Debug.Log($" ✅ Notify Game Over From APP onPlayerleft Match Id: {matchId}");
-     
-        // }
+
+		// }
 
 
 		/// <summary>
@@ -258,16 +253,17 @@ namespace FusionExamples.Tanknarok
 
 			_status = status;
 			UpdateUI();
-			 if (status == FusionLauncher.ConnectionStatus.Loaded) {
+			if (status == FusionLauncher.ConnectionStatus.Loaded)
+			{
 				BootGate.IsBooting = false; // 🔓 ya puede mostrarse el lobby real
-				}
+			}
 		}
 
 		public void ToggleAudio()
-        {
+		{
 			AudioListener.volume = 1f - AudioListener.volume;
 			_audioText.text = AudioListener.volume > 0.5f ? "ON" : "OFF";
-        }
+		}
 
 		private void UpdateUI()
 		{
@@ -302,19 +298,20 @@ namespace FusionExamples.Tanknarok
 					break;
 			}
 
-				_uiCurtain.SetVisible(!running);
-				_uiStart.SetVisible(intro);
-				_uiProgress.SetVisible(progress);
-				_uiGame.SetActive(running);
-			 
+			_uiCurtain.SetVisible(!running);
+			_uiStart.SetVisible(intro);
+			_uiProgress.SetVisible(progress);
+			_uiGame.SetActive(running);
 
-				  // 🟢 Al estar Loaded, habilita ReadyUp (Lobby real)
-			if (_levelManager && _levelManager.readyUpManager){
+
+			// 🟢 Al estar Loaded, habilita ReadyUp (Lobby real)
+			if (_levelManager && _levelManager.readyUpManager)
+			{
 				_levelManager.readyUpManager.gameObject.SetActive(running);
 			}
-			
-			if(intro)
-				MusicPlayer.instance.SetLowPassTranstionDirection( -1f);
+
+			if (intro)
+				MusicPlayer.instance.SetLowPassTranstionDirection(-1f);
 		}
 	}
 }

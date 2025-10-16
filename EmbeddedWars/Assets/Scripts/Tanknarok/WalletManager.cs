@@ -11,25 +11,21 @@ public class WalletManager : MonoBehaviour
     public void SetWalletAddress(string address)
     {
         WalletAddress = address;
-        Debug.Log("📥 Wallet address received in Unity: " + WalletAddress);
     }
 
     public void SetTransactionId(string txId)
     {
         TransactionId = txId;
-        Debug.Log("📥 Transaction ID received in Unity: " + TransactionId);
     }
 
-    public void SetGameMode (string mode) {
-         GameMode = mode;
-        Debug.Log("📥 Game Mode received in Unity: " + GameMode);
-
-    }
-
-     public void SetBetAmount(string amount)
+    public void SetGameMode(string mode)
     {
-       BetAmount = amount;
-        Debug.Log("📥 BetAmount received in Unity: " + BetAmount);
+        GameMode = mode;
+    }
+
+    public void SetBetAmount(string amount)
+    {
+        BetAmount = amount;
     }
 
     public static string GetWalletAddress()
@@ -37,23 +33,23 @@ public class WalletManager : MonoBehaviour
         return WalletAddress;
     }
 
-      public static string GetTransactionId()
+    public static string GetTransactionId()
     {
         return TransactionId;
     }
 
-     public static string GetGameMode()
+    public static string GetGameMode()
     {
         return GameMode;
     }
 
-      public static string GetBetAmount()
+    public static string GetBetAmount()
     {
         return BetAmount;
     }
 
 
-     private void Awake()
+    private void Awake()
     {
         // Que este objeto no se destruya entre escenas
         DontDestroyOnLoad(gameObject);
