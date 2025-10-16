@@ -155,7 +155,7 @@ namespace FusionHelpers
 				 Debug.Log($"Reporting match: {matchId} result. Winner: {winnerWallet}");
 				await API.ReportMatchResultAsync(matchId, winnerWallet);
 				JsBridge.NotifyGameOver("Dissconected", matchId );
-				Debug.Log($" ✅ Notify Game Over From FusionLauncher onPlayerleft Match Id: {matchId}");
+				
 			}
            
 			if(runner.TryGetSingleton(out FusionSession session))

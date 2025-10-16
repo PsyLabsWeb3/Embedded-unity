@@ -9,7 +9,7 @@ namespace EmbeddedAPI
 {
     public static class API
     {
-        private static readonly string sharedSecret = "5f725f60-f959-4d54-a081-7a935bdf3194";
+        private static readonly string sharedSecret = "";
         private static readonly string baseUrl = "https://backend.embedded.games/api";
 
         [Serializable]
