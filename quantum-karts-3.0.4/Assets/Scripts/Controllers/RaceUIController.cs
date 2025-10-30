@@ -59,6 +59,10 @@ public unsafe class RaceUIController : QuantumCallbacks
 
     [SerializeField] private ResultItemController _resultItemPrefab;
 
+    [Header("Mobile Controls")]
+    [SerializeField] private MobileInputManager _mobileInputManager;
+    [SerializeField] private GameObject _mobileControlsContainer;
+
     private UIState _currentUIState = UIState.Waiting;
     private int lastCountdownTimer = 100;
 
@@ -92,6 +96,30 @@ public unsafe class RaceUIController : QuantumCallbacks
         foreach (var pair in _stateObjectPairs)
         {
             _stateObjectDictionary.Add(pair.State, pair.Object);
+        }
+
+        // Initialize mobile controls
+        InitializeMobileControls();
+    }
+
+    private void InitializeMobileControls()
+    {
+        // Find mobile input manager if not assigned
+        if (_mobileInputManager == null)
+        {
+            _mobileInputManager = FindObjectOfType<MobileInputManager>();
+        }
+
+        // Find mobile controls container if not assigned
+        if (_mobileControlsContainer == null)
+        {
+            _mobileControlsContainer = GameObject.Find("MobileControlsContainer");
+        }
+
+        // Set mobile controls visibility based on platform
+        if (_mobileInputManager != null && _mobileControlsContainer != null)
+        {
+            _mobileControlsContainer.SetActive(_mobileInputManager.IsMobilePlatform);
         }
     }
 
@@ -280,6 +308,57 @@ public unsafe class RaceUIController : QuantumCallbacks
         }
 
         _currentUIState = state;
+
+        // Show/hide mobile controls based on UI state
+        UpdateMobileControlsVisibility(state);
+    }
+
+    private void UpdateMobileControlsVisibility(UIState state)
+    {
+        if (_mobileInputManager == null || !_mobileInputManager.IsMobilePlatform || _mobileControlsContainer == null)
+            return;
+
+        // Show mobile controls during racing states AND waiting (for ready up)
+        bool showMobileControls = state == UIState.Waiting || state == UIState.Countdown || state == UIState.InRace;
+        _mobileControlsContainer.SetActive(showMobileControls);
+        
+        // Update button text based on state
+        UpdateMobileButtonText(state);
+    }
+    
+    private void UpdateMobileButtonText(UIState state)
+    {
+        // Find the powerup button and update its text for ready state
+        GameObject powerupButton = GameObject.Find("PowerupButton");
+        if (powerupButton != null)
+        {
+            Text buttonText = powerupButton.GetComponentInChildren<Text>();
+            if (buttonText != null)
+            {
+                switch (state)
+                {
+                    case UIState.Waiting:
+                        buttonText.text = "READY";
+                        break;
+                    case UIState.Countdown:
+                    case UIState.InRace:
+                    case UIState.LocalFinished:
+                    case UIState.RaceOver:
+                        buttonText.text = "FIRE";
+                        break;
+                }
+            }
+        }
+        
+        // Update the ready CTA text for mobile
+        if (_readyCtaText != null && _mobileInputManager != null && _mobileInputManager.IsMobilePlatform)
+        {
+            // Change the text to mention tapping the button instead of pressing R
+            if (state == UIState.Waiting && _readyCtaText.gameObject.activeSelf)
+            {
+                _readyCtaText.text = "Tap READY button to ready up";
+            }
+        }
     }
 
     private void UpdatePosition(int position)
