@@ -1,0 +1,22 @@
+﻿component KartHitReceiver {
+
+    [ExcludeFromPrototype]
+    FP HitTimer;
+    [ExcludeFromPrototype]
+    FP ImmunityTimer;
+    [ExcludeFromPrototype]
+    FP HitCooldownTimer;
+    
+    FP HitCooldown;
+    
+    FPVector3 HitShapeSize;
+    
+    [ExcludeFromPrototype]
+    PhysicsQueryRef HazardQuery;
+    LayerMask HazardLayerMask;
+}
+
+event OnHitStart {entity_ref kartEntity;}
+event OnHitEnd {entity_ref kartEntity;}
+event OnImmunityStart {entity_ref kartEntity;}
+event OnImmunityEnd {entity_ref kartEntity;}

@@ -1,0 +1,6 @@
+component Checkpoint { 
+ sbyte Index; 
+ bool Finish;
+ FPVector3 AIOptimalLocalPosition;
+ FPVector3 AIBadLocalPosition;
+}

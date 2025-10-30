@@ -1,0 +1,20 @@
+component Kart {    
+    [ExcludeFromPrototype] ComponentPrototypeRef Prototype;	
+	[ExcludeFromPrototype] FPVector3 Velocity;	
+	[ExcludeFromPrototype] FPVector3 OldVelocity;	
+	[ExcludeFromPrototype] FPVector3 ExternalForce;	
+	[ExcludeFromPrototype] FPVector3 CollisionPositionCompensation;
+	[ExcludeFromPrototype] FP SidewaysSpeedSqr;
+	[ExcludeFromPrototype] FP SurfaceFrictionMultiplier;
+	[ExcludeFromPrototype] FP SurfaceSpeedMultiplier;
+	[ExcludeFromPrototype] FP SurfaceHandlingMultiplier;
+	[ExcludeFromPrototype] FPQuaternion TargetRotation;
+    [ExcludeFromPrototype] byte GroundedWheels;
+    [ExcludeFromPrototype] byte OffroadWheels;
+    [ExcludeFromPrototype] FP AirTime;
+    [ExcludeFromPrototype] FP OffroadTime;
+    [ExcludeFromPrototype] PhysicsQueryRef OverlapQuery;
+        
+    asset_ref<KartStats> StatsAsset;
+    asset_ref<KartVisuals> VisualAsset;
+}

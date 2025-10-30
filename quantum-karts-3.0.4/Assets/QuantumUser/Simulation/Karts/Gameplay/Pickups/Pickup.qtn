@@ -1,0 +1,13 @@
+﻿component Pickup {
+    FP RespawnTimer;
+    asset_ref<PickupAsset> Asset;
+    bool PickedUp;
+}
+
+event OnPickupCollected {
+    entity_ref PickupEntity;
+}
+
+event OnPickupRespawn {
+    entity_ref PickupEntity;
+}
