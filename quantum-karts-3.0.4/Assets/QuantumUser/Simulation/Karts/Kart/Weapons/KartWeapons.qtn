@@ -1,0 +1,17 @@
+﻿component KartWeapons {
+	[ExcludeFromPrototype] 
+    asset_ref<WeaponAsset> HeldWeapon;
+
+    [ExcludeFromPrototype]
+    byte RemainingUses;
+}
+
+event WeaponCollected { 
+    local entity_ref kartEntity;
+    KartWeapons kartWeapons;
+}
+
+event WeaponUsed {
+    entity_ref kartEntity;
+    KartWeapons kartWeapons;
+}
