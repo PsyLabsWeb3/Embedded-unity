@@ -1620,6 +1620,7 @@ GameObject:
   m_Component:
   - component: {fileID: 753834694}
   - component: {fileID: 753834693}
+  - component: {fileID: 753834695}
   m_Layer: 13
   m_Name: Global
   m_TagString: Untagged
@@ -1659,6 +1660,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &753834695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753834692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0d3171f7e75964d97e83a2dba9cbd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetCanvas: {fileID: 1033966100}
+  _createOnStart: 0
+  _autoCreateOnMobile: 1
+  _enableTestingOnPC: 0
+  _joystickPosition: {x: 300, y: 250}
+  _joystickSize: 500
+  _powerupButtonPosition: {x: -250, y: 250}
+  _buttonSize: 225
+  _joystickBackgroundColor: {r: 1, g: 1, b: 1, a: 0.3}
+  _joystickHandleColor: {r: 1, g: 1, b: 1, a: 0.8}
+  _buttonColor: {r: 0.2, g: 0.6, b: 1, a: 0.8}
+--- !u!223 &1033966100 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 2580771894536653946, guid: 0110ba34f174dd948a8db8ccc95c13ff, type: 3}
+  m_PrefabInstance: {fileID: 6962819384334313488}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1191370042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,6 +1926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678e13504cf767d49a8c13fdad5b77c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mobileInputManager: {fileID: 0}
 --- !u!1001 &177954131342506303
 PrefabInstance:
   m_ObjectHideFlags: 0
