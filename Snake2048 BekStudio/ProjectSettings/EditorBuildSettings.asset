@@ -7,6 +7,9 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/BEK Studio/Snake 2048/Scenes/Game.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    guid: e70889c82600d430cb7962fccb8fc1b1
+  - enabled: 1
+    path: Assets/BEK Studio/Snake 2048/Scenes/GameOver.unity
+    guid: fb9ab9c01892c814aada1e6b02f5dc42
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
