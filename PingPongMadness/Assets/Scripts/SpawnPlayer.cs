@@ -43,7 +43,7 @@ public class PlayerSpawner : MonoBehaviour
 
         int playerId = NetworkManager.Instance.Runner.LocalPlayer.PlayerId;
 
-        Vector3 spawnPos = playerId == 1 ? new Vector3(-5, 1, 0) : new Vector3(5, 1, 0);
+        Vector3 spawnPos = playerId == 1 ? new Vector3(-7, 1, 0) : new Vector3(7, 1, 0);
         Debug.Log($"🚀 Spawning player {playerId} at {spawnPos}");
 
         // Manual spawn

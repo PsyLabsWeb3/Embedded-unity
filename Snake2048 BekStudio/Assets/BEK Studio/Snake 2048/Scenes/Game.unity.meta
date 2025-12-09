@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e70889c82600d430cb7962fccb8fc1b1
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Scenes/Game.unity
+  uploadId: 745896

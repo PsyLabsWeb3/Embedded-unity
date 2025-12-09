@@ -1,0 +1,13 @@
+﻿component KartBoost {
+   [ExcludeFromPrototype] FP TimeRemaining;
+   [ExcludeFromPrototype] asset_ref<BoostConfig> CurrentBoost;
+}
+
+[Serializable]
+struct DriftBoostLevel {
+    FP MinDriftTime;
+    asset_ref<BoostConfig> BoostAsset;
+}
+
+event OnBoostStart {entity_ref kartEntity; KartBoost kartBoost;}
+event OnBoostEnd {entity_ref kartEntity; KartBoost kartBoost;}

@@ -1,0 +1,5 @@
+﻿component DriftBoost {
+
+[ExcludeFromPrototype]
+ FP DriftTime;
+}

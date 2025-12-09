@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c327cfbeae774a768fe60f1357bc08d3
+labels:
+- gvh
+- gvh_version-9.6.0
+- gvhp_exportpath-GoogleMobileAds/Editor/GoogleUmpDependencies.xml
+timeCreated: 1480838400
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/GoogleMobileAds/Editor/GoogleUmpDependencies.xml
+  uploadId: 745896

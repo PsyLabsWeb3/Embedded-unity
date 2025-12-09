@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: fa2f4907cd424f4fb88a3e92aac91bee
+labels:
+- gvh
+- gvh_version-9.6.0
+- gvhp_exportpath-GoogleMobileAds/Editor/Utils.cs
+timeCreated: 1480838400
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/GoogleMobileAds/Editor/Utils.cs
+  uploadId: 745896

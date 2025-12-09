@@ -6,6 +6,11 @@ public class CountdownUI : MonoBehaviour
     public static CountdownUI Instance;
 
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private GameObject countdownPanel;
+
+
+
+   
 
   private void Update()
     {
@@ -16,6 +21,7 @@ public class CountdownUI : MonoBehaviour
         {
             // Oculta el texto una vez que el juego ha comenzado
             countdownText.gameObject.SetActive(false);
+            countdownPanel.gameObject.SetActive(false);
             return;
         }
 
@@ -30,5 +36,9 @@ public class CountdownUI : MonoBehaviour
         {
             countdownText.gameObject.SetActive(false);
         }
+            
+      
+
+       
     }
 }
