@@ -9,8 +9,8 @@ namespace EmbeddedAPI
 {
     public static class API
     {
-        private static readonly string sharedSecret = "5f725f60-f959-4d54-a081-7a935bdf3194";
-        private static readonly string baseUrl = "https://backend.embedded.games/api";
+        private static readonly string sharedSecret = "embedded_shared_secret";
+        private static readonly string baseUrl = "http://localhost:3000/api";
 
  [Serializable]
         public class RegisterPayload
@@ -27,6 +27,21 @@ namespace EmbeddedAPI
         public class RegisterResponse
         {
             public string matchId;
+            public string playerNumber;
+        }
+
+        [Serializable]
+        public class RegisterPvEPayload
+        {
+            public string walletAddress;
+            public string txSignature;
+            public string game;
+        }
+
+        [Serializable]
+        public class RegisterPvEResponse
+        {
+            public string matchId;
         }
 
         [Serializable]
@@ -38,6 +53,12 @@ namespace EmbeddedAPI
 
         [Serializable]
         private class MatchJoinPayload
+        {
+            public string matchID;
+            public string walletAddress;
+        }
+
+        private class AbortMatchPayload
         {
             public string matchID;
             public string walletAddress;
@@ -70,7 +91,7 @@ namespace EmbeddedAPI
         }
 
         public static async Task<string> RegisterPlayerAsync(string walletAddress, string txSignature, string game,
-                                                             string region, string mode , string betAmount)
+                                                             string region, string mode = null, string betAmount = null)
         {
             Debug.Log($"BETAMOUNT recibido API: {betAmount}, type {betAmount.GetType()}");
 
@@ -89,8 +110,7 @@ namespace EmbeddedAPI
 
             AddSecureHeaders(request, body);
 
-             await request.SendWebRequestAsync();
-
+            await request.SendWebRequestAsync();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -123,7 +143,6 @@ namespace EmbeddedAPI
 
             await request.SendWebRequestAsync();
 
-
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Error: " + request.error);
@@ -149,11 +168,39 @@ namespace EmbeddedAPI
 
             await request.SendWebRequestAsync();
 
-
             if (request.result == UnityWebRequest.Result.Success)
                 Debug.Log("Success: " + request.downloadHandler.text);
             else
                 Debug.LogError("Error: " + request.error);
+        }
+
+        public static async Task<Boolean> AbortMatchAsync(string matchId, string walletAddress)
+        {
+            var success = false;
+
+            var payload = new AbortMatchPayload
+            {
+                matchID = matchId,
+                walletAddress = walletAddress
+            };
+
+            var body = JsonUtility.ToJson(payload);
+            var request = new UnityWebRequest(baseUrl + "/abortMatch", "POST");
+
+            AddSecureHeaders(request, body);
+            await request.SendWebRequestAsync();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                success = true;
+                Debug.Log("Success: " + request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError("Error: " + request.error);
+            }
+
+            return success;
         }
     }
 }
