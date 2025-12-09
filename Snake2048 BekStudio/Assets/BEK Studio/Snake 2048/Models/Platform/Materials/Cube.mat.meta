@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bb2ab5b6e47254a0cac9d74a2ff526f3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Models/Platform/Materials/Cube.mat
+  uploadId: 745896

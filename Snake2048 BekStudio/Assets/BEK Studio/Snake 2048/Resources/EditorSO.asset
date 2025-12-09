@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816a100dfcda7124d804d45c74b59054, type: 3}
+  m_Name: EditorSO
+  m_EditorClassIdentifier: 
+  gameSettings:
+    numberColors:
+    - serializedVersion: 2
+      rgba: 4293509509
+    - serializedVersion: 2
+      rgba: 4293045597
+    - serializedVersion: 2
+      rgba: 4292581428
+    - serializedVersion: 2
+      rgba: 4289388674
+    - serializedVersion: 2
+      rgba: 4287485528
+    - serializedVersion: 2
+      rgba: 4285647918
+    - serializedVersion: 2
+      rgba: 4286231280
+    - serializedVersion: 2
+      rgba: 4283341035
+    - serializedVersion: 2
+      rgba: 4280450790
+    - serializedVersion: 2
+      rgba: 4287272177
+    - serializedVersion: 2
+      rgba: 4284707052
+    - serializedVersion: 2
+      rgba: 4282141927
+    - serializedVersion: 2
+      rgba: 4292058051
+    - serializedVersion: 2
+      rgba: 4291132079
+    - serializedVersion: 2
+      rgba: 4290140571
+    - serializedVersion: 2
+      rgba: 4285521143
+    - serializedVersion: 2
+      rgba: 4282372340
+    - serializedVersion: 2
+      rgba: 4279223537
+    - serializedVersion: 2
+      rgba: 4290885375
+    - serializedVersion: 2
+      rgba: 4288845055
+    - serializedVersion: 2
+      rgba: 4286671871
+    - serializedVersion: 2
+      rgba: 4290229939
+    - serializedVersion: 2
+      rgba: 4289111445
+    - serializedVersion: 2
+      rgba: 4287466623
+    - serializedVersion: 2
+      rgba: 4291090294
+    - serializedVersion: 2
+      rgba: 4289775944
+    - serializedVersion: 2
+      rgba: 4288461850
+    - serializedVersion: 2
+      rgba: 4288582277
+    - serializedVersion: 2
+      rgba: 4286475613
+    - serializedVersion: 2
+      rgba: 4284369204
+    botNames:
+    - NeonStriker
+    - ShadowVortex
+    - BlazeHunter47
+    - PhantomByte
+    - DarkStormX
+    - CyberRogue93
+    - SolarFlare
+    - NightFury77
+    - ThunderEcho
+    - InfernoGlitch
+    - VenomSlicer
+    - PixelFreak
+    - ChaosDagger12
+    - FrozenPhantom
+    - AtomicTitan
+    - NovaSlayer99
+    - VortexKnight
+    - StealthReaper
+    - ArcaneWolf87
+    - TitanRider
+    - FrostBite3000
+    - MysticRogue
+    - EclipseSentinel
+    - TurboShadow42
+    - WildFalcon
+    - HyperSniperX
+    - DarkNebula
+    - OmegaSurge88
+    - CyberDrifter
+    - BlazePhantom67
+    - AeroRanger
+    - VenomStormX
+    - BioHazard92
+    - NitroGlider
+    - ZeroFury75
+    - ApexDagger
+    - ShadowPulse99
+    - StarlightKnight
+    - TerraBlazer77
+    - TitanSpecter
+    - RogueXtreme
+    - IronVortex
+    - QuantumFlash27
+    - ChaosStorm
+    - SolarPhoenix
+    - IceFangX
+    - VelocityStriker
+    - MidnightHowl
+    - SkyRiderX23
+    - DoomSeeker
+    buttonClip: {fileID: 8300000, guid: 284a103bd4099804db2e3f0118d95e9c, type: 3}
+    foodClip: {fileID: 8300000, guid: b11dcbd0a53dbc64cb7491e740de39fe, type: 3}
+    maxAiCount: 19
+    maxFoodCount: 50
+  admobSettings:
+    interstitialAndroidID: ca-app-pub-3940256099942544/1033173712
+    rewardedAndroidID: ca-app-pub-3940256099942544/5224354917
+    interstitialIOSID: ca-app-pub-3940256099942544/4411468910
+    rewardedIOSId: ca-app-pub-3940256099942544/1712485313

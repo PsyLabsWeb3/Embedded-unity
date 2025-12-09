@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 914e5192b68cea04db44554f413e4055
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/Android/gradleTemplate.properties
+  uploadId: 745896

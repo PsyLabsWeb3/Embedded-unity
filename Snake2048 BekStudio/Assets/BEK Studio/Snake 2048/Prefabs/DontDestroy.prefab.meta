@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0985f36c2e0855347ac891463dcd57dc
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Prefabs/DontDestroy.prefab
+  uploadId: 745896

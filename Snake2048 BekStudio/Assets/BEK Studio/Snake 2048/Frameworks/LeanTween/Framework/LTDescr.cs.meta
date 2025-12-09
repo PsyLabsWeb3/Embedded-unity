@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 381c8d6fb1acdc348870a7147bc98723
+timeCreated: 1463137984
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Frameworks/LeanTween/Framework/LTDescr.cs
+  uploadId: 745896

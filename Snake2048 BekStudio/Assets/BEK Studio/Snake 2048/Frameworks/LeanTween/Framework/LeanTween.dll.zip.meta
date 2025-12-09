@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ffeadda6aaa064923a3f7e28ff26afb1
+timeCreated: 1477948563
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/BEK Studio/Snake 2048/Frameworks/LeanTween/Framework/LeanTween.dll.zip
+  uploadId: 745896

@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 32087445d9e7f4577ae9170a6b11f114
+labels:
+- gvh
+- gvh_version-9.6.0
+- gvhp_exportpath-GoogleMobileAds/Editor/Resources/DummyAds/AdInspector/768x1024.prefab
+- gvhp_exportpath-GoogleMobileAds/Editor/Resources/Ump/ConsentForm.prefab
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314674
+  packageName: Snake 2048
+  packageVersion: 1.0
+  assetPath: Assets/GoogleMobileAds/Editor/Resources/Ump/ConsentForm.prefab
+  uploadId: 745896
